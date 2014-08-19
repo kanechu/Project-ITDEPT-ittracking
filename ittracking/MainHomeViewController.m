@@ -144,8 +144,10 @@ CustomBadge *iobj_customBadge;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //background task here
         Web_get_alert *web_get_alert = [[Web_get_alert alloc] init];
-        web_get_alert.iobj_target = self;
-        web_get_alert.isel_action = @selector(fn_save_alert_list:);
+        web_get_alert.callBack=^(NSMutableArray *alist_result){
+            DB_alert * ldb_alert = [[DB_alert alloc] init];
+            [ldb_alert fn_save_data:alist_result];
+        };
         [web_get_alert fn_get_data];
         
         dispatch_async( dispatch_get_main_queue(), ^{
@@ -159,11 +161,6 @@ CustomBadge *iobj_customBadge;
             [iui_collectionview reloadData];
         });
     });
-}
-
-- (void) fn_save_alert_list: (NSMutableArray *) alist_alert {
-    DB_alert * ldb_alert = [[DB_alert alloc] init];
-    [ldb_alert fn_save_data:alist_alert];
 }
 
 - (IBAction)fn_menu_btn_clicked:(id)sender {
@@ -222,14 +219,16 @@ CustomBadge *iobj_customBadge;
     PopViewManager *popV=[[PopViewManager alloc]init];
     if ([dbLogin isLoginSuccess]==NO) {
         LoginViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-        VC.iobj_target =self;
-        VC.isel_action = @selector(fn_after_login:);
+        VC.callBack=^(NSString* user_id){
+            [self fn_after_login:user_id];
+        };
         [popV PopupView:VC Size:LOGINSHEETSIZE uponView:self];
     }else{
         //点击用户名称项，执行下面的语句
         LogoutViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
-        VC.iobj_target =self;
-        VC.isel_action = @selector(fn_user_logout);
+        VC.callback=^(){
+            [self fn_user_logout];
+        };
         NSString *logo=[[[dbLogin fn_get_all_msg] objectAtIndex:0] valueForKey:@"user_logo"];
         //如果logo为空的话，弹出的视图size变小
         if (logo==NULL || logo==nil || logo.length==0) {
@@ -271,19 +270,16 @@ CustomBadge *iobj_customBadge;
     web_base.iresp_class =[RespSearchCriteria class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespSearchCriteria class]];
-    web_base.iobj_target = self;
-    web_base.isel_action = @selector(fn_save_searchCriteria_list:);
+    web_base.callBack=^(NSMutableArray *alist_result){
+        DB_searchCriteria *db=[[DB_searchCriteria alloc]init];
+        if ([db fn_delete_all_data]) {
+            [db fn_save_data:alist_result];
+        }
+    };
     [web_base fn_get_data:req_form];
     
 }
-//搜索标准的数据存入数据库中
--(void)fn_save_searchCriteria_list:(NSMutableArray*)ilist_result{
-    DB_searchCriteria *db=[[DB_searchCriteria alloc]init];
-    if ([db fn_delete_all_data]) {
-        [db fn_save_data:ilist_result];
-    }
-    
-}
+
 -(void)fn_get_icon_data:(NSString*)search_value{
     
     RequestContract *req_form=[[RequestContract alloc]init];
@@ -300,8 +296,9 @@ CustomBadge *iobj_customBadge;
     web_base.iresp_class =[RespIcon class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespIcon class]];
-    web_base.iobj_target = self;
-    web_base.isel_action = @selector(fn_save_icon_list:);
+    web_base.callBack=^(NSMutableArray *alist_result){
+        [self fn_save_icon_list:alist_result];
+    };
     [web_base fn_get_data:req_form];
     
 }

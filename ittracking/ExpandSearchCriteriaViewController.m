@@ -270,15 +270,18 @@ static NSInteger day=0;
     if (Btn.tag==TAG1) {
         SearchPortNameViewController *VC=(SearchPortNameViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"SearchPortNameViewController"];
         VC.is_placeholder=@"Please fill in Load Port!";
-        VC.iobj_target=self;
-        VC.isel_action=@selector(fn_show_load_portname:);
+        VC.callBack=^(NSMutableDictionary *dic_portname){
+            idic_portname=dic_portname;
+            [self.skstableView reloadData];
+        };
         [popV PopupView:VC Size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height) uponView:self];
-        
     }
     if (Btn.tag==TAG2) {
         SearchPortNameViewController *VC=(SearchPortNameViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"SearchPortNameViewController"];
-        VC.iobj_target=self;
-        VC.isel_action=@selector(fn_show_dis_portname:);
+        VC.callBack=^(NSMutableDictionary *dic_disportname){
+            idic_dis_portname=dic_disportname;
+            [self.skstableView reloadData];
+        };
         VC.is_placeholder=@"Please fill in Discharge Port!";
         [popV PopupView:VC Size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height) uponView:self];
     }
@@ -324,15 +327,6 @@ static NSInteger day=0;
         textfield.inputView=idp_picker;
         textfield.inputAccessoryView=[self fn_create_toolbar];
     }
-}
-
--(void)fn_show_load_portname:(NSMutableDictionary*)portname{
-    idic_portname=portname;
-    [self.skstableView reloadData];
-}
--(void)fn_show_dis_portname:(NSMutableDictionary*)disportname{
-    idic_dis_portname=disportname;
-    [self.skstableView reloadData];
 }
 
 #pragma mark UIDatePick

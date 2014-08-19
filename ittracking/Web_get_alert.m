@@ -17,10 +17,7 @@
 #import "Web_base.h"
 #import "DB_login.h"
 @implementation Web_get_alert
-
 @synthesize ilist_alert;
-@synthesize isel_action;
-@synthesize iobj_target;
 
 - (void) fn_get_data
 {
@@ -49,14 +46,13 @@
     web_base.iresp_class =[RespAlert class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespAlert class]];
-    web_base.iobj_target = self;
-    web_base.isel_action = @selector(fn_save_alert_list:);
+    web_base.callBack=^(NSMutableArray *alist_result){
+        ilist_alert = alist_result;
+        if (_callBack) {
+            _callBack(ilist_alert);
+        }
+    };
     [web_base fn_get_data:req_form];
-    
-}
-- (void) fn_save_alert_list: (NSMutableArray *) alist_result {
-    ilist_alert = alist_result;
-    SuppressPerformSelectorLeakWarning([iobj_target performSelector:isel_action withObject:ilist_alert];);
     
 }
 @end

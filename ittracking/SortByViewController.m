@@ -17,8 +17,6 @@
 @implementation SortByViewController
 @synthesize imt_sort_list;
 @synthesize imt_sort_key;
-@synthesize iobj_target;
-@synthesize isel_action;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -81,8 +79,9 @@
     return headerView;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    SuppressPerformSelectorLeakWarning(  [iobj_target performSelector:isel_action withObject:[imt_sort_key objectAtIndex:indexPath.row]];);
-    
-      [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController* formSheet){}];
+    if (_callback) {
+        _callback([imt_sort_key objectAtIndex:indexPath.row]);
+    }
+    [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController* formSheet){}];
 }
 @end

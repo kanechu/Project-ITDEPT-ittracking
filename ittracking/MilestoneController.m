@@ -164,8 +164,9 @@
     web_base.iresp_class =[RespMilestone class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespMilestone class]];
-    web_base.iobj_target = self;
-    web_base.isel_action = @selector(fn_save_milestone_list:);
+    web_base.callBack=^(NSMutableArray *alist_result){
+        [self fn_save_milestone_list:alist_result];
+    };
     [web_base fn_get_data:req_form];
     
    

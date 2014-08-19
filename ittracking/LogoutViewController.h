@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef void (^callBack)(void);
 @interface LogoutViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *userLoginTime;
@@ -17,8 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *userID;
 @property (weak, nonatomic) IBOutlet UILabel *loginTime;
 
-@property (strong,nonatomic) id iobj_target;
-@property (nonatomic, assign) SEL isel_action;
+@property (strong,nonatomic)callBack callback;
 
 @property (weak, nonatomic) IBOutlet UIButton *logoutBtn;
 

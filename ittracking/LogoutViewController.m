@@ -19,8 +19,6 @@ enum HEIGHT {
 };
 
 @implementation LogoutViewController
-@synthesize iobj_target;
-@synthesize isel_action;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -80,7 +78,9 @@ enum HEIGHT {
 
 - (void)clickLogout:(id)sender {
      [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController* formSheet){}];
-    SuppressPerformSelectorLeakWarning([iobj_target performSelector:isel_action withObject:nil];);
+    if (_callback) {
+       _callback();
+    }
 }
 
 - (IBAction)closeLogoutUI:(id)sender {

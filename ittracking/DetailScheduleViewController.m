@@ -144,9 +144,9 @@
 #pragma mark 点击右上角的sortBy Button触发的方法
 - (IBAction)fn_click_sortBy_btn:(id)sender {
     SortByViewController *sortByVC=[self.storyboard instantiateViewControllerWithIdentifier:@"SortByViewController"];
-    
-    sortByVC.iobj_target=self;
-    sortByVC.isel_action=@selector(fn_sort_schedule:);
+    sortByVC.callback=^(NSString *type){
+        [self fn_sort_schedule:type];
+    };
     PopViewManager *popV=[[PopViewManager alloc]init];
     [popV PopupView:sortByVC Size:CGSizeMake(250, 300) uponView:self];
 }
@@ -208,17 +208,14 @@
     web_base.iresp_class =[RespSchedule class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespSchedule     class]];
-    web_base.iobj_target = self;
-    web_base.isel_action = @selector(fn_save_schedule_list:);
+    web_base.callBack=^(NSMutableArray *alist_result){
+        ilist_schedule=alist_result;
+        //默认以etd排序
+        [self fn_sort_schedule:@"etd"];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    };
     [web_base fn_get_data:req_form];
     
-    
-}
--(void)fn_save_schedule_list:(NSMutableArray*)alist_result{
-    ilist_schedule=alist_result;
-    //默认以etd排序
-    [self fn_sort_schedule:@"etd"];
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
 }
 #pragma mark 排序调用的方法

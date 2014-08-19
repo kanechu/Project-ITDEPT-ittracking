@@ -13,8 +13,6 @@
 
 @synthesize il_url;
 @synthesize ilist_resp_result;
-@synthesize isel_action;
-@synthesize iobj_target;
 @synthesize iresp_class;
 @synthesize ilist_resp_mapping;
 
@@ -73,11 +71,10 @@
                 success:^(RKObjectRequestOperation *operation, RKMappingResult *result) {
                     
                     ilist_resp_result = [NSMutableArray arrayWithArray:result.array];
+                    if (_callBack) {
+                        _callBack(ilist_resp_result);
+                    }
                     
-                   
-                    SuppressPerformSelectorLeakWarning(  [iobj_target performSelector:isel_action withObject:ilist_resp_result];);
-                  
-            
                 } failure:^(RKObjectRequestOperation *operation, NSError *error) {
                     RKLogError(@"Operation failed with error: %@", error);
                 }];

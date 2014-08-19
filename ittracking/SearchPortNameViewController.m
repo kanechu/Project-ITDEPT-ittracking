@@ -21,8 +21,6 @@
 
 @implementation SearchPortNameViewController
 @synthesize ilist_portname;
-@synthesize iobj_target;
-@synthesize isel_action;
 @synthesize is_placeholder;
 
 - (void)viewDidLoad
@@ -65,18 +63,16 @@
     web_base.iresp_class =[RespPortName class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespPortName class]];
-    web_base.iobj_target = self;
-    web_base.isel_action = @selector(fn_save_portname_list:);
+    web_base.callBack=^(NSMutableArray *alist_result){
+        ilist_portname=alist_result;
+        DB_portName *db=[[DB_portName alloc]init];
+        [db fn_save_data:alist_result];
+        [_it_table_portname reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    };
     [web_base fn_get_data:req_form];
     
     
-}
--(void)fn_save_portname_list:(NSMutableArray*)alist_result{
-    ilist_portname=alist_result;
-    DB_portName *db=[[DB_portName alloc]init];
-    [db fn_save_data:alist_result];
-    [_it_table_portname reloadData];
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 -(void)fn_hide_HUDView{
     
@@ -119,8 +115,9 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *dic=[ilist_portname objectAtIndex:indexPath.row];
-    SuppressPerformSelectorLeakWarning([iobj_target performSelector:isel_action withObject:dic];);
-    
+    if (_callBack) {
+        _callBack(dic);
+    }
     [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController* formSheet){}];
 
 }

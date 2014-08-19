@@ -78,8 +78,10 @@
         
         //background task here
         Web_get_alert *web_get_alert = [[Web_get_alert alloc] init];
-        web_get_alert.iobj_target = self;
-        web_get_alert.isel_action = @selector(fn_save_alert_list:);
+        web_get_alert.callBack=^(NSMutableArray* alist_result){
+            DB_alert * ldb_alert = [[DB_alert alloc] init];
+            [ldb_alert fn_save_data:alist_result];
+        };
         [web_get_alert fn_get_data];
     }
     else {
