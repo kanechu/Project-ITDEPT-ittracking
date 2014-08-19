@@ -8,26 +8,15 @@
 
 #import "Web_base.h"
 #import <RestKit/RestKit.h>
-#import "AuthContract.h"
-#import "RequestContract.h"
-#import "SearchFormContract.h"
-#import "RespAlert.h"
-#import "Cell_alert_list.h"
-#import "Res_color.h"
-#import "AppConstants.h"
-
 
 @implementation Web_base
 
 @synthesize il_url;
-
 @synthesize ilist_resp_result;
 @synthesize isel_action;
 @synthesize iobj_target;
 @synthesize iresp_class;
 @synthesize ilist_resp_mapping;
-
-
 
 - (void) fn_get_data:(RequestContract*)ao_form
 {
