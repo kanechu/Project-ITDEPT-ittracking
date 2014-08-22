@@ -16,6 +16,8 @@
 
 @synthesize system;
 
+@synthesize encrypted;
+
 @synthesize device_id;
 
 

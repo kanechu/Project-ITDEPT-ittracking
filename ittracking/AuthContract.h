@@ -16,6 +16,8 @@
 
 @property(nonatomic, copy) NSString *system;
 
+@property(nonatomic, copy) NSString *encrypted;
+
 @property(nonatomic, copy) NSString *device_id;
 
 @end
