@@ -46,6 +46,8 @@
 		B25740B518EBE3BF0060190B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B25740B418EBE3BF0060190B /* MapKit.framework */; };
 		B25740FA18EBF17F0060190B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B25740F918EBF17F0060190B /* CoreLocation.framework */; };
 		B25BE7BC18ECEF0000F41409 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B25BE7BB18ECEF0000F41409 /* MapViewController.m */; };
+		B26A068F19A333C70002EA96 /* RespExcntr_status.m in Sources */ = {isa = PBXBuildFile; fileRef = B26A068E19A333C70002EA96 /* RespExcntr_status.m */; };
+		B26A069619A335520002EA96 /* CarrierMilestoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B26A069519A335520002EA96 /* CarrierMilestoneViewController.m */; };
 		B26B3C8C19078A4000CB41F9 /* RespPortName.m in Sources */ = {isa = PBXBuildFile; fileRef = B26B3C8B19078A4000CB41F9 /* RespPortName.m */; };
 		B26B3C93190795C700CB41F9 /* SearchPortNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B26B3C92190795C700CB41F9 /* SearchPortNameViewController.m */; };
 		B26B3C96190797A700CB41F9 /* Cell_portName_list.m in Sources */ = {isa = PBXBuildFile; fileRef = B26B3C95190797A700CB41F9 /* Cell_portName_list.m */; };
@@ -78,6 +80,9 @@
 		B278A92318D8218F0057DC37 /* UIImage+Additional.m in Sources */ = {isa = PBXBuildFile; fileRef = B278A91918D8218F0057DC37 /* UIImage+Additional.m */; };
 		B278A92418D8218F0057DC37 /* UIViewController+TargetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B278A91B18D8218F0057DC37 /* UIViewController+TargetViewController.m */; };
 		B278A92A18D832AA0057DC37 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B278A92918D832AA0057DC37 /* LoginViewController.m */; };
+		B27EF99619A43DE8007A7124 /* Custom_headView.m in Sources */ = {isa = PBXBuildFile; fileRef = B27EF99519A43DE8007A7124 /* Custom_headView.m */; };
+		B27EF99D19A4441B007A7124 /* Cell_Carrier_milestone.m in Sources */ = {isa = PBXBuildFile; fileRef = B27EF99C19A4441B007A7124 /* Cell_Carrier_milestone.m */; };
+		B27EF9A319A4492C007A7124 /* DB_Excntr_status.m in Sources */ = {isa = PBXBuildFile; fileRef = B27EF9A219A4492C007A7124 /* DB_Excntr_status.m */; };
 		B28209D318E518C90027227A /* MainHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28209D218E518C90027227A /* MainHomeViewController.m */; };
 		B284FBD019175F0300EDEBA8 /* RespSearchCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = B284FBCF19175F0300EDEBA8 /* RespSearchCriteria.m */; };
 		B284FBD31917694A00EDEBA8 /* DB_searchCriteria.m in Sources */ = {isa = PBXBuildFile; fileRef = B284FBD21917694A00EDEBA8 /* DB_searchCriteria.m */; };
@@ -98,6 +103,7 @@
 		B2B020C818ACB69F00EECD92 /* DBTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B020C718ACB69F00EECD92 /* DBTest.m */; };
 		B2B020CE18ACD15900EECD92 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B020CD18ACD15900EECD92 /* libsqlite3.dylib */; };
 		B2B020D018AF12CA00EECD92 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B020CF18AF12CA00EECD92 /* libsqlite3.0.dylib */; };
+		B2B2A70B19A58213009F3AE2 /* Calculate_lineHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B2A70A19A58213009F3AE2 /* Calculate_lineHeight.m */; };
 		B2C216D618C85E5900A46809 /* DB_alert.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C216D518C85E5900A46809 /* DB_alert.m */; };
 		B2C216DE18C8AC7A00A46809 /* NSDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C216DD18C8AC7A00A46809 /* NSDictionary.m */; };
 		B2C2348318B35149001E13C9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2C2348218B35149001E13C9 /* CFNetwork.framework */; };
@@ -234,6 +240,10 @@
 		B25740F918EBF17F0060190B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B25BE7BA18ECEF0000F41409 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		B25BE7BB18ECEF0000F41409 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		B26A068D19A333C70002EA96 /* RespExcntr_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RespExcntr_status.h; sourceTree = "<group>"; };
+		B26A068E19A333C70002EA96 /* RespExcntr_status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RespExcntr_status.m; sourceTree = "<group>"; };
+		B26A069419A335520002EA96 /* CarrierMilestoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarrierMilestoneViewController.h; sourceTree = "<group>"; };
+		B26A069519A335520002EA96 /* CarrierMilestoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarrierMilestoneViewController.m; sourceTree = "<group>"; };
 		B26B3C8A19078A4000CB41F9 /* RespPortName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RespPortName.h; sourceTree = "<group>"; };
 		B26B3C8B19078A4000CB41F9 /* RespPortName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RespPortName.m; sourceTree = "<group>"; };
 		B26B3C91190795C700CB41F9 /* SearchPortNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchPortNameViewController.h; sourceTree = "<group>"; };
@@ -289,6 +299,12 @@
 		B278A91B18D8218F0057DC37 /* UIViewController+TargetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TargetViewController.m"; sourceTree = "<group>"; };
 		B278A92818D832AA0057DC37 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		B278A92918D832AA0057DC37 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		B27EF99419A43DE8007A7124 /* Custom_headView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Custom_headView.h; sourceTree = "<group>"; };
+		B27EF99519A43DE8007A7124 /* Custom_headView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Custom_headView.m; sourceTree = "<group>"; };
+		B27EF99B19A4441B007A7124 /* Cell_Carrier_milestone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cell_Carrier_milestone.h; sourceTree = "<group>"; };
+		B27EF99C19A4441B007A7124 /* Cell_Carrier_milestone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cell_Carrier_milestone.m; sourceTree = "<group>"; };
+		B27EF9A119A4492C007A7124 /* DB_Excntr_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB_Excntr_status.h; sourceTree = "<group>"; };
+		B27EF9A219A4492C007A7124 /* DB_Excntr_status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DB_Excntr_status.m; sourceTree = "<group>"; };
 		B28209D118E518C90027227A /* MainHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainHomeViewController.h; sourceTree = "<group>"; };
 		B28209D218E518C90027227A /* MainHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainHomeViewController.m; sourceTree = "<group>"; };
 		B284FBCE19175F0300EDEBA8 /* RespSearchCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RespSearchCriteria.h; sourceTree = "<group>"; };
@@ -327,6 +343,8 @@
 		B2B020C718ACB69F00EECD92 /* DBTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBTest.m; sourceTree = "<group>"; };
 		B2B020CD18ACD15900EECD92 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		B2B020CF18AF12CA00EECD92 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		B2B2A70919A58213009F3AE2 /* Calculate_lineHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calculate_lineHeight.h; sourceTree = "<group>"; };
+		B2B2A70A19A58213009F3AE2 /* Calculate_lineHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calculate_lineHeight.m; sourceTree = "<group>"; };
 		B2C216D418C85E5900A46809 /* DB_alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB_alert.h; sourceTree = "<group>"; };
 		B2C216D518C85E5900A46809 /* DB_alert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DB_alert.m; sourceTree = "<group>"; };
 		B2C216DC18C8AC7A00A46809 /* NSDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionary.h; sourceTree = "<group>"; };
@@ -449,6 +467,8 @@
 				B242209A18BB303600D4A75C /* ExhblGeneralController.m */,
 				B2307B0418BC920F000502BE /* MilestoneController.h */,
 				B2307B0518BC920F000502BE /* MilestoneController.m */,
+				B26A069419A335520002EA96 /* CarrierMilestoneViewController.h */,
+				B26A069519A335520002EA96 /* CarrierMilestoneViewController.m */,
 				B2307B1718BDC748000502BE /* AlertController.h */,
 				B2307B1818BDC748000502BE /* AlertController.m */,
 				B24555CD18D166A500D47DC7 /* AehblListController.h */,
@@ -506,6 +526,8 @@
 				B25490181904EFF200D7197A /* Cell_detail_schedule.m */,
 				B26B3C94190797A700CB41F9 /* Cell_portName_list.h */,
 				B26B3C95190797A700CB41F9 /* Cell_portName_list.m */,
+				B27EF99B19A4441B007A7124 /* Cell_Carrier_milestone.h */,
+				B27EF99C19A4441B007A7124 /* Cell_Carrier_milestone.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -519,6 +541,8 @@
 				B230189718ED66CA004B6CCC /* MapAnnotation.m */,
 				B2923512191A119C00F9F8B8 /* PopViewManager.h */,
 				B2923513191A119C00F9F8B8 /* PopViewManager.m */,
+				B2B2A70919A58213009F3AE2 /* Calculate_lineHeight.h */,
+				B2B2A70A19A58213009F3AE2 /* Calculate_lineHeight.m */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -649,6 +673,8 @@
 				B2AFA527190F44C900778F75 /* Custom_backgroundView.m */,
 				B2CD15691910B3A40025DD93 /* Custom_SearchBtn.h */,
 				B2CD156A1910B3A40025DD93 /* Custom_SearchBtn.m */,
+				B27EF99419A43DE8007A7124 /* Custom_headView.h */,
+				B27EF99519A43DE8007A7124 /* Custom_headView.m */,
 			);
 			name = customControl;
 			sourceTree = "<group>";
@@ -734,6 +760,8 @@
 				B284FBD21917694A00EDEBA8 /* DB_searchCriteria.m */,
 				B2C92B2F192DAE2B00B2B8D0 /* DB_icon.h */,
 				B2C92B30192DAE2B00B2B8D0 /* DB_icon.m */,
+				B27EF9A119A4492C007A7124 /* DB_Excntr_status.h */,
+				B27EF9A219A4492C007A7124 /* DB_Excntr_status.m */,
 			);
 			name = DataAccess;
 			sourceTree = "<group>";
@@ -765,6 +793,8 @@
 				B284FBCF19175F0300EDEBA8 /* RespSearchCriteria.m */,
 				B2C92B28192DAB7800B2B8D0 /* RespIcon.h */,
 				B2C92B29192DAB7800B2B8D0 /* RespIcon.m */,
+				B26A068D19A333C70002EA96 /* RespExcntr_status.h */,
+				B26A068E19A333C70002EA96 /* RespExcntr_status.m */,
 				B2C6ED7918E58B570001837B /* Menu_home.h */,
 				B2C6ED7A18E58B570001837B /* Menu_home.m */,
 			);
@@ -957,12 +987,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2B020C418AB5F6500EECD92 /* CandyTableViewController.m in Sources */,
+				B27EF9A319A4492C007A7124 /* DB_Excntr_status.m in Sources */,
 				B2A9770718CF18290096BD4B /* FMDatabase.m in Sources */,
 				B23D80F218E18D4700316700 /* Web_base.m in Sources */,
 				B272410419132E5800E6EE5F /* DB_portName.m in Sources */,
 				B26B684818E6969200E2E67B /* DB_device.m in Sources */,
 				B24555CF18D166A500D47DC7 /* AehblListController.m in Sources */,
 				B2307B2618BEEA82000502BE /* Web_get_alert.m in Sources */,
+				B26A068F19A333C70002EA96 /* RespExcntr_status.m in Sources */,
 				B2531108191C73E10049AFDA /* ExpandSearchCriteriaViewController.m in Sources */,
 				B2B020B818AB52D100EECD92 /* ExhblListController.m in Sources */,
 				B26B3C96190797A700CB41F9 /* Cell_portName_list.m in Sources */,
@@ -970,6 +1002,7 @@
 				B26CAC5818AA302A00C97C83 /* AppDelegate.m in Sources */,
 				B2307B0918BC960C000502BE /* RespMilestone.m in Sources */,
 				B24E83AC18D2A50700C29034 /* AehblGeneralController.m in Sources */,
+				B27EF99619A43DE8007A7124 /* Custom_headView.m in Sources */,
 				B288CFE018DA945E0089F877 /* DB_login.m in Sources */,
 				B2307B1F18BDE888000502BE /* DBManager.m in Sources */,
 				B22D6C1C18D1A7CB00DE4DB5 /* AehblHomeController.m in Sources */,
@@ -979,6 +1012,7 @@
 				B2C216DE18C8AC7A00A46809 /* NSDictionary.m in Sources */,
 				B27387DA18FF85C500BF57F2 /* Custom_TextField.m in Sources */,
 				B2531102191C728C0049AFDA /* SKSTableViewCell.m in Sources */,
+				B2B2A70B19A58213009F3AE2 /* Calculate_lineHeight.m in Sources */,
 				B2307B2A18BEEE36000502BE /* AppConstants.m in Sources */,
 				B2C92B2A192DAB7800B2B8D0 /* RespIcon.m in Sources */,
 				B21D992218D2E53800EE795A /* RespAehbl.m in Sources */,
@@ -1022,10 +1056,12 @@
 				B2700B07190E0D2A001E824C /* Custom_Button.m in Sources */,
 				B25BE7BC18ECEF0000F41409 /* MapViewController.m in Sources */,
 				B26CAC5418AA302A00C97C83 /* main.m in Sources */,
+				B26A069619A335520002EA96 /* CarrierMilestoneViewController.m in Sources */,
 				B22446D518CF2C7500049F8C /* NSString.m in Sources */,
 				B225B47A19020AC3009F1F25 /* RespSchedule.m in Sources */,
 				B2307B1918BDC748000502BE /* AlertController.m in Sources */,
 				B2155E5618D930B900180EF9 /* RespLogin.m in Sources */,
+				B27EF99D19A4441B007A7124 /* Cell_Carrier_milestone.m in Sources */,
 				B278A91D18D8218F0057DC37 /* MZFormSheetBackgroundWindow.m in Sources */,
 				B2B020C818ACB69F00EECD92 /* DBTest.m in Sources */,
 				B2571CE218E5441F00C7DFA3 /* CustomBadge.m in Sources */,

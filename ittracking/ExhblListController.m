@@ -210,6 +210,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
         ExhblHomeController *exhblHomeController = [segue destinationViewController];
         exhblHomeController.is_search_column = ls_os_column;
         exhblHomeController.is_search_value = ls_os_value;
+        exhblHomeController.idic_exhbl=ldict_dictionary;
     }
 }
 

@@ -9,6 +9,7 @@
 #import "AehblHomeController.h"
 #import "AehblGeneralController.h"
 #import "MilestoneController.h"
+#import "CarrierMilestoneViewController.h"
 @interface AehblHomeController ()
 
 @end
@@ -34,6 +35,7 @@
 {
     [super viewDidLoad];
     // add viewController so you can switch them later.
+    [self.segmentedControl setApportionsSegmentWidthsByContent:YES];
     UIViewController *vc = [self viewControllerForSegmentIndex:self.segmentedControl.selectedSegmentIndex];
     [self addChildViewController:vc];
     vc.view.frame = self.contentView.bounds;
@@ -53,6 +55,7 @@
     
     AehblGeneralController *vc;
     MilestoneController *a;
+    CarrierMilestoneViewController *carrierVC;
     switch (index) {
         case 0:
             vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AehblGeneralController"];
@@ -70,6 +73,10 @@
             a.is_docu_uid = self.is_search_value;
             return a;
             break;
+        case 2:
+            carrierVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CarrierMilestoneViewController"];
+            return carrierVC;
+        break;
     }
     return vc;
 }

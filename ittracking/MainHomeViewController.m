@@ -78,7 +78,7 @@ CustomBadge *iobj_customBadge;
         [self gettingNotification];
         dispatch_async( dispatch_get_main_queue(), ^{
             
-            [NSTimer scheduledTimerWithTimeInterval: 11.0 target: self
+            [NSTimer scheduledTimerWithTimeInterval: 120.0 target: self
                                            selector: @selector(gettingNotification) userInfo: nil repeats: YES];
             // Add code here to update the UI/send notifications based on the
             // results of the background processing

@@ -16,7 +16,7 @@
 
 
 @property (nonatomic, strong) UIViewController *currentViewController;
-
+@property (nonatomic, strong) NSMutableDictionary *idic_exhbl;
 
 @property(nonatomic) NSString *is_search_column;
 @property(nonatomic) NSString *is_search_value;
