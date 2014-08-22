@@ -34,8 +34,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // add viewController so you can switch them later.
+    /**
+     *  for adjust segment widths based on their content widths
+     */
     [self.segmentedControl setApportionsSegmentWidthsByContent:YES];
+    // add viewController so you can switch them later.
     UIViewController *vc = [self viewControllerForSegmentIndex:self.segmentedControl.selectedSegmentIndex];
     [self addChildViewController:vc];
     vc.view.frame = self.contentView.bounds;
@@ -47,21 +50,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(IBAction) segmentedControlIndexChanged
-{
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-            //self.textLabel.text =@"Segment 1 selected.";
-            break;
-        case 1:
-            //self.textLabel.text =@"Segment 2 selected.";
-            break;
-        default: 
-            break; 
-    } 
 }
 
 - (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index {
@@ -95,7 +83,6 @@
     }
     return vc;
 }
-
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender {
     UIViewController *vc = [self viewControllerForSegmentIndex:sender.selectedSegmentIndex];

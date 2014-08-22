@@ -9,6 +9,8 @@
 #import "Cell_menu_item.h"
 
 @implementation Cell_menu_item
+@synthesize ilb_label;
+@synthesize itemButton;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -27,7 +29,10 @@
     // Drawing code
 }
 */
-@synthesize ilb_label;
 
-@synthesize itemButton;
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    //生成圆角图片，值越大，越圆
+    itemButton.layer.cornerRadius=7;
+}
 @end

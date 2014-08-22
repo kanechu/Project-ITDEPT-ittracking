@@ -75,6 +75,7 @@
             break;
         case 2:
             carrierVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CarrierMilestoneViewController"];
+            carrierVC.idic_detail=_idic_aehbl;
             return carrierVC;
         break;
     }

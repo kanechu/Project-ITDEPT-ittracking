@@ -10,15 +10,13 @@
 
 @interface AehblHomeController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
-
-@property (strong, nonatomic) IBOutlet UIView *contentView;
-
 @property (nonatomic, strong) UIViewController *currentViewController;
+@property (nonatomic, strong) NSMutableDictionary *idic_aehbl;
+@property(nonatomic,copy) NSString *is_search_column;
+@property(nonatomic,copy) NSString *is_search_value;
 
-
-@property(nonatomic) NSString *is_search_column;
-@property(nonatomic) NSString *is_search_value;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender;
 @end

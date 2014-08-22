@@ -47,6 +47,7 @@
     [iSearchBar.layer insertSublayer:gradient atIndex:0];
     self.view.backgroundColor = [UIColor blackColor];
     iSearchBar.delegate = (id)self;
+    [self setExtraCellLineHidden];
     [self fn_get_data:is_search_no];
 }
 
@@ -55,33 +56,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark UITableViewDataSource
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (ilist_aehbl==nil || ilist_aehbl==NULL) {
-        return 0;
-    }else{
-         return [ilist_aehbl count];
-    }
+    return [ilist_aehbl count];
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 80;
-}
-
--(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    static NSString *CellIdentifier = @"cell_aehbl_header";
-    UITableViewCell *headerView = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (headerView == nil){
-        [NSException raise:@"headerView == nil.." format:@"No cells with matching CellIdentifier loaded from your storyboard"];
-    }
-    return headerView;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(section == 1 )
-        return 0.000001f;
-    else return 80; // put 22 in case of plain one..
-}
-
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -95,7 +75,7 @@
     }
     
     NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-   // ldict_dictionary = [ [NSDictionary dictionaryWithPropertiesOfObject:[ilist_aehbl objectAtIndex:indexPath.row]] mutableCopy];    // Configure Cell
+    // Configure Cell
     RespAehbl *lespAehbl = [[RespAehbl alloc] init];
     lespAehbl = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
     
@@ -105,7 +85,6 @@
         [cell setBackgroundColor:COLOR_DARK_JUNGLE_GREEN];
     else
         [cell setBackgroundColor:COLOR_EERIE_BLACK];
-    
     
     cell.ilb_hbl_no.text =[NSString nullConvertEmpty:lespAehbl.hbl_no];
     cell.ilb_so_no.text =[NSString nullConvertEmpty:lespAehbl.so_no];
@@ -125,69 +104,36 @@
     
     return cell;
 }
+#pragma mark UITableViewDelegate
 
-
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if(section == 1 )
+        return 0.000001f;
+    else return 80; // put 22 in case of plain one..
+}
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    static NSString *CellIdentifier = @"cell_aehbl_header";
+    UITableViewCell *headerView = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (headerView == nil){
+        [NSException raise:@"headerView == nil.." format:@"No cells with matching CellIdentifier loaded from your storyboard"];
+    }
+    return headerView;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 80;
+}
 
 - (void)tableView: (UITableView *)tableView
 didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 {
-    NSString *ls_hbl_uid = @"";
-    NSString *ls_so_uid = @"";
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-    ldict_dictionary = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
-    ls_hbl_uid = [ldict_dictionary valueForKey:@"hbl_uid"];
-    ls_so_uid = [ldict_dictionary valueForKey:@"so_uid"];
-    
     [self performSegueWithIdentifier:@"segue_aehbl_home" sender:self];
 }
-
-- (void) fn_get_data: (NSString*)as_search_no
-{    
-     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-      RequestContract *req_form = [[RequestContract alloc] init];
-    
-    
-    DB_login *dbLogin=[[DB_login alloc]init];
-    req_form.Auth =[dbLogin WayOfAuthorization];
-    SearchFormContract *search = [[SearchFormContract alloc]init];
-    search.os_column = @"search_no";
-    search.os_value = as_search_no;
-    
-    req_form.SearchForm = [NSSet setWithObjects:search, nil];
-    
-    Web_base *web_base = [[Web_base alloc] init];
-    web_base.il_url =STR_AIR_URL;
-    web_base.iresp_class =[RespAehbl class];
-    web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespAehbl class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        ilist_aehbl = alist_result;
-        [self.tableView reloadData];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    };
-    [web_base fn_get_data:req_form];
-
+- (void)setExtraCellLineHidden
+{
+    UIView *view =[ [UIView alloc]init];
+    view.backgroundColor = [UIColor clearColor];
+    [self.tableView setTableFooterView:view];
 }
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self handleSearch:searchBar];
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    //[self handleSearch:searchBar];
-}
-
-- (void)handleSearch:(UISearchBar *)searchBar {
-    
-    [self fn_get_data:searchBar.text];
-    
-    [searchBar resignFirstResponder]; // if you want the keyboard to go away
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar {
-    NSLog(@"User canceled search");
-    [searchBar resignFirstResponder]; // if you want the keyboard to go away
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     NSString *ls_hbl_uid = @"";
@@ -215,9 +161,49 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
         AehblHomeController *aehblHomeController = [segue destinationViewController];
         aehblHomeController.is_search_column = ls_os_column;
         aehblHomeController.is_search_value = ls_os_value;
+        aehblHomeController.idic_aehbl=ldict_dictionary;
     }
 }
 
+#pragma mark NetWork Request
+- (void) fn_get_data: (NSString*)as_search_no
+{    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    RequestContract *req_form = [[RequestContract alloc] init];
+    
+    DB_login *dbLogin=[[DB_login alloc]init];
+    req_form.Auth =[dbLogin WayOfAuthorization];
+    SearchFormContract *search = [[SearchFormContract alloc]init];
+    search.os_column = @"search_no";
+    search.os_value = as_search_no;
+    
+    req_form.SearchForm = [NSSet setWithObjects:search, nil];
+    
+    Web_base *web_base = [[Web_base alloc] init];
+    web_base.il_url =STR_AIR_URL;
+    web_base.iresp_class =[RespAehbl class];
+    web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespAehbl class]];
+    web_base.callBack=^(NSMutableArray *alist_result){
+        ilist_aehbl = alist_result;
+        [self.tableView reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    };
+    [web_base fn_get_data:req_form];
 
+}
+#pragma mark UISearchBarDelegate
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self handleSearch:searchBar];
+}
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar {
+    NSLog(@"User canceled search");
+    [searchBar resignFirstResponder]; // if you want the keyboard to go away
+}
+- (void)handleSearch:(UISearchBar *)searchBar {
+    
+    [self fn_get_data:searchBar.text];
+    
+    [searchBar resignFirstResponder]; // if you want the keyboard to go away
+}
 
 @end

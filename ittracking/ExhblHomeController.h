@@ -10,16 +10,14 @@
 
 @interface ExhblHomeController : UIViewController
 
-@property (nonatomic,weak) IBOutlet UISegmentedControl *segmentedControl;
-
-@property (nonatomic,weak) IBOutlet UIView *contentView;
-
-
 @property (nonatomic, strong) UIViewController *currentViewController;
 @property (nonatomic, strong) NSMutableDictionary *idic_exhbl;
 
-@property(nonatomic) NSString *is_search_column;
-@property(nonatomic) NSString *is_search_value;
+@property(nonatomic,copy) NSString *is_search_column;
+@property(nonatomic,copy) NSString *is_search_value;
+
+@property (nonatomic,weak) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic,weak) IBOutlet UIView *contentView;
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender;
 

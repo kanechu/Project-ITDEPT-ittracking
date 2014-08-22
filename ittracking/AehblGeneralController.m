@@ -28,10 +28,7 @@ enum ROW_NUMOFSECTION {
 @synthesize calulate_obj;
 @synthesize ilist_aehbl;
 @synthesize dbLogin;
--(void)createDBLoginObj{
-    self.dbLogin =[[DB_login alloc]init];
-    calulate_obj=[[Calculate_lineHeight alloc]init];
-}
+
 - (void)viewDidLoad
 {
     [self createDBLoginObj];
@@ -45,18 +42,97 @@ enum ROW_NUMOFSECTION {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
+-(void)createDBLoginObj{
+    self.dbLogin =[[DB_login alloc]init];
+    calulate_obj=[[Calculate_lineHeight alloc]init];
+}
+#pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([dbLogin isLoginSuccess] && ilist_aehbl!=nil && ilist_aehbl!=NULL) {
+    if ([dbLogin isLoginSuccess] && [ilist_aehbl count]!=0) {
         return ROW_NUM1;
-    }else if(ilist_aehbl!=nil && ilist_aehbl!=NULL){
+    }else if([ilist_aehbl count]!=0){
         return RoW_NUM2;
     }else{
         return 0;
     }
 }
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *ls_TableIdentifier = @"cell_aehbl_general_detail";
+    Cell_exhbl_general_detail *cell = (Cell_exhbl_general_detail *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
+    NSString *ls_os_value = @"";
+    if (cell == nil)
+    {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"Cell_aehbl_general_detail" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
+    ldict_dictionary = [ilist_aehbl objectAtIndex:0];    // Configure Cell
+    
+    if( [indexPath row] % 2)
+        [cell setBackgroundColor:COLOR_DARK_JUNGLE_GREEN];
+    else
+        [cell setBackgroundColor:COLOR_EERIE_BLACK];
+    
+    if ( indexPath.row == 0)
+    {
+        cell.ilb_header.text = @" ETA";
+        cell.ilb_value.text =[ldict_dictionary valueForKey:@"eta"];
+    }
+    if ( indexPath.row == 1)
+    {
+        cell.ilb_header.text = @"Load Port";
+        cell.ilb_value.text = [ldict_dictionary valueForKey:@"load_port"];
+        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundColor=[UIColor clearColor];
+    }
+    if ( indexPath.row == 2)
+    {
+        cell.ilb_header.text = @"Destination";
+        cell.ilb_value.text =[ldict_dictionary valueForKey:@"dest_name"];
+        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundColor=[UIColor clearColor];
+    }
+    if ( indexPath.row == 3)
+    {
+        
+        cell.ilb_header.text = @"PKG/ACT_KGS/CHRG_KGS";
+        cell.ilb_value.text = [NSString stringWithFormat:@"%@ / %@/ %@", [ldict_dictionary valueForKey:@"hbl_pkg"], [ldict_dictionary valueForKey:@"hbl_act_cbm"], [ldict_dictionary valueForKey:@"hbl_chrg_cbm"]];
+    }
+    
+    if ( indexPath.row == 4)
+    {
+        cell.ilb_header.text = @"Flight#/ Flight Date";
+        cell.ilb_value.text =[NSString stringWithFormat:@"%@/%@",[ldict_dictionary valueForKey:@"flight_no"],[ldict_dictionary valueForKey:@"prt_flight_date"]];
+    }
+    if ( indexPath.row == 5)
+    {
+        ls_os_value = [ldict_dictionary valueForKey:@"status_desc"];
+        if ([ls_os_value length] > 0 ){
+            ls_os_value = [ls_os_value stringByAppendingString:[NSString stringWithFormat:@" / %@, ",[ldict_dictionary valueForKey:@"act_status_date"]]];
+        }
+        cell.ilb_header.text = @"Latest Status";
+        cell.ilb_value.text = ls_os_value;
+        
+    }
+    if ([dbLogin isLoginSuccess]) {
+        if (indexPath.row==6) {
+            cell.ilb_header.text = @"Shipper ";
+            cell.ilb_value.text =[ldict_dictionary valueForKey:@"shpr_name"];
+        }
+        if (indexPath.row==7) {
+            cell.ilb_header.text = @"Consignee";
+            cell.ilb_value.text =[ldict_dictionary valueForKey:@"cnee_name"];
+        }
+    }
+    CGFloat height=[calulate_obj fn_heightWithString:cell.ilb_value.text font:cell.ilb_value.font constrainedToWidth:cell.ilb_value.frame.size.width];
+    [cell.ilb_value setFrame:CGRectMake(cell.ilb_value.frame.origin.x, cell.ilb_value.frame.origin.y, cell.ilb_value.frame.size.width, height)];
+    
+    return cell;
+}
+
+#pragma mark UITableViewDelegate
 
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     static NSString *CellIdentifier = @"cell_aehbl_general_hdr";
@@ -113,80 +189,6 @@ enum ROW_NUMOFSECTION {
     return height;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *ls_TableIdentifier = @"cell_aehbl_general_detail";
-    Cell_exhbl_general_detail *cell = (Cell_exhbl_general_detail *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
-    NSString *ls_os_value = @"";
-    if (cell == nil)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"Cell_aehbl_general_detail" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-    ldict_dictionary = [ilist_aehbl objectAtIndex:0];    // Configure Cell
-    
-    if( [indexPath row] % 2)
-        [cell setBackgroundColor:COLOR_DARK_JUNGLE_GREEN];
-    else
-        [cell setBackgroundColor:COLOR_EERIE_BLACK];
-    
-    if ( indexPath.row == 0)
-    {
-        cell.ilb_header.text = @" ETA";
-        cell.ilb_value.text =[ldict_dictionary valueForKey:@"eta"];
-    }
-    if ( indexPath.row == 1)
-    {
-        cell.ilb_header.text = @"Load Port";
-        cell.ilb_value.text = [ldict_dictionary valueForKey:@"load_port"];
-        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-        cell.backgroundColor=[UIColor clearColor];
-    }
-    if ( indexPath.row == 2)
-    {
-        cell.ilb_header.text = @"Destination";
-        cell.ilb_value.text =[ldict_dictionary valueForKey:@"dest_name"];
-        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-        cell.backgroundColor=[UIColor clearColor];
-    }
-    if ( indexPath.row == 3)
-    {
-                                  
-        cell.ilb_header.text = @"PKG/ACT_KGS/CHRG_KGS";
-        cell.ilb_value.text = [NSString stringWithFormat:@"%@ / %@/ %@", [ldict_dictionary valueForKey:@"hbl_pkg"], [ldict_dictionary valueForKey:@"hbl_act_cbm"], [ldict_dictionary valueForKey:@"hbl_chrg_cbm"]];
-    }
-    
-    if ( indexPath.row == 4)
-    {
-        cell.ilb_header.text = @"Flight#/ Flight Date";
-        cell.ilb_value.text =[NSString stringWithFormat:@"%@/%@",[ldict_dictionary valueForKey:@"flight_no"],[ldict_dictionary valueForKey:@"prt_flight_date"]];
-    }
-    if ( indexPath.row == 5)
-    {
-        ls_os_value = [ldict_dictionary valueForKey:@"status_desc"];
-        if ([ls_os_value length] > 0 ){
-            ls_os_value = [ls_os_value stringByAppendingString:[NSString stringWithFormat:@" / %@, ",[ldict_dictionary valueForKey:@"act_status_date"]]];
-        }
-        cell.ilb_header.text = @"Latest Status";
-        cell.ilb_value.text = ls_os_value;
-        
-    }
-    if ([dbLogin isLoginSuccess]) {
-        if (indexPath.row==6) {
-            cell.ilb_header.text = @"Shipper ";
-            cell.ilb_value.text =[ldict_dictionary valueForKey:@"shpr_name"];
-        }
-        if (indexPath.row==7) {
-            cell.ilb_header.text = @"Consignee";
-            cell.ilb_value.text =[ldict_dictionary valueForKey:@"cnee_name"];
-        }
-    }
-    CGFloat height=[calulate_obj fn_heightWithString:cell.ilb_value.text font:cell.ilb_value.font constrainedToWidth:cell.ilb_value.frame.size.width];
-    [cell.ilb_value setFrame:CGRectMake(cell.ilb_value.frame.origin.x, cell.ilb_value.frame.origin.y, cell.ilb_value.frame.size.width, height)];
-    
-    return cell;
-}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
     ldict_dictionary = [ilist_aehbl objectAtIndex:0];
@@ -200,7 +202,7 @@ enum ROW_NUMOFSECTION {
         [self.navigationController pushViewController:mapVC animated:YES];
     }
 }
-
+#pragma mark NetWork Request
 - (void) fn_get_data: (NSString*)as_search_column :(NSString*)as_search_value
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
