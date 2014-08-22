@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Custom_TextField.h"
 typedef void (^callBack_id)(NSString*);
-@class TrackHomeController;
+
 @interface LoginViewController : UIViewController<UITextFieldDelegate>
 
-@property(nonatomic,strong)NSDictionary *loginData;
 @property(nonatomic,strong)callBack_id callBack;
 @property (weak, nonatomic) IBOutlet Custom_TextField *user_ID;
 @property (weak, nonatomic) IBOutlet Custom_TextField *user_Password;

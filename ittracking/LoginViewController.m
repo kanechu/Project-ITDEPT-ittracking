@@ -7,7 +7,6 @@
 //
 
 #import "LoginViewController.h"
-#import "TrackHomeController.h"
 #import "MZFormSheetController.h"
 #import <RestKit/RestKit.h>
 #import "RespLogin.h"
@@ -20,7 +19,7 @@
 @end
 
 @implementation LoginViewController
-@synthesize loginData;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -59,10 +58,7 @@
     _user_ID.layer.borderColor=[UIColor lightGrayColor].CGColor;
     _user_Password.layer.borderColor=[UIColor lightGrayColor].CGColor;
 }
--(void)fn_hide_HUDView{
-   
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-}
+
 #pragma mark getData method
 - (void) fn_get_data: (NSString*)user_code :(NSString*)user_pass
 {
@@ -75,20 +71,27 @@
     auth.user_code=user_code;
     auth.password=user_pass;
     auth.system = DEFAULT_SYSTEM;
+    /**
+     *  encrypted 如果为1，密码需要AES128加密，并base64 encode
+     */
+    auth.encrypted=@"0";
     req_form.Auth =auth;
     Web_base *web_base=[[Web_base alloc]init];
     web_base.il_url=STR_LOGIN_URL;
     web_base.iresp_class=[RespLogin class];
     web_base.ilist_resp_mapping =@[@"user_code",@"pass",@"user_logo"];
     web_base.callBack=^(NSMutableArray *alist_result){
-        [self fn_save_login_list:alist_result];
+        if ([alist_result count]!=0) {
+            
+            [self fn_save_login_list:alist_result];
+        }
     };
     [web_base fn_get_data:req_form];
     
 }
 - (void) fn_save_login_list: (NSMutableArray *) alist_result {
     
-    loginData=[NSDictionary dictionaryWithPropertiesOfObject:[alist_result objectAtIndex:0]];
+    NSDictionary *loginData=[NSDictionary dictionaryWithPropertiesOfObject:[alist_result objectAtIndex:0]];
     if ([[loginData valueForKey:@"pass"] isEqualToString:@"true"]) {
         DB_login *dbLogin=[[DB_login alloc]init];
         NSString *userlogo=[loginData valueForKey:@"user_logo"];
@@ -100,28 +103,31 @@
         }
        
     }else{
-        NSString *str=nil;
-        if (_user_ID.text.length==0) {
-            str=@"User ID can not be empty!";
-        }else if(_user_Password.text.length==0){
-            str=@"User Password can not be empty!";
-        }else{
-            str=@"User ID and Password do not match!";
-        }
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:str delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+       
+      UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"User ID and Password do not match!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
 }
-
-
+-(void)fn_hide_HUDView{
+    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
 #pragma mark -userLogin method
 - (IBAction)UserLogin:(id)sender {
+    NSString *str=nil;
+    if (_user_ID.text.length==0) {
+        str=@"User ID can not be empty!";
+    }else if(_user_Password.text.length==0){
+        str=@"User Password can not be empty!";
+    }else{
+        [self fn_get_data:_user_ID.text :_user_Password.text];
+        return;
+    }
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:str delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [alertView show];
     
-    [self fn_get_data:_user_ID.text :_user_Password.text];
-   
-   
 }
 
 - (IBAction)closeLoginUI:(id)sender {
