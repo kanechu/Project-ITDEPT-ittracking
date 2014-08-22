@@ -95,7 +95,8 @@
     if ([self isLoginSuccess]) {
         NSMutableArray *userInfo=[self fn_get_all_msg];
         auth.user_code =[[userInfo objectAtIndex:0] valueForKey:@"user_code"];
-        auth.password = [[userInfo objectAtIndex:0] valueForKey:@"password"];;
+        auth.password = [[userInfo objectAtIndex:0] valueForKey:@"password"];
+        auth.encrypted=@"0";
     }else{
         auth.user_code =DEFAULT_USERCODE;
         auth.password =DEFAULT_PASS;
