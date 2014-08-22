@@ -7,13 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#define SuppressPerformSelectorLeakWarning(Stuff) \
-do { \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
-Stuff; \
-_Pragma("clang diagnostic pop") \
-} while (0)
 #define DEFAULT_USERCODE @"ANONYMOUS"
 #define DEFAULT_PASS @"ANONYMOUS1"
 #define DEFAULT_SYSTEM @"ITNEW"
@@ -29,4 +22,5 @@ extern NSString* const STR_SCHEDULE_URL;
 extern NSString* const STR_PORTNAME_URL;
 extern NSString* const STR_SEARCHCRITERIA_URL;
 extern NSString* const STR_ICON_URL;
+extern NSString* const STR_EXCNTR_STATUS_URL;
 @end

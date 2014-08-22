@@ -8,7 +8,19 @@
 
 #import "AppConstants.h"
 
-#ifdef DEBUG 
+#ifdef DEBUG
+NSString* const STR_BASE_URL = @"http://223.255.167.158/";
+NSString* const STR_SEA_URL =@"itwebapi/api/cargotracking/exhbl";
+NSString* const STR_AIR_URL =@"itwebapi/api/cargotracking/aehbl";
+NSString* const STR_LOGIN_URL=@"itwebapi/api/users/login";
+NSString* const STR_ALERT_URL=@"itwebapi/api/cargotracking/alert";
+NSString* const STR_MILESTONE_URL=@"itwebapi/api/cargotracking/milestone";
+NSString* const STR_SCHEDULE_URL=@"itwebapi/api/cargotracking/schedule";
+NSString* const STR_PORTNAME_URL=@"itwebapi/api/master/maport";
+NSString* const STR_SEARCHCRITERIA_URL=@"itwebapi/api/search/searchcriteria";
+NSString* const STR_ICON_URL=@"itwebapi/api/system/icon";
+NSString* const STR_EXCNTR_STATUS_URL=@"itwebapi/api/cargotracking/excntr_status";
+#else
 NSString* const STR_BASE_URL = @"http://demo.itdept.com.hk/";
 NSString* const STR_SEA_URL =@"itleo.web/api/cargotracking/exhbl";
 NSString* const STR_AIR_URL =@"itleo.web/api/cargotracking/aehbl";
@@ -19,12 +31,5 @@ NSString* const STR_SCHEDULE_URL=@"itleo.web/api/cargotracking/schedule";
 NSString* const STR_PORTNAME_URL=@"itleo.web/api/master/maport";
 NSString* const STR_SEARCHCRITERIA_URL=@"itleo.web/api/search/searchcriteria";
 NSString* const STR_ICON_URL=@"itleo.web/api/system/icon";
-#else
-NSString* const STR_BASE_URL = @"http://223.255.167.158/";
-NSString* const STR_SEA_URL =@"itwebapi/api/cargotracking/exhbl";
-NSString* const STR_AIR_URL =@"itwebapi/api/cargotracking/aehbl";
-NSString* const STR_LOGIN_URL=@"itwebapi/api/users/login";
-NSString* const STR_ALERT_URL=@"itwebapi/api/cargotracking/alert";
-NSString* const STR_MILESTONE_URL=@"itwebapi/api/cargotracking/milestone";
-NSString* const STR_SCHEDULE_URL=@"itwebapi/api/cargotracking/schedule";
+NSString* const STR_EXCNTR_STATUS_URL=@"itleo.web/api/cargotracking/excntr_status";
 #endif
