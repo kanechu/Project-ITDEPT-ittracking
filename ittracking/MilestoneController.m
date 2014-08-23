@@ -84,8 +84,7 @@
         cell = [nib objectAtIndex:0];
     }
     
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-    ldict_dictionary = [ilist_milestone objectAtIndex:indexPath.row];    // Configure Cell
+     NSMutableDictionary *ldict_dictionary = [ilist_milestone objectAtIndex:indexPath.row];    // Configure Cell
     
     ls_status_desc =[ldict_dictionary valueForKey:@"status_desc"];
     ls_act_status_date =[ldict_dictionary valueForKey:@"act_status_date"];

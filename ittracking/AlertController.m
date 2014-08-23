@@ -15,7 +15,11 @@
 #import "AehblHomeController.h"
 
 @interface AlertController ()
-
+@property (strong,nonatomic) NSMutableArray *ilist_alert;
+@property (strong,nonatomic) NSMutableArray *today_alert;
+@property (strong,nonatomic) NSMutableArray *previous_alert;
+@property (strong,nonatomic) NSMutableDictionary *deleteDic;
+@property ( nonatomic) UIButton *cancleButton;
 @end
 
 @implementation AlertController
@@ -25,11 +29,7 @@
 @synthesize cancleButton;
 @synthesize today_alert;
 @synthesize previous_alert;
--(void)initDic{
-    self.deleteDic=[NSMutableDictionary dictionaryWithCapacity:10];
-    self.today_alert=[NSMutableArray arrayWithCapacity:10];
-    self.previous_alert=[NSMutableArray arrayWithCapacity:10];
-}
+
 - (void)viewDidLoad
 {
    
@@ -48,6 +48,12 @@
     [[self navigationController] setToolbarHidden:YES animated:YES];
    
 }
+-(void)initDic{
+    self.deleteDic=[NSMutableDictionary dictionaryWithCapacity:10];
+    self.today_alert=[NSMutableArray arrayWithCapacity:10];
+    self.previous_alert=[NSMutableArray arrayWithCapacity:10];
+}
+
 #pragma mark UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -125,8 +131,8 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     if ([self.cancleButton.titleLabel.text isEqualToString:@"Cancel"]) {
         [self.deleteDic setObject:indexPath forKey:[ilist_alert objectAtIndex:indexPath.row]];
     }else{
-        NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-        ldict_dictionary = [ilist_alert objectAtIndex:indexPath.row];
+        
+       NSMutableDictionary * ldict_dictionary = [ilist_alert objectAtIndex:indexPath.row];
         // Configure Cell
         NSString *ls_unique_id = [ldict_dictionary valueForKey:@"unique_id"];
         NSString *ls_ct_type =[[ldict_dictionary valueForKey:@"ct_type"] lowercaseString];
@@ -168,10 +174,9 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     NSString *ls_so_uid = @"";
     NSString *ls_os_column = @"";
     NSString *ls_os_value = @"";
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
     NSIndexPath *selectedRowIndex = [self.tableView indexPathForSelectedRow];
     
-    ldict_dictionary = [ilist_alert objectAtIndex:selectedRowIndex.row];    // Configure Cell
+    NSMutableDictionary *ldict_dictionary = [ilist_alert objectAtIndex:selectedRowIndex.row];    // Configure Cell
     ls_hbl_uid = [ldict_dictionary valueForKey:@"hbl_uid"];
     ls_so_uid = [ldict_dictionary valueForKey:@"so_uid"];
     
@@ -257,8 +262,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     //快速枚举遍历所有的Value值
     for (NSObject *object in enumeratorValue) {
         NSIndexPath* indexPath=(NSIndexPath *)object;
-        NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-        ldict_dictionary= [ilist_alert objectAtIndex:indexPath.row];
+        NSMutableDictionary * ldict_dictionary= [ilist_alert objectAtIndex:indexPath.row];
         // Configure Cell
         NSString *ls_unique_id = [ldict_dictionary valueForKey:@"unique_id"];
         DB_alert * ldb_alert = [[DB_alert alloc] init];

@@ -95,8 +95,7 @@
         cell.backgroundView=[[Custom_backgroundView alloc]init];
     }
 
-    NSMutableDictionary *ldict_dictionary=[[NSMutableDictionary alloc]init];
-    ldict_dictionary=[ilist_schedule objectAtIndex:indexPath.row]
+    NSMutableDictionary *ldict_dictionary=[ilist_schedule objectAtIndex:indexPath.row]
     ;
     cell.ilb_vessel_voyage.text=[ldict_dictionary valueForKey:@"vessel_voyage"];
     cell.ilb_wh_address.text=[ldict_dictionary valueForKey:@"carrier_name"];

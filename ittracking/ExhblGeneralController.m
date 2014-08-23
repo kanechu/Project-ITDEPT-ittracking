@@ -72,8 +72,7 @@ enum ROW_NUMOFSECTION {
         cell = [nib objectAtIndex:0];
     }
     
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-    ldict_dictionary = [ilist_exhbl objectAtIndex:0];    // Configure Cell
+    NSMutableDictionary *ldict_dictionary = [ilist_exhbl objectAtIndex:0];    // Configure Cell
     
     if( [indexPath row] % 2==0)
         [cell setBackgroundColor:COLOR_DARK_JUNGLE_GREEN];
@@ -191,8 +190,7 @@ enum ROW_NUMOFSECTION {
         [NSException raise:@"headerView == nil.." format:@"No cells with matching CellIdentifier loaded from your storyboard"];
     }
     
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-    ldict_dictionary = [ilist_exhbl objectAtIndex:0];    // Configure Cell
+   NSMutableDictionary * ldict_dictionary = [ilist_exhbl objectAtIndex:0];    // Configure Cell
     
     
         headerView.ilb_display_no.text = [NSString stringWithFormat:@"%@ / %@", [ldict_dictionary valueForKey:@"so_no"], [ldict_dictionary valueForKey:@"hbl_no"]];
@@ -244,8 +242,8 @@ enum ROW_NUMOFSECTION {
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-    ldict_dictionary = [ilist_exhbl objectAtIndex:0];
+    
+    NSMutableDictionary *ldict_dictionary = [ilist_exhbl objectAtIndex:0];
     MapViewController *mapVC=nil;
      mapVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
     if ([indexPath row]==1) {

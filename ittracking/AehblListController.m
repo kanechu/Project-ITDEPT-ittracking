@@ -74,12 +74,9 @@
         cell = [nib objectAtIndex:0];
     }
     
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
-    // Configure Cell
-    RespAehbl *lespAehbl = [[RespAehbl alloc] init];
-    lespAehbl = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
+   RespAehbl * lespAehbl = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
     
-    ldict_dictionary = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
+   NSMutableDictionary * ldict_dictionary = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
     
     if( [indexPath row] % 2)
         [cell setBackgroundColor:COLOR_DARK_JUNGLE_GREEN];
@@ -140,10 +137,9 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     NSString *ls_so_uid = @"";
     NSString *ls_os_column = @"";
     NSString *ls_os_value = @"";
-    NSMutableDictionary *ldict_dictionary = [[NSMutableDictionary alloc] init];
     NSIndexPath *selectedRowIndex = [self.tableView indexPathForSelectedRow];
     
-    ldict_dictionary = [ilist_aehbl objectAtIndex:selectedRowIndex.row];    // Configure Cell
+    NSMutableDictionary * ldict_dictionary = [ilist_aehbl objectAtIndex:selectedRowIndex.row];    // Configure Cell
     ls_hbl_uid = [ldict_dictionary valueForKey:@"hbl_uid"];
     ls_so_uid = [ldict_dictionary valueForKey:@"so_uid"];
     

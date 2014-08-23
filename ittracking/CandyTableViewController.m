@@ -85,7 +85,6 @@
     }
     // Create a new Candy Object
     // Candy *candy = nil;
-     NSMutableDictionary *myDictionary = [[NSMutableDictionary alloc] init];
     // Check to see whether the normal table or search results table is being displayed and set the Candy object from the appropriate array
     //if (tableView == self.searchDisplayController.searchResultsTableView) {
     //    candy = [filteredCandyArray objectAtIndex:indexPath.row];
@@ -93,7 +92,7 @@
     //} else {
     //    candy = [candyArray objectAtIndex:indexPath.row];
     //}
-    myDictionary = [testArray objectAtIndex:indexPath.row];    // Configure Cell
+   NSMutableDictionary * myDictionary = [testArray objectAtIndex:indexPath.row];    // Configure Cell
     UILabel *Title = (UILabel *)[cell.contentView viewWithTag:11];
     //Title.text = candy.name;
     Title.text = [myDictionary valueForKey:@"name"];
