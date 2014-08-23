@@ -20,6 +20,7 @@
 @property (nonatomic,strong)NSMutableArray *alist_filtered_data;
 @property (nonatomic,strong)NSMutableArray *alist_groupAndnum;
 @property (nonatomic,strong) Calculate_lineHeight *cal_obj;
+@property (copy,nonatomic) NSString *is_hbl_uid;
 @end
 
 @implementation CarrierMilestoneViewController
@@ -39,9 +40,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self fn_get_excntr_status_data];
-    [self fn_set_headView];
     [self fn_set_array_pro];
+    [self fn_set_headView];
+    [self fn_get_excntr_status_data];
     self.skstableview.SKSTableViewDelegate=self;
     [self setExtraCellLineHidden];
     cal_obj=[[Calculate_lineHeight alloc]init];
@@ -55,16 +56,24 @@
 }
 -(void)fn_set_array_pro{
     alist_filtered_data=[NSMutableArray array];
-   /* alist_groupAndnum=[NSMutableArray array];
-    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
-    [dic setObject:@"Click the following Container to see the detail " forKey:@"cntr_uid"];
-    [dic setObject:@"0" forKey:@"subrows"];
-    [alist_groupAndnum addObject:dic];*/
+    DB_Excntr_status *db_excntr=[[DB_Excntr_status alloc]init];
+    [db_excntr fn_delete_all_excntr_status_data];
 }
 -(void)fn_set_headView{
-    _iv_headView.il_booking_hbl_no.text=[NSString stringWithFormat:@"%@ / %@", [_idic_detail valueForKey:@"so_no"], [_idic_detail valueForKey:@"hbl_no"]];
+    
+    _iv_headView.il_booking_hbl_no.text=[NSString stringWithFormat:@"%@ / %@",[self fn_get_subString:[_idic_detail valueForKey:@"so_no"]] , [_idic_detail valueForKey:@"hbl_no"]];
+    _is_hbl_uid=[_idic_detail valueForKey:@"hbl_uid"];
 }
-#pragma mark 获取excntr_status_data
+-(NSString*)fn_get_subString:(NSString*)string{
+    NSRange range=[string rangeOfString:@" "];
+    if (range.location==NSNotFound ) {
+        return string;
+    }else{
+        NSString *subString=[string substringToIndex:range.location];
+        return subString;
+    }
+}
+#pragma mark NetWork Request excntr_status_data
 -(void)fn_get_excntr_status_data{
     //显示loading
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -73,7 +82,7 @@
     req_form.Auth =[dbLogin WayOfAuthorization];
     SearchFormContract *search1 = [[SearchFormContract alloc]init];
     search1.os_column = @"hbl_uid";
-    search1.os_value = @"80E07000036";
+    search1.os_value = _is_hbl_uid;
     req_form.SearchForm = [NSSet setWithObjects:search1,nil];
     Web_base *web_base = [[Web_base alloc] init];
     web_base.il_url =STR_EXCNTR_STATUS_URL;
@@ -81,7 +90,6 @@
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespExcntr_status class]];
     web_base.callBack=^(NSMutableArray *alist_result){
-        NSLog(@"%@",alist_result);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         DB_Excntr_status *db_excntr=[[DB_Excntr_status alloc]init];
         [db_excntr fn_save_excntr_status_data:alist_result];
@@ -89,10 +97,13 @@
         alist_groupAndnum=[db_excntr fn_get_groupAndNum];
         [self fn_get_filtered_data];
         [self.skstableview reloadData];
-        
+        if ([alist_groupAndnum count]==2) {
+            [self.skstableview fn_expandall];
+        }
     };
     [web_base fn_get_data:req_form];
 }
+#pragma mark filter array
 -(void)fn_get_filtered_data{
     for (NSMutableDictionary *dic in alist_groupAndnum) {
         NSString *str_uid=[dic valueForKey:@"cntr_uid"];
@@ -107,7 +118,7 @@
     [alist_groupAndnum insertObject:dic atIndex:0];
 }
 
-#pragma mark 过滤数组
+
 -(NSMutableArray*)fn_filtered_criteriaData:(NSString*)key{
     NSMutableArray *filtered=[[alist_excntr_status filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(cntr_uid==%@)",key]]mutableCopy];
     NSString *key_uid=[NSString stringWithFormat:@"Container Milestone:%@",key];
@@ -127,24 +138,30 @@
     return [numofrow integerValue];
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"SKSTableViewCell";
-    SKSTableViewCell *cell = [self.skstableview dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell)
+    static NSString *CellIdentifier = @"SKSTableViewCellCustom";
+    SKSTableViewCell *cell =nil;
+    if (!cell){
         cell = [[SKSTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    [cell.textLabel setFrame:CGRectMake(10, 0, 300, 21)];
+        UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(10, 2, 310, 21)];
+        label.tag=200;
+        [cell.contentView addSubview:label];
+    }
+    UILabel *il_title=(UILabel*)[cell.contentView viewWithTag:200];
     NSMutableDictionary *dic=[alist_groupAndnum objectAtIndex:indexPath.section];
     if (indexPath.section==0) {
         cell.backgroundColor=[UIColor whiteColor];
-        cell.textLabel.text=[dic valueForKey:@"cntr_uid"];
-        cell.textLabel.font=[UIFont systemFontOfSize:13];
+        il_title.font=[UIFont boldSystemFontOfSize:14.0f];
+        il_title.text=[dic valueForKey:@"cntr_uid"];
         cell.expandable=NO;
     }else{
-        cell.backgroundColor=[UIColor blackColor];
-        cell.textLabel.textColor=[UIColor whiteColor];
-        cell.textLabel.text=[NSString stringWithFormat:@"%@   Size:%@",[dic valueForKey:@"cntr_uid"],[dic valueForKey:@"size_type_word"]];
-        cell.textLabel.font=[UIFont systemFontOfSize:16.0f];
+        [cell setBackgroundColor:COLOR_AQUA];
+        il_title.textColor=[UIColor redColor];
+        il_title.text=[NSString stringWithFormat:@"%@   Size:%@",[dic valueForKey:@"cntr_uid"],[dic valueForKey:@"size_type_word"]];
+        il_title.font=[UIFont systemFontOfSize:16.0f];
         cell.expandable=YES;
     }
+    cell.selectedBackgroundView=[[UIView alloc]initWithFrame:cell.bounds];
+    cell.selectedBackgroundView.backgroundColor=[UIColor blueColor];
     [cell setExpanded:YES];
     return cell;
 }
@@ -154,14 +171,18 @@
         dic=[alist_filtered_data objectAtIndex:indexPath.section-1][indexPath.subRow-1];
     }
     if (indexPath.subRow==1) {
-        static NSString *CellIdentifier = @"TableViewCell";
+        static NSString *CellIdentifier = @"UITableViewCell";
         UITableViewCell *cell = [self.skstableview dequeueReusableCellWithIdentifier:CellIdentifier];
         if (!cell)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            UILabel *lable=[[UILabel alloc]initWithFrame:CGRectMake(10, 2, 300, 21)];
+            lable.tag=100;
+            lable.font=[UIFont boldSystemFontOfSize:14.0f];
+            [cell.contentView addSubview:lable];
         }
-        cell.textLabel.font=[UIFont systemFontOfSize:15.0f];
-        cell.textLabel.text=[dic valueForKey:@"prompt"];
+        UILabel *il_title=(UILabel*)[cell.contentView viewWithTag:100];
+        il_title.text=[dic valueForKey:@"prompt"];
         cell.backgroundColor=[UIColor whiteColor];
         return cell;
     }else{
