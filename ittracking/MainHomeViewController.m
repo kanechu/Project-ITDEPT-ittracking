@@ -65,7 +65,6 @@ CustomBadge *iobj_customBadge;
         });
     });
     
-   
 	// Do any additional setup after loading the view.
 }
 
@@ -110,15 +109,17 @@ CustomBadge *iobj_customBadge;
         
         dispatch_async( dispatch_get_main_queue(), ^{
             // update UI here
-            
-            DB_alert * ldb_alert = [[DB_alert alloc] init];
-            NSInteger li_alert_count = [ldb_alert fn_get_unread_msg_count];
-            [iobj_customBadge removeFromSuperview];
-            iobj_customBadge = nil;
-            badge_Num=li_alert_count;
-            [iui_collectionview reloadData];
+            [self fn_set_unread_msg_badge];
         });
     });
+}
+- (void)fn_set_unread_msg_badge{
+    DB_alert * ldb_alert = [[DB_alert alloc] init];
+    NSInteger li_alert_count = [ldb_alert fn_get_unread_msg_count];
+    [iobj_customBadge removeFromSuperview];
+    iobj_customBadge = nil;
+    badge_Num=li_alert_count;
+    [iui_collectionview reloadData];
 }
 #pragma mark function options
 - (void) fn_refresh_menu;
@@ -145,6 +146,7 @@ CustomBadge *iobj_customBadge;
     //button.tag用来区分点击那个Item
     menu_item=[ilist_menu objectAtIndex:button.tag];
     [self performSegueWithIdentifier:menu_item.is_segue sender:self];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(fn_set_unread_msg_badge) name:@"update" object:nil];
     if ([menu_item.is_segue isEqualToString:@"Segue_ExpandSearch"]) {
         NSDate *now_time=[NSDate date];
         NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
@@ -265,6 +267,9 @@ CustomBadge *iobj_customBadge;
     //清除portName的缓存
     DB_portName *db=[[DB_portName alloc]init];
     [db fn_delete_all_data];
+    //清除alert的缓存
+    DB_alert *db_alert=[[DB_alert alloc]init];
+    [db_alert fn_delete_all_alert];
 }
 #pragma mark NetWork request
 -(void)fn_get_allIcon{
@@ -352,7 +357,7 @@ CustomBadge *iobj_customBadge;
 #pragma mark - UICollectionView Datasource
 // 1
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    // NSString *searchTerm = self.searches[section];
+    
     return [self.ilist_menu count];
 }
 // 一个collectionView中的分区数

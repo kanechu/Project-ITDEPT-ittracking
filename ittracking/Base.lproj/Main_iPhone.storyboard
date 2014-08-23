@@ -692,7 +692,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="fNo-BY-b3N">
-                                            <rect key="frame" x="255" y="30" width="30" height="25"/>
+                                            <rect key="frame" x="255" y="40" width="30" height="25"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </imageView>
@@ -728,6 +728,7 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
+                        <outlet property="is_segment" destination="0lE-aI-SDf" id="kek-Fb-Iin"/>
                         <segue destination="7UD-qU-Ko9" kind="push" identifier="segue_exhbl_home1" id="Cr5-3k-Xhp"/>
                         <segue destination="O1K-i7-1iG" kind="push" identifier="segue_aehbl_home1" id="3hz-sA-2Up"/>
                     </connections>

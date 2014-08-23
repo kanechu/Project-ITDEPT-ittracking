@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface AlertController : UITableViewController
+@property (weak, nonatomic) IBOutlet UISegmentedControl *is_segment;
 
 - (IBAction)EditRow:(id)sender;
 

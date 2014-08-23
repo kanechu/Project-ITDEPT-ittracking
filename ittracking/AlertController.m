@@ -33,14 +33,11 @@
 - (void)viewDidLoad
 {
    
-    [self initDic];
+    [self fn_create_obj];
     self.view.backgroundColor = [UIColor blackColor];
     //初始nil文件，获取alert
     [self fn_get_data];
-    //十分钟检查一次是否有新通知
-    [NSTimer scheduledTimerWithTimeInterval: 600.0 target: self
-                                   selector: @selector(reloadNeWData) userInfo: nil repeats: YES];
-    
+
     //当点击编辑的时候，显示toolbar
     UIBarButtonItem *deleteItem=[[UIBarButtonItem alloc]initWithTitle:@"delete" style:UIBarButtonItemStyleBordered target:self action:@selector(DeleteAllSelections:)];
     NSMutableArray *arr=[NSMutableArray arrayWithObject:deleteItem];
@@ -48,38 +45,17 @@
     [[self navigationController] setToolbarHidden:YES animated:YES];
    
 }
--(void)initDic{
+-(void)fn_create_obj{
     self.deleteDic=[NSMutableDictionary dictionaryWithCapacity:10];
     self.today_alert=[NSMutableArray arrayWithCapacity:10];
     self.previous_alert=[NSMutableArray arrayWithCapacity:10];
 }
+#pragma mark UITableViewDataSource
 
-#pragma mark UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [ilist_alert count];
 }
-
--(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    static NSString *CellIdentifier = @"cell_alert_list_hdr";
-    Cell_alert_list *headerView = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (headerView == nil){
-        [NSException raise:@"headerView == nil.." format:@"No cells with matching CellIdentifier loaded from your storyboard"];
-    }
-    return headerView;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(section == 1 )
-        return 0.000001f;
-    else return 44; // put 22 in case of plain one..
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-    return 71;
-}
-#pragma mark UITableViewDataSource
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     static NSString *ls_TableIdentifier = @"cell_alert_list";
@@ -120,11 +96,30 @@
         cell.ilb_warningBlue.image=nil;
         cell.ilb_warningBlue.hidden=YES;
     }
-    cell.selectedBackgroundView=[[UIView alloc]initWithFrame:cell.frame];
-    cell.selectedBackgroundView.backgroundColor=[UIColor blackColor];
     cell.selectionStyle=UITableViewCellSelectionStyleBlue;
     return cell;
 }
+#pragma mark UITableViewDelegate
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    static NSString *CellIdentifier = @"cell_alert_list_hdr";
+    Cell_alert_list *headerView = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (headerView == nil){
+        [NSException raise:@"headerView == nil.." format:@"No cells with matching CellIdentifier loaded from your storyboard"];
+    }
+    return headerView;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if(section == 1 )
+        return 0.000001f;
+    else return 44; // put 22 in case of plain one..
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    return 71;
+}
+
 - (void)tableView: (UITableView *)tableView
 didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 {
@@ -143,14 +138,16 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
         }
         DB_alert * ldb_alert = [[DB_alert alloc] init];
         [ldb_alert fn_update_isRead:ls_unique_id];
-        
-        ilist_alert=[ldb_alert fn_get_all_msg];
+        if (_is_segment.selectedSegmentIndex==0) {
+            ilist_alert=[ldb_alert fn_get_today_msg];
+        }else{
+            ilist_alert=[ldb_alert fn_get_previous_msg];
+        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"update" object:nil];
         [self.tableView reloadData];
     }
 }
--(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
-}
+
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     if ([self.cancleButton.titleLabel.text isEqualToString:@"Cancel"]) {
        [self.deleteDic removeObjectForKey:[ilist_alert objectAtIndex:indexPath.row]];
@@ -158,10 +155,11 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     }
     
 }
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
+}
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (editingStyle==UITableViewCellEditingStyleDelete) {
-        
-        
         
     }
     
@@ -202,24 +200,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
         aehblHomeController.idic_aehbl=ldict_dictionary;
     }
 }
-
-- (void) fn_get_data
-{
-    DB_alert * ldb_alert = [[DB_alert alloc] init];
-    today_alert=[ldb_alert fn_get_today_msg];
-    previous_alert=[ldb_alert fn_get_previous_msg];
-    ilist_alert=today_alert;
-    
-}
--(void)reloadNeWData{
-    
-    DB_alert * ldb_alert = [[DB_alert alloc] init];
-    if ([ldb_alert fn_get_unread_msg_count]>([previous_alert count]+[today_alert count])) {
-        today_alert=[ldb_alert fn_get_today_msg];
-        previous_alert=[ldb_alert fn_get_previous_msg];
-        [self.tableView reloadData];
-    }
-}
+#pragma mark edit msg
 - (IBAction)EditRow:(id)sender{
     self.cancleButton=(UIButton*)sender;
     //显示多选圆圈
@@ -277,7 +258,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     [self.cancleButton addTarget:self action:@selector(EditRow:) forControlEvents:UIControlEventTouchUpInside];
      [[self navigationController] setToolbarHidden:YES animated:YES];
 }
-
+#pragma mark segmentChange action
 - (IBAction)segmentChange:(id)sender {
     UISegmentedControl *segmentCon=(UISegmentedControl*)sender;
     if (segmentCon.selectedSegmentIndex==0) {
@@ -286,5 +267,13 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
         ilist_alert=previous_alert;
     }
     [self.tableView reloadData];
+}
+- (void) fn_get_data
+{
+    DB_alert * ldb_alert = [[DB_alert alloc] init];
+    today_alert=[ldb_alert fn_get_today_msg];
+    previous_alert=[ldb_alert fn_get_previous_msg];
+    ilist_alert=today_alert;
+    
 }
 @end

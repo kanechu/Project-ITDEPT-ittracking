@@ -128,6 +128,17 @@
     
     return llist_results;
 }
+- (BOOL)fn_delete_all_alert{
+    if ([[idb fn_get_db]open]) {
+        BOOL isDelete=[[idb fn_get_db]executeUpdate:@"delete from alert"];
+        if (!isDelete) {
+            return NO;
+        }
+        [[idb fn_get_db]close];
+        return YES;
+    }
+    return NO;
+}
 @end
 
 
