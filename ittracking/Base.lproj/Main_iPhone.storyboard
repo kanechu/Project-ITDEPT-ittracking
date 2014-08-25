@@ -875,7 +875,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="fn_click_textfield:" destination="ifm-S5-DYL" eventType="editingDidBegin" id="y7p-Mc-UkU"/>
+                                                        <action selector="fn_end_edit_textfield:" destination="ifm-S5-DYL" eventType="editingDidEnd" id="AfH-Le-lVu"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>

@@ -36,6 +36,7 @@
 		B242209B18BB303600D4A75C /* ExhblGeneralController.m in Sources */ = {isa = PBXBuildFile; fileRef = B242209A18BB303600D4A75C /* ExhblGeneralController.m */; };
 		B24555CF18D166A500D47DC7 /* AehblListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B24555CE18D166A500D47DC7 /* AehblListController.m */; };
 		B24E83AC18D2A50700C29034 /* AehblGeneralController.m in Sources */ = {isa = PBXBuildFile; fileRef = B24E83AB18D2A50700C29034 /* AehblGeneralController.m */; };
+		B250BFBE19AB428F005EA993 /* KeyboardNoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B250BFBD19AB428F005EA993 /* KeyboardNoticeManager.m */; };
 		B2531101191C728C0049AFDA /* SKSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B25310FE191C728C0049AFDA /* SKSTableView.m */; };
 		B2531102191C728C0049AFDA /* SKSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2531100191C728C0049AFDA /* SKSTableViewCell.m */; };
 		B2531108191C73E10049AFDA /* ExpandSearchCriteriaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2531107191C73E10049AFDA /* ExpandSearchCriteriaViewController.m */; };
@@ -222,6 +223,8 @@
 		B24555CE18D166A500D47DC7 /* AehblListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AehblListController.m; sourceTree = "<group>"; };
 		B24E83AA18D2A50700C29034 /* AehblGeneralController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AehblGeneralController.h; sourceTree = "<group>"; };
 		B24E83AB18D2A50700C29034 /* AehblGeneralController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AehblGeneralController.m; sourceTree = "<group>"; };
+		B250BFBC19AB428F005EA993 /* KeyboardNoticeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardNoticeManager.h; sourceTree = "<group>"; };
+		B250BFBD19AB428F005EA993 /* KeyboardNoticeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardNoticeManager.m; sourceTree = "<group>"; };
 		B25310FD191C728C0049AFDA /* SKSTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableView.h; sourceTree = "<group>"; };
 		B25310FE191C728C0049AFDA /* SKSTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableView.m; sourceTree = "<group>"; };
 		B25310FF191C728C0049AFDA /* SKSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCell.h; sourceTree = "<group>"; };
@@ -535,6 +538,8 @@
 		B242208918B8464200D4A75C /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				B250BFBC19AB428F005EA993 /* KeyboardNoticeManager.h */,
+				B250BFBD19AB428F005EA993 /* KeyboardNoticeManager.m */,
 				B242208A18B8467300D4A75C /* Res_color.h */,
 				B242208B18B8467300D4A75C /* Res_color.m */,
 				B230189618ED66CA004B6CCC /* MapAnnotation.h */,
@@ -1006,6 +1011,7 @@
 				B288CFE018DA945E0089F877 /* DB_login.m in Sources */,
 				B2307B1F18BDE888000502BE /* DBManager.m in Sources */,
 				B22D6C1C18D1A7CB00DE4DB5 /* AehblHomeController.m in Sources */,
+				B250BFBE19AB428F005EA993 /* KeyboardNoticeManager.m in Sources */,
 				B284FBD019175F0300EDEBA8 /* RespSearchCriteria.m in Sources */,
 				B2AD1FB71900CA7900F0E0A7 /* Cell_schedule_section1.m in Sources */,
 				B2A9770818CF18290096BD4B /* FMDatabaseAdditions.m in Sources */,
