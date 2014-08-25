@@ -11,6 +11,7 @@
 #import "SKSTableViewCell.h"
 #import "DB_searchCriteria.h"
 #import "DB_icon.h"
+#import "Res_color.h"
 #import "Cell_schedule_section1.h"
 #import "Cell_schedule_section2_row1.h"
 #import "Cell_schedule_section2_row3.h"
@@ -19,13 +20,23 @@
 #import "SearchPortNameViewController.h"
 #import "MZFormSheetController.h"
 #import "PopViewManager.h"
+#import "KeyboardNoticeManager.h"
+typedef NSString* (^pass_value)(NSInteger tag);
+#define TEXTFIELD_TAG 100
 @interface ExpandSearchCriteriaViewController ()
-
+@property(nonatomic,strong)pass_value passValue;
+//存储搜索标准数据
+@property(nonatomic,strong)NSMutableArray *alist_searchCriteria;
+//存储搜索标准的组名和该组的行数
+@property(nonatomic,strong)NSMutableArray *alist_groupNameAndNum;
+//存储过滤后的搜索标准数据
+@property(nonatomic,strong)NSMutableArray *alist_filtered_data;
+//搜索的条件，放到一个字典中
+@property (strong,nonatomic) NSMutableDictionary *imd_searchDic;
+//显示的内容，放到一个字典中
+@property (strong,nonatomic) NSMutableDictionary *imd_displayDic;
 @end
-enum TEXTFIELD_TAG {
-    TAG1 = 1,
-    TAG2 ,TAG3,TAG4,TAG5
-};
+
 static NSInteger day=0;
 
 @implementation ExpandSearchCriteriaViewController
@@ -36,16 +47,13 @@ static NSInteger day=0;
 @synthesize imd_searchDic;
 @synthesize idp_picker;
 @synthesize id_startdate;
-@synthesize idic_portname;
-@synthesize idic_dis_portname;
 @synthesize select_row;
 @synthesize skstableView;
-@synthesize db;
 @synthesize alist_searchCriteria;
 @synthesize alist_groupNameAndNum;
 @synthesize alist_filtered_data;
 @synthesize alist_icon;
-
+@synthesize imd_displayDic;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -85,7 +93,8 @@ static NSInteger day=0;
     
     [self fn_get_searchCriteria_data];
     //注册通知
-    [self fn_register_notifiction];
+    //[self fn_register_notifiction];
+    [KeyboardNoticeManager sharedKeyboardNoticeManager];
     //loadview的时候，打开所有expandable
     [self.skstableView fn_expandall];
     
@@ -114,33 +123,23 @@ static NSInteger day=0;
 }
 
 -(void)fn_init_global_Variable{
-    db=[[DB_searchCriteria alloc]init];
+    DB_searchCriteria *db=[[DB_searchCriteria alloc]init];
     alist_searchCriteria=[db fn_get_all_data];
+    alist_groupNameAndNum=[db fn_get_groupNameAndNum];
     DB_icon *db_icon=[[DB_icon alloc]init];
     alist_icon=[db_icon fn_get_all_iconData];
     imd_searchDic=[[NSMutableDictionary alloc]initWithCapacity:10];
+    imd_displayDic=[[NSMutableDictionary alloc]initWithCapacity:1];
     ilist_dateType=[[NSMutableArray alloc]initWithCapacity:10];
     ia_listData=[[NSMutableArray alloc]initWithCapacity:10];
     alist_filtered_data=[[NSMutableArray alloc]initWithCapacity:10];
-}
--(void)fn_register_notifiction{
-    //注册通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    // 键盘高度变化通知，ios5.0新增的
-    
-#ifdef __IPHONE_5_0
-    
-    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-    
-    if (version >= 5.0) {
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)name:UIKeyboardWillChangeFrameNotification object:nil];
-        
+    for (NSMutableDictionary *dic in alist_groupNameAndNum) {
+        NSString *str=[dic valueForKey:@"group_name"];
+        NSArray *arr=[self fn_filtered_criteriaData:str];
+        if (arr!=nil) {
+            [alist_filtered_data addObject:arr];
+        }
     }
-    
-#endif
 }
 
 //将额外的cell的线隐藏
@@ -152,16 +151,20 @@ static NSInteger day=0;
 }
 //截取搜索标准的有用数据
 -(void)fn_get_searchCriteria_data{
-   
+    DB_searchCriteria *db=[[DB_searchCriteria alloc]init];
     if ([db fn_get_all_data].count!=0) {
         _ibt_search_btn.hidden=NO;
     }
-    alist_groupNameAndNum=[db fn_get_groupNameAndNum];
-    
     for (NSMutableDictionary *dic in [db fn_get_all_data]) {
         //获取date Range默认的天数
         if ([[dic valueForKey:@"col_type"] isEqualToString:@"int"]) {
             day=[[dic valueForKey:@"col_def"] integerValue];
+            NSString *col_code=[dic valueForKey:@"col_code"];
+            if ([col_code length]!=0) {
+                [imd_displayDic setObject:[NSString stringWithFormat:@"%d",day] forKey:col_code];
+                [imd_searchDic setObject:[self fn_get_finishDate:day]forKey:col_code];
+            }
+            
         }
         //获取option 的数据
         if ([[dic valueForKey:@"col_type"] isEqualToString:@"combo"]) {
@@ -178,6 +181,18 @@ static NSInteger day=0;
                     [ilist_dateType addObject:[option1 objectAtIndex:1]];
                 }
             }
+            NSString *col_def=[dic valueForKey:@"col_def"];
+            NSInteger i=0;
+            for (NSString *str in ilist_dateType) {
+                if ([str isEqualToString:col_def]) {
+                    break;
+                }
+                i++;
+            }
+            if ([col_def length]!=0) {
+                [imd_searchDic setObject:col_def forKey:[dic valueForKey:@"col_code"]];
+                [imd_displayDic setObject:[ia_listData objectAtIndex:i] forKey:[dic valueForKey:@"col_code"]];
+            }
         }
     }
 }
@@ -192,35 +207,6 @@ static NSInteger day=0;
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
      checkText = textField;//设置被点击的对象
 }
-
-#pragma mark Responding to keyboard events
-- (void)keyboardWillShow:(NSNotification*)notification{
-    if (nil == checkText) {
-        
-        return;
-        
-    }
-    NSDictionary *userInfo = [notification userInfo];
-    // Get the origin of the keyboard when it's displayed.
-    
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    
-    CGRect keyboardRect = [aValue CGRectValue];
-    
-    //设置表视图frame
-    [skstableView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-keyboardRect.size.height-10)];
-    //设置表视图可见cell
-    [skstableView scrollToRowAtIndexPath:[NSIndexPath indexPathForSubRow:1 inRow:1 inSection:1] atScrollPosition:UITableViewScrollPositionNone animated:YES];
-}
-
-//键盘被隐藏的时候调用的方法
--(void)keyboardWillHide:(NSNotification*)notification {
-    if (checkText) {
-        //设置表视图frame,ios7的导航条加上状态栏是64
-        [skstableView setFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height)];
-    }
-}
-
 #pragma mark create toolbar
 -(UIToolbar*)fn_create_toolbar{
     UIToolbar *toolbar = [[UIToolbar alloc] init];
@@ -263,72 +249,6 @@ static NSInteger day=0;
     select_row=row;
     
 }
-#pragma mark sent event
-- (IBAction)fn_click_portBtn:(id)sender{
-    Custom_Button *Btn=(Custom_Button*)sender;
-    PopViewManager *popV=[[PopViewManager alloc]init];
-    if (Btn.tag==TAG1) {
-        SearchPortNameViewController *VC=(SearchPortNameViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"SearchPortNameViewController"];
-        VC.is_placeholder=@"Please fill in Load Port!";
-        VC.callBack=^(NSMutableDictionary *dic_portname){
-            idic_portname=dic_portname;
-            [self.skstableView reloadData];
-        };
-        [popV PopupView:VC Size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height) uponView:self];
-    }
-    if (Btn.tag==TAG2) {
-        SearchPortNameViewController *VC=(SearchPortNameViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"SearchPortNameViewController"];
-        VC.callBack=^(NSMutableDictionary *dic_disportname){
-            idic_dis_portname=dic_disportname;
-            [self.skstableView reloadData];
-        };
-        VC.is_placeholder=@"Please fill in Discharge Port!";
-        [popV PopupView:VC Size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height) uponView:self];
-    }
-}
-
-
-- (IBAction)fn_click_subBtn:(id)sender {
-    day--;
-    if (day<0) {
-        day=0;
-    }
-    [self.skstableView reloadData];
-}
-
-- (IBAction)fn_click_addBtn:(id)sender {
-    day++;
-    [self.skstableView reloadData];
-}
-//输入天数结束的时候(endEdit)，触发的方法
-- (IBAction)fn_click_day:(id)sender {
-    UITextField *textfield=(UITextField*)sender;
-    if (textfield.tag==TAG5) {
-        day=[textfield.text integerValue];
-    }
-    [self.skstableView reloadData];
-}
-
-- (IBAction)fn_begin_click_day:(id)sender {
-    UITextField *textfield=(UITextField*)sender;
-    if (textfield.tag==TAG5) {
-        textfield.inputAccessoryView=[self fn_create_toolbar];
-    }
-}
-//文本框beginEdit，触发的方法
-- (IBAction)fn_click_textfield:(id)sender {
-    UITextField *textfield=(UITextField*)sender;
-    textfield.delegate=self;
-    if (textfield.tag==TAG3) {
-        textfield.inputView=ipic_drop_view;
-        textfield.inputAccessoryView=[self fn_create_toolbar];
-    }
-    if (textfield.tag==TAG4) {
-        textfield.inputView=idp_picker;
-        textfield.inputAccessoryView=[self fn_create_toolbar];
-    }
-}
-
 #pragma mark UIDatePick
 -(void)fn_create_datePick{
     //初始化UIDatePicker
@@ -347,6 +267,75 @@ static NSInteger day=0;
     id_startdate=[idp_picker date];
     
 }
+#pragma mark sent event
+- (IBAction)fn_click_portBtn:(id)sender{
+    Custom_Button *Btn=(Custom_Button*)sender;
+    NSString *col_code=_passValue(Btn.tag);
+    NSString *str_placeholder=@"";
+    if ([col_code isEqualToString:@"load_port"]) {
+        str_placeholder=@"Please fill in Load Port!";
+    }
+    if ([col_code isEqualToString:@"dish_port"]) {
+        str_placeholder=@"Please fill in Discharge Port!";
+    }
+    [self fn_popup_searchPortNameView:str_placeholder col_code:col_code];
+}
+
+- (IBAction)fn_end_edit_textfield:(id)sender {
+    UITextField *textfield=(UITextField*)sender;
+    NSString *col_code=_passValue(textfield.tag);
+    if ([col_code isEqualToString:@"datetype"]) {
+        [imd_searchDic setObject:[ilist_dateType objectAtIndex:select_row] forKey:col_code];
+        [imd_displayDic setObject:[ia_listData objectAtIndex:select_row] forKey:col_code];
+    }
+    if ([col_code isEqualToString:@"date"]) {
+        
+        [imd_searchDic setObject:[self fn_DateToStringDate:id_startdate] forKey:col_code];
+        [imd_displayDic setObject:[self fn_DateToStringDate:id_startdate] forKey:col_code];
+    }
+    
+}
+-(void)fn_popup_searchPortNameView:(NSString*)placeholder col_code:(NSString*)col_code{
+    SearchPortNameViewController *VC=(SearchPortNameViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"SearchPortNameViewController"];
+    VC.callBack=^(NSMutableDictionary *idic_name){
+        [imd_searchDic setObject:[idic_name valueForKey:@"data"] forKey:col_code];
+        [imd_displayDic setObject:[idic_name valueForKey:@"display"] forKey:col_code];
+        [self.skstableView reloadData];
+    };
+    VC.is_placeholder=placeholder;
+    PopViewManager *popV=[[PopViewManager alloc]init];
+    [popV PopupView:VC Size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height) uponView:self];
+}
+
+- (IBAction)fn_click_subBtn:(id)sender {
+    day--;
+    if (day<0) {
+        day=0;
+    }
+    [self.skstableView reloadData];
+}
+
+- (IBAction)fn_click_addBtn:(id)sender {
+    day++;
+    [self.skstableView reloadData];
+}
+//输入天数结束的时候(endEdit)，触发的方法
+- (IBAction)fn_click_day:(id)sender {
+    UITextField *textfield=(UITextField*)sender;
+    NSString *col_code=_passValue(textfield.tag);
+    day=[textfield.text integerValue];
+    if ([[self fn_get_finishDate:day]length]!=0) {
+        [imd_searchDic setObject:[self fn_get_finishDate:day]forKey:col_code];
+    }
+    [imd_displayDic setObject:[NSString stringWithFormat:@"%d",day] forKey:col_code];
+    [self.skstableView reloadData];
+}
+
+- (IBAction)fn_begin_click_day:(id)sender {
+    UITextField *textfield=(UITextField*)sender;
+    textfield.inputAccessoryView=[self fn_create_toolbar];
+}
+
 #pragma mark 开始日期加天数，得结束日期
 -(NSString*)fn_get_finishDate:(NSInteger)_days{
     NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
@@ -378,11 +367,8 @@ static NSInteger day=0;
     
     NSInteger flag=0;
     for (NSMutableDictionary *dic in alist_searchCriteria) {
-        if ([dic valueForKey:@"is_mandatory"]) {
-            if ([[dic valueForKey:@"col_type"] isEqualToString:@"LOOKUP"] && [[imd_searchDic valueForKey:@"load_port_value"] length]==0) {
-                flag++;
-            }
-            if ([[dic valueForKey:@"col_type"] isEqualToString:@"lookup"] && [[imd_searchDic valueForKey:@"dish_port_value"] length]==0) {
+        if ([[dic valueForKey:@"is_mandatory"] isEqualToString:@"1"]) {
+            if ([[imd_searchDic valueForKey:[dic valueForKey:@"col_code"]] length]==0) {
                 flag++;
             }
             if (flag==1) {
@@ -395,6 +381,7 @@ static NSInteger day=0;
     if (flag==0) {
         [self performSegueWithIdentifier:@"segue_DetailSchedule" sender:self];
     }
+    
 }
 #pragma mark - UITableViewDataSource
 
@@ -416,20 +403,13 @@ static NSInteger day=0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"SKSTableViewCell";
-    
     SKSTableViewCell *cell = [self.skstableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell)
         cell = [[SKSTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     //设置文本字体的颜色
-    cell.textLabel.textColor=[UIColor colorWithRed:234.0/255.0 green:191.0/255.0 blue:229.0/255.0 alpha:1.0];
+    cell.textLabel.textColor=COLOR_PINK;
     cell.textLabel.font=[UIFont systemFontOfSize:15];
     cell.textLabel.text =[[alist_groupNameAndNum objectAtIndex:indexPath.section] valueForKey:@"group_name"];
-    
-    NSString *str=[[alist_groupNameAndNum objectAtIndex:indexPath.section] valueForKey:@"group_name"];
-    NSArray *arr=[self fn_filtered_criteriaData:str];
-    if (arr!=nil) {
-         [alist_filtered_data addObject:arr];
-    }
     cell.expandable = YES;
     return cell;
 }
@@ -443,6 +423,13 @@ static NSInteger day=0;
     NSString *col_code=[dic valueForKey:@"col_code"];
     //类型，用于判断使用的cell
     NSString *col_type=[dic valueForKey:@"col_type"];
+    //每行的显示的图片
+    NSString *icon_name=[dic valueForKey:@"icon_name"];
+    __block ExpandSearchCriteriaViewController *blockSelf=self;
+    _passValue=^NSString*(NSInteger tag){
+        NSMutableDictionary *dic=blockSelf->alist_filtered_data[tag/100-1][tag-TEXTFIELD_TAG-(tag/100-1)*100];
+        return [dic valueForKey:@"col_code"];
+    };
     if ([col_type isEqualToString:@"LOOKUP"] || [col_type isEqualToString:@"lookup"]) {
         
         static NSString *CellIdentifier = @"Cell_schedule_section11";
@@ -450,29 +437,10 @@ static NSInteger day=0;
         if (cell==nil) {
             cell=[[Cell_schedule_section1 alloc]init];
         }
-        if ([col_type isEqualToString:@"LOOKUP"]) {
-            cell.ilb_port.text=col_label;
-            cell.ilb_show_portName.label.text=[idic_portname valueForKey:@"display"];
-            cell.im_navigate_img.image=[UIImage imageWithData:[self fn_get_imageData:@"crmsubregion"]];
-            cell.ilb_show_portName.tag=TAG1;
-            if (idic_portname!=nil) {
-                [imd_searchDic setObject:[idic_portname valueForKey:@"data"] forKey:@"load_port_value"];
-                [imd_searchDic setObject:col_code forKey:@"load_port_column"];
-            }
-            
-        }
-        if ([col_type isEqualToString:@"lookup"]) {
-            cell.im_navigate_img.image=[UIImage imageWithData:[self fn_get_imageData:@"crmsubregion"]];
-            cell.ilb_port.text=col_label;
-            cell.ilb_show_portName.label.text=[idic_dis_portname valueForKey:@"display"];
-            cell.ilb_show_portName.tag=TAG2;
-            if (idic_dis_portname!=nil) {
-                [imd_searchDic setObject:[idic_dis_portname valueForKey:@"data"] forKey:@"dish_port_value"];
-                [imd_searchDic setObject:col_code forKey:@"dish_port_column"];
-            }
-            
-        }
-        
+        cell.im_navigate_img.image=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
+        cell.ilb_port.text=col_label;
+        cell.ilb_show_portName.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
+        cell.ilb_show_portName.label.text=[imd_displayDic valueForKey:col_code];
         return cell;
     }
     
@@ -482,28 +450,24 @@ static NSInteger day=0;
         if (cell==nil) {
             cell=[[Cell_schedule_section2_row1 alloc]init];
         }
-        if ([col_type isEqualToString:@"combo"]) {
-            cell.ilb_show_dateAndtype.text=col_label;
-            cell.itf_show_dateType.text=[ia_listData objectAtIndex:select_row];
+        cell.itf_show_dateType.delegate=self;
+        cell.ilb_show_dateAndtype.text=col_label;
+        cell.itf_show_dateType.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
+        cell.ii_calendar_img.image=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
+        cell.itf_show_dateType.text=[imd_displayDic valueForKey:col_code];
             ;
-            cell.itf_show_dateType.tag=TAG3;
-            cell.ii_calendar_img.image=[UIImage imageWithData:[self fn_get_imageData:@"crmacct"]];
-            if (ilist_dateType!=nil) {
-                [imd_searchDic setObject:col_code forKey:@"datetype_column"];
-                [imd_searchDic setObject:[ilist_dateType objectAtIndex:select_row]forKey:@"datetype_value"];
-            }
+        if ([col_type isEqualToString:@"combo"]) {
+            cell.itf_show_dateType.inputView=ipic_drop_view;
+            cell.itf_show_dateType.inputAccessoryView=[self fn_create_toolbar];
         }
-        
         if ([col_type isEqualToString:@"date"]) {
             
-            cell.ilb_show_dateAndtype.text=col_label;
-            cell.ii_calendar_img.image=[UIImage imageWithData:[self fn_get_imageData:@"crmregion"]];
-            cell.itf_show_dateType.text=[self fn_DateToStringDate:id_startdate];
-            cell.itf_show_dateType.tag=TAG4;
-            [imd_searchDic setObject:col_code forKey:@"datefm_column"];
-            [imd_searchDic setObject: cell.itf_show_dateType.text forKey:@"datefm_value"];
+            cell.itf_show_dateType.inputView=idp_picker;
+            cell.itf_show_dateType.inputAccessoryView=[self fn_create_toolbar];
+            NSString *str_date=[self fn_DateToStringDate:id_startdate];
+            cell.itf_show_dateType.text=str_date;
+            [imd_searchDic setObject:str_date forKey:col_code];
         }
-        
         return cell;
     }
     if ([col_type isEqualToString:@"int"]) {
@@ -512,25 +476,20 @@ static NSInteger day=0;
         if (cell==nil) {
             cell=[[Cell_schedule_section2_row3 alloc]init];
         }
-        if ([self fn_DateToStringDate:id_startdate].length!=0 && day!=0) {
-           
-            [imd_searchDic setObject:[self fn_get_finishDate:day]forKey:@"dateto_value"];
-            
-        }else if([self fn_DateToStringDate:id_startdate].length!=0 && day==0){
-            
-            [imd_searchDic setObject:[self fn_DateToStringDate:id_startdate] forKey:@"dateto_value"];
-        }
-        [imd_searchDic setObject:col_code forKey:@"dateto_column"];
-        cell.ict_show_days.tag=TAG5;
-        cell.ict_show_days.text=[NSString stringWithFormat:@"%d",day];
+        cell.ict_show_days.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
+        cell.ict_show_days.text=[imd_displayDic valueForKey:col_code];
         cell.ict_show_days.delegate=self;
         [cell.ibt_add_btn setImage:[UIImage imageWithData:[self fn_get_imageData:@"int_minus"]] forState:UIControlStateNormal];
         [cell.ibt_decrease_btn setImage:[UIImage imageWithData:[self fn_get_imageData:@"int_add"]] forState:UIControlStateNormal];
-        cell.ii_calendar_img.image=[UIImage imageWithData:[self fn_get_imageData:@"date"]];
+        cell.ii_calendar_img.image=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
         return cell;
     }
       // Configure the cell...
     return nil;
+}
+#pragma mark UITableViewDelegate
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 40;
 }
 #pragma mark 遍历数组
 -(NSData*)fn_get_imageData:(NSString*)str{
@@ -542,26 +501,6 @@ static NSInteger day=0;
         }
     }
     return nil;
-}
--(NSMutableDictionary*)fn_get_DataOfRow:(NSString*)str{
-    for (NSMutableDictionary *dic in alist_filtered_data) {
-        if ([[dic valueForKey:@"col_type"] isEqualToString:str]) {
-            return dic;
-        }
-    }
-    return nil;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
-
-- (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
-{
-   
-}
--(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
 }
 
 @end
