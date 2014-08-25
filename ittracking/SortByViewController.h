@@ -9,10 +9,8 @@
 #import <UIKit/UIKit.h>
 typedef void (^callBack_type)(NSString *);
 @interface SortByViewController : UITableViewController
-@property (strong,nonatomic)NSArray *imt_sort_list;
-@property (strong,nonatomic)NSArray *imt_sort_key;
 
 @property (strong,nonatomic)callBack_type callback;
-
 - (IBAction)fn_disappear_sortBy:(id)sender;
+
 @end

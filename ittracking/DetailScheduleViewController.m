@@ -16,14 +16,15 @@
 #import "RespSchedule.h"
 #import "MBProgressHUD.h"
 #import "PopViewManager.h"
+#import "Calculate_lineHeight.h"
 @interface DetailScheduleViewController ()
-
+@property(nonatomic,strong)Calculate_lineHeight *cal_obj;
 @end
 
 @implementation DetailScheduleViewController
 @synthesize ilist_schedule;
 @synthesize imd_searchDic;
-
+@synthesize cal_obj;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -39,9 +40,14 @@
     //searchBar的代理
     _is_seach_bar.delegate=self;
     [self fn_get_data:imd_searchDic];
-    NSLog(@"%@",imd_searchDic);
     [self BtnGraphicMixed];
-
+    [self fn_setExtraline_hidden];
+    cal_obj=[[Calculate_lineHeight alloc]init];
+}
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 //实现按钮的图文混排
 -(void)BtnGraphicMixed{
@@ -56,12 +62,6 @@
     
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -71,13 +71,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  
-    if (ilist_schedule==nil || ilist_schedule==NULL) {
-        return 0;
-    }else{
-        return [ilist_schedule count];
-    }
-    
+    return [ilist_schedule count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -88,6 +82,7 @@
         NSArray *nib=[[NSBundle mainBundle]loadNibNamed:@"Cell_detail_schedule" owner:self options:nil];
         cell=[nib objectAtIndex:0];
     }
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
     if( [indexPath row] % 2){
         cell.backgroundView=nil;
         cell.backgroundColor=[UIColor blackColor];
@@ -118,19 +113,39 @@
     cell.ilb_dish_port.text=[ldict_dictionary valueForKey:@"port_name"];
    
         // Configure the cell...
-    
+    CGFloat height=[cal_obj fn_heightWithString:cell.ilb_vessel_voyage.text font:cell.ilb_vessel_voyage.font constrainedToWidth:cell.ilb_vessel_voyage.frame.size.width];
+    if (height<21) {
+        height=21;
+    }
+    [cell.ilb_vessel_voyage setFrame:CGRectMake(cell.ilb_vessel_voyage.frame.origin.x, cell.ilb_vessel_voyage.frame.origin.y, cell.ilb_vessel_voyage.frame.size.width,height)];
+    CGFloat height1=[cal_obj fn_heightWithString:cell.ilb_wh_address.text font:cell.ilb_wh_address.font constrainedToWidth:cell.ilb_wh_address.frame.size.width];
+    if (height1<21) {
+        height1=21;
+    }
+    [cell.ilb_wh_address setFrame:CGRectMake(cell.ilb_wh_address.frame.origin.x, cell.ilb_vessel_voyage.frame.origin.y+height+1, cell.ilb_wh_address.frame.size.width, height1)];
     return cell;
 }
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (ilist_schedule==nil||ilist_schedule==NULL||ilist_schedule.count==0) {
-        return 40;
-    }else{
-        return 145;
+    static NSString *CellIdentifier = @"Cell_detail_schedule";
+    Cell_detail_schedule *cell=[self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    NSMutableDictionary *ldict_dictionary=[ilist_schedule objectAtIndex:indexPath.row]
+    ;
+    NSString *str_vessel=[ldict_dictionary valueForKey:@"vessel_voyage"];
+    CGFloat height=[cal_obj fn_heightWithString:str_vessel font:cell.ilb_vessel_voyage.font constrainedToWidth:cell.ilb_vessel_voyage.frame.size.width];    NSString *str_carrier_name=[ldict_dictionary valueForKey:@"carrier_name"];
+    CGFloat height1=[cal_obj fn_heightWithString:str_carrier_name font:cell.ilb_wh_address.font constrainedToWidth:cell.ilb_wh_address.frame.size.width];
+    if (height<21) {
+        height=21;
     }
+    if (height1<21) {
+        height1=21;
+    }
+    return height+height1+108;
 }
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NO;
+-(void)fn_setExtraline_hidden{
+    UIView *view=[[UIView alloc]initWithFrame:self.view.bounds];
+    view.backgroundColor=[UIColor clearColor];
+    [self.tableView setTableFooterView:view];
 }
 #pragma mark 同一个Label显示不同颜色的文字方法
 -(NSMutableAttributedString*)fn_different_fontcolor:(NSString*)_str range:(NSRange)_range{
@@ -139,16 +154,6 @@
     
     return str;
 }
-
-#pragma mark 点击右上角的sortBy Button触发的方法
-- (IBAction)fn_click_sortBy_btn:(id)sender {
-    SortByViewController *sortByVC=[self.storyboard instantiateViewControllerWithIdentifier:@"SortByViewController"];
-    sortByVC.callback=^(NSString *type){
-        [self fn_sort_schedule:type];
-    };
-    PopViewManager *popV=[[PopViewManager alloc]init];
-    [popV PopupView:sortByVC Size:CGSizeMake(250, 300) uponView:self];
-}
 #pragma mark UISearchBarDelegate
 //点击搜索按钮的cancel，键盘收起
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar{
@@ -156,11 +161,9 @@
 }
 //点击搜索的时候，触发的事件
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    ilist_schedule=nil;
-    [self.tableView reloadData];
+    [ilist_schedule removeAllObjects];
     [self handleSearch:searchBar];
 }
-
 
 - (void)handleSearch:(UISearchBar *)searchBar {
     NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
@@ -169,7 +172,7 @@
     // if you want the keyboard to go away
     [searchBar resignFirstResponder];
 }
-#pragma mark 按条件获取服务器的数据
+#pragma mark NetWork Request
 -(void)fn_get_data:(NSMutableDictionary*)as_search_dic{
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     RequestContract *req_form=[[RequestContract alloc]init];
@@ -181,26 +184,15 @@
         search.os_value=[as_search_dic valueForKey:@"vessel"];
         req_form.SearchForm=[NSSet setWithObjects:search, nil];
     }else{
-        SearchFormContract *search=[[SearchFormContract alloc]init];
-        search.os_column=[as_search_dic valueForKey:@"load_port_column"];
-        search.os_value=[as_search_dic valueForKey:@"load_port_value"];
-        
-        SearchFormContract *search1=[[SearchFormContract alloc]init];
-        search1.os_column=[as_search_dic valueForKey:@"dish_port_column"];
-        search1.os_value=[as_search_dic valueForKey:@"dish_port_value"];
-        
-        SearchFormContract *search2=[[SearchFormContract alloc]init];
-        search2.os_column=[as_search_dic valueForKey:@"datetype_column"];
-        search2.os_value=[as_search_dic valueForKey:@"datetype_value"];
-        
-        SearchFormContract *search3=[[SearchFormContract alloc]init];
-        search3.os_column=[as_search_dic valueForKey:@"datefm_column"];
-        search3.os_value=[as_search_dic valueForKey:@"datefm_value"];
-        
-        SearchFormContract *search4=[[SearchFormContract alloc]init];
-        search4.os_column=[as_search_dic valueForKey:@"dateto_column"];
-        search4.os_value=[as_search_dic valueForKey:@"dateto_value"];
-        req_form.SearchForm=[NSSet setWithObjects:search,search1,search2,search3,search4, nil];
+        NSEnumerator *keys=[as_search_dic keyEnumerator];
+        NSMutableArray *arr_searchForm=[NSMutableArray array];
+        for (NSString *key in keys) {
+            SearchFormContract *search=[[SearchFormContract alloc]init];
+            search.os_column=key;
+            search.os_value=[as_search_dic valueForKey:key];
+            [arr_searchForm addObject:search];
+        }
+        req_form.SearchForm=[NSSet setWithArray:arr_searchForm];
     }
     Web_base *web_base=[[Web_base alloc]init];
     web_base.il_url =STR_SCHEDULE_URL;
@@ -215,7 +207,15 @@
     };
     [web_base fn_get_data:req_form];
     
-    
+}
+#pragma mark 点击右上角的sortBy Button触发的方法
+- (IBAction)fn_click_sortBy_btn:(id)sender {
+    SortByViewController *sortByVC=[self.storyboard instantiateViewControllerWithIdentifier:@"SortByViewController"];
+    sortByVC.callback=^(NSString *type){
+        [self fn_sort_schedule:type];
+    };
+    PopViewManager *popV=[[PopViewManager alloc]init];
+    [popV PopupView:sortByVC Size:CGSizeMake(250, 300) uponView:self];
 }
 #pragma mark 排序调用的方法
 -(void)fn_sort_schedule:(NSString*)is_sortBy_name{

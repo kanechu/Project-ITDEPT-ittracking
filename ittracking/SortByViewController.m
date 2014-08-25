@@ -11,6 +11,8 @@
 #import "Cell_sortBy_list.h"
 #import "AppConstants.h"
 @interface SortByViewController ()
+@property (strong,nonatomic)NSArray *imt_sort_list;
+@property (strong,nonatomic)NSArray *imt_sort_key;
 
 @end
 
