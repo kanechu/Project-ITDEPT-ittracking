@@ -10,6 +10,7 @@
 #import "AehblGeneralController.h"
 #import "MilestoneController.h"
 #import "CarrierMilestoneViewController.h"
+#import "DB_login.h"
 @interface AehblHomeController ()
 
 @end
@@ -34,6 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self fn_is_login];
     // add viewController so you can switch them later.
     [self.segmentedControl setApportionsSegmentWidthsByContent:YES];
     UIViewController *vc = [self viewControllerForSegmentIndex:self.segmentedControl.selectedSegmentIndex];
@@ -48,8 +50,14 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
+-(void)fn_is_login{
+    DB_login *db=[[DB_login alloc]init];
+    if ([db isLoginSuccess]==NO) {
+        [segmentedControl removeSegmentAtIndex:2 animated:NO];
+        [segmentedControl setApportionsSegmentWidthsByContent:NO];
+        [segmentedControl setFrame:CGRectMake(segmentedControl.frame.origin.x, segmentedControl.frame.origin.y, 140, segmentedControl.frame.size.height)];
+    }
+}
 
 - (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index {
     

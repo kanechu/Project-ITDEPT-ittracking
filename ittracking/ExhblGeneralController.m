@@ -231,6 +231,9 @@ enum ROW_NUMOFSECTION {
         if (indexPath.row==8) {
             ls_os_value=[ldict_dictionary valueForKey:@"po_no_list"];
         }
+        if (indexPath.row==9) {
+            ls_os_value=[ldict_dictionary valueForKey:@"cntr_no_list"];
+        }
         
     }
     CGFloat height=[calulate_obj fn_heightWithString:ls_os_value font:cell.ilb_value.font constrainedToWidth:cell.ilb_value.frame.size.width];
