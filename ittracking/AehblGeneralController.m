@@ -62,11 +62,7 @@ enum ROW_NUMOFSECTION {
     static NSString *ls_TableIdentifier = @"cell_aehbl_general_detail";
     Cell_exhbl_general_detail *cell = (Cell_exhbl_general_detail *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
     NSString *ls_os_value = @"";
-    if (cell == nil)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"Cell_aehbl_general_detail" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
+
     NSMutableDictionary * ldict_dictionary = [ilist_aehbl objectAtIndex:0];    // Configure Cell
     
     if( [indexPath row] % 2)

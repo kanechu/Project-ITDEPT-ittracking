@@ -57,11 +57,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *indentifer=@"Cell_sortBy_list";
     Cell_sortBy_list *cell=[self.tableView dequeueReusableCellWithIdentifier:indentifer];
-    if (cell==nil) {
-        NSArray *nib=[[NSBundle mainBundle]loadNibNamed:@"Cell_sortBy_list" owner:self options:nil];
-        cell=[nib objectAtIndex:0];
-        
-    }
+    
     cell.ilb_sortby.text=[imt_sort_list objectAtIndex:indexPath.row];
     return cell;
 }

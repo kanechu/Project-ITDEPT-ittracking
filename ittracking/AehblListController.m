@@ -68,13 +68,7 @@
     static NSString *ls_TableIdentifier = @"cell_aehbl_list";
     
     Cell_aehbl_list *cell = (Cell_aehbl_list *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
-    if (cell == nil)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"Cell_aehbl_list" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
-    
-   RespAehbl * lespAehbl = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
+    RespAehbl * lespAehbl = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
     
    NSMutableDictionary * ldict_dictionary = [ilist_aehbl objectAtIndex:indexPath.row];    // Configure Cell
     

@@ -78,10 +78,7 @@
 {
     static NSString *CellIdentifier = @"Cell_detail_schedule";
     Cell_detail_schedule *cell=[self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell==nil) {
-        NSArray *nib=[[NSBundle mainBundle]loadNibNamed:@"Cell_detail_schedule" owner:self options:nil];
-        cell=[nib objectAtIndex:0];
-    }
+
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     if( [indexPath row] % 2){
         cell.backgroundView=nil;

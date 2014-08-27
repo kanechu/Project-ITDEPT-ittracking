@@ -63,12 +63,6 @@
     static NSString *ls_TableIdentifier = @"cell_exhbl_list";
     
     Cell_exhbl_list *cell = (Cell_exhbl_list *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
-    if (cell == nil)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"Cell_exhbl_list" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
-
     NSMutableDictionary *ldict_dictionary = [ilist_exhbl objectAtIndex:indexPath.row];
     // Configure Cell
     if( [indexPath row] % 2)
