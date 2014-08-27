@@ -12,6 +12,7 @@
 #import "Web_base.h"
 #import "DB_login.h"
 #import "MBProgressHUD.h"
+#import "Res_color.h"
 @interface MilestoneController ()
 
 @end
@@ -38,35 +39,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+#pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (ilist_milestone==nil || ilist_milestone==NULL) {
-        return 0;
-    }else{
-        return [ilist_milestone count];
-    }
-   
-}
-
--(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    static NSString *CellIdentifier = @"cell_milestone_hdr";
-    Cell_milestone *headerView = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (headerView == nil){
-        [NSException raise:@"headerView == nil.." format:@"No cells with matching CellIdentifier loaded from your storyboard"];
-    }
-    return headerView;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(section == 1 )
-        return 0.000001f;
-    else return 44; // put 22 in case of plain one..
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-    return 55;
+    return [ilist_milestone count];
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -78,12 +55,6 @@
     Cell_milestone *cell = (Cell_milestone *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
     
     cell.selectionStyle=UITableViewCellSeparatorStyleNone;
-    if (cell == nil)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"Cell_exhbl_general_detail" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
-    
      NSMutableDictionary *ldict_dictionary = [ilist_milestone objectAtIndex:indexPath.row];    // Configure Cell
     
     ls_status_desc =[ldict_dictionary valueForKey:@"status_desc"];
@@ -106,6 +77,9 @@
         }
         cell.ilb_status_remark.text = [NSString stringWithFormat:@"%@ %@ %@", @"(Done)", ls_act_status_date
                                        , [ldict_dictionary valueForKey:@"remark"]];
+        [cell.ilb_status_desc setTextColor:COLOR_LIGHT_GREEN];
+        [cell.ilb_status_remark setTextColor:COLOR_LIGHT_GREEN];
+        
         
     } else {
         // pic setting
@@ -121,12 +95,30 @@
         [cell.ilb_status_remark setTextColor:[UIColor grayColor]];
     }
     
-    
-    
     return cell;
 }
+#pragma mark UITableViewDelegate
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    static NSString *CellIdentifier = @"cell_milestone_hdr";
+    Cell_milestone *headerView = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (headerView == nil){
+        [NSException raise:@"headerView == nil.." format:@"No cells with matching CellIdentifier loaded from your storyboard"];
+    }
+    return headerView;
+}
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if(section == 1 )
+        return 0.000001f;
+    else return 44; // put 22 in case of plain one..
+}
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    return 55;
+}
+
+#pragma mark -milestone info
 - (void)fn_get_milestone_info {
     int nextTag = 1;
     self.ii_max_row = [ilist_milestone count];
@@ -138,7 +130,7 @@
     }
 }
 
-
+#pragma mark -NetWork Request
 - (void) fn_get_data: (NSString*)as_docu_type :(NSString*)as_docu_uid
 {
     //显示loading
@@ -178,6 +170,5 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
    
 }
-
 
 @end
