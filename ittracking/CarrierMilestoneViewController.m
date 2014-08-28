@@ -154,7 +154,7 @@
         il_title.text=[dic valueForKey:@"cntr_uid"];
         cell.expandable=NO;
     }else{
-        [cell setBackgroundColor:COLOR_AQUA];
+        [cell setBackgroundColor:COLOR_LIGHT_BLUE];
         il_title.textColor=[UIColor redColor];
         il_title.text=[NSString stringWithFormat:@"%@   Size:%@",[dic valueForKey:@"cntr_uid"],[dic valueForKey:@"size_type_word"]];
         il_title.font=[UIFont systemFontOfSize:16.0f];
