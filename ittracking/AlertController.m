@@ -97,6 +97,8 @@
         cell.ilb_warningBlue.hidden=YES;
     }
     cell.selectionStyle=UITableViewCellSelectionStyleBlue;
+    cell.selectedBackgroundView=[[UIView alloc]init];
+    cell.selectedBackgroundView.backgroundColor=[UIColor clearColor];
     return cell;
 }
 #pragma mark UITableViewDelegate
@@ -235,6 +237,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 }
 
 - (void)DeleteAllSelections:(id)sender {
+    NSMutableArray *ilist_alert_copy=[ilist_alert copy];
     [ilist_alert removeObjectsInArray:[self.deleteDic allKeys]];
     [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithArray:
                                             [self.deleteDic allValues]] withRowAnimation:UITableViewRowAnimationFade];
@@ -243,7 +246,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     //快速枚举遍历所有的Value值
     for (NSObject *object in enumeratorValue) {
         NSIndexPath* indexPath=(NSIndexPath *)object;
-        NSMutableDictionary * ldict_dictionary= [ilist_alert objectAtIndex:indexPath.row];
+        NSMutableDictionary * ldict_dictionary= [ilist_alert_copy objectAtIndex:indexPath.row];
         // Configure Cell
         NSString *ls_unique_id = [ldict_dictionary valueForKey:@"unique_id"];
         DB_alert * ldb_alert = [[DB_alert alloc] init];
