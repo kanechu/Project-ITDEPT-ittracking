@@ -13,6 +13,7 @@
 #import "NSString.h"
 #import "ExhblHomeController.h"
 #import "AehblHomeController.h"
+#import "Calculate_lineHeight.h"
 
 @interface AlertController ()
 @property (strong,nonatomic) NSMutableArray *ilist_alert;
@@ -83,7 +84,16 @@
     ls_msg_recv_date=[NSString nullConvertEmpty:ls_msg_recv_date];
     ls_show_no=[NSString nullConvertEmpty:ls_show_no];
     
+    //根据内容改变ilb_status_desc的高度
     cell.ilb_status_desc.text = ls_status_desc;
+    Calculate_lineHeight *cal_obj=[[Calculate_lineHeight alloc]init];
+    CGFloat height=[cal_obj fn_heightWithString:ls_status_desc font:cell.ilb_status_desc.font constrainedToWidth:cell.ilb_status_desc.frame.size.width];
+    if (height<21) {
+        height=21;
+    }
+    [cell.ilb_status_desc setFrame:CGRectMake(cell.ilb_status_desc.frame.origin.x, cell.ilb_status_desc.frame.origin.y, cell.ilb_status_desc.frame.size.width, height)];
+    
+    
     cell.ilb_act_status_date.text = ls_act_status_date;
     cell.ilb_alert_date.text = ls_msg_recv_date;
     cell.ilb_ct_nos.text = ls_show_no;
@@ -119,7 +129,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    return 71;
+    static NSString *ls_TableIdentifier = @"cell_alert_list";
+    Cell_alert_list *cell = (Cell_alert_list *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
+    NSDictionary *ldict_dictionary = [ilist_alert objectAtIndex:indexPath.row];
+     NSString *ls_status_desc =[ldict_dictionary valueForKey:@"status_desc"];
+    Calculate_lineHeight *cal_obj=[[Calculate_lineHeight alloc]init];
+    CGFloat height=[cal_obj fn_heightWithString:ls_status_desc font:cell.ilb_status_desc.font constrainedToWidth:cell.ilb_status_desc.frame.size.width];
+    if (height<21) {
+        height=21;
+    }
+    
+    return 50+height;
 }
 
 - (void)tableView: (UITableView *)tableView
