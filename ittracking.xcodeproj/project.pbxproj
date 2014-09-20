@@ -630,9 +630,9 @@
 				B26CAC5718AA302A00C97C83 /* AppDelegate.m */,
 				B242208718B7479900D4A75C /* Controller */,
 				B26CAC5918AA302A00C97C83 /* Main_iPhone.storyboard */,
+				B26CAC6518AA302A00C97C83 /* Images.xcassets */,
 				B26CAC6218AA302A00C97C83 /* SecondViewController.h */,
 				B26CAC6318AA302A00C97C83 /* SecondViewController.m */,
-				B26CAC6518AA302A00C97C83 /* Images.xcassets */,
 				B26CAC4E18AA302A00C97C83 /* Supporting Files */,
 			);
 			path = ittracking;
