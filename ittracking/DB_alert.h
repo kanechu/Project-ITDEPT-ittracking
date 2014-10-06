@@ -11,7 +11,8 @@
 
 @interface DB_alert : NSObject
 
-@property (strong,nonatomic) DBManager *idb;
+@property (strong, nonatomic) DBManager *idb;
+@property (strong, nonatomic) NSString *user_code;
 
 - (BOOL) fn_save_data:(NSMutableArray*) alist_alert;
 - (NSInteger) fn_get_unread_msg_count;

@@ -267,9 +267,6 @@ CustomBadge *iobj_customBadge;
     //清除portName的缓存
     DB_portName *db=[[DB_portName alloc]init];
     [db fn_delete_all_data];
-    //清除alert的缓存
-    DB_alert *db_alert=[[DB_alert alloc]init];
-    [db_alert fn_delete_all_alert];
 }
 #pragma mark NetWork request
 -(void)fn_get_allIcon{
