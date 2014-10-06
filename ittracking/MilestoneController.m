@@ -13,8 +13,9 @@
 #import "DB_login.h"
 #import "MBProgressHUD.h"
 #import "Res_color.h"
+#import "Calculate_lineHeight.h"
 @interface MilestoneController ()
-
+@property(nonatomic,strong)Calculate_lineHeight *cal_obj;
 @end
 
 @implementation MilestoneController
@@ -24,13 +25,13 @@
 @synthesize ilist_milestone;
 @synthesize ii_last_status_row;
 @synthesize ii_max_row;
-
+@synthesize cal_obj;
 
 - (void)viewDidLoad
 {
     self.view.backgroundColor = [UIColor blackColor];
     [self fn_get_data:is_docu_type :is_docu_uid];
-    
+    cal_obj=[[Calculate_lineHeight alloc]init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,7 +65,6 @@
     if (indexPath.row < self.ii_last_status_row) {
         lb_done = YES;
     }
-    
     // letter value
     if (lb_done) {
         // pic setting
@@ -73,7 +73,7 @@
         } else if (indexPath.row == self.ii_max_row-1 ) {
             [cell.ipic_row_status setImage:[UIImage imageNamed:@"readed_end"]];
         } else {
-            [cell.ipic_row_status setImage:[UIImage imageNamed:@"readed"]];
+            [cell.ipic_row_status setImage:[self fn_resizableImage:[UIImage imageNamed:@"readed"]]];
         }
         cell.ilb_status_remark.text = [NSString stringWithFormat:@"%@ %@ %@", @"(Done)", ls_act_status_date
                                        , [ldict_dictionary valueForKey:@"remark"]];
@@ -84,17 +84,27 @@
     } else {
         // pic setting
         if (indexPath.row == 0 ) {
-            [cell.ipic_row_status setImage:[UIImage imageNamed:@"unread_start"]];
+            [cell.ipic_row_status setImage:[self fn_resizableImage:[UIImage imageNamed:@"unread_start"]]];
         } else if (indexPath.row == self.ii_max_row-1 ) {
-            [cell.ipic_row_status setImage:[UIImage imageNamed:@"unread_end"]];
+            [cell.ipic_row_status setImage:[self fn_resizableImage:[UIImage imageNamed:@"unread_end"]]];
         }
         else {
-            [cell.ipic_row_status setImage:[UIImage imageNamed:@"unread"]];
+            [cell.ipic_row_status setImage:[self fn_resizableImage:[UIImage imageNamed:@"unread"]]];
         }
         [cell.ilb_status_desc setTextColor:[UIColor grayColor]];
         [cell.ilb_status_remark setTextColor:[UIColor grayColor]];
     }
-    
+    CGFloat height=[cal_obj fn_heightWithString:cell.ilb_status_desc.text font:cell.ilb_status_desc.font constrainedToWidth:cell.ilb_status_desc.frame.size.width];
+    if (height<21) {
+        height=21;
+    }
+    [cell.ilb_status_desc setFrame:CGRectMake(cell.ilb_status_desc.frame.origin.x, cell.ilb_status_desc.frame.origin.y, cell.ilb_status_desc.frame.size.width,height)];
+    CGFloat height1=[cal_obj fn_heightWithString:cell.ilb_status_remark.text font:cell.ilb_status_remark.font constrainedToWidth:cell.ilb_status_remark.frame.size.width];
+    if (height1<21) {
+        height1=21;
+    }
+    [cell.ilb_status_remark setFrame:CGRectMake(cell.ilb_status_remark.frame.origin.x, cell.ilb_status_desc.frame.origin.y+height-3, cell.ilb_status_remark.frame.size.width, height)];
+    [cell.ipic_row_status setFrame:CGRectMake(cell.ipic_row_status.frame.origin.x, cell.ipic_row_status.frame.origin.y, cell.ipic_row_status.frame.size.width, height+height1+20)];
     return cell;
 }
 #pragma mark UITableViewDelegate
@@ -115,9 +125,36 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    return 55;
+    static NSString *ls_TableIdentifier = @"cell_milestone_detail";
+    Cell_milestone *cell = (Cell_milestone *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
+    NSMutableDictionary *ldict_dictionary = [ilist_milestone objectAtIndex:indexPath.row];
+   NSString *ls_status_desc =[ldict_dictionary valueForKey:@"status_desc"];
+   NSString *ls_act_status_date =[ldict_dictionary valueForKey:@"act_status_date"];
+   NSString *ls_remark = [NSString stringWithFormat:@"%@ %@ %@", @"(Done)", ls_act_status_date
+                                   , [ldict_dictionary valueForKey:@"remark"]];
+    
+    CGFloat height=[cal_obj fn_heightWithString:ls_status_desc font:cell.ilb_status_desc.font constrainedToWidth:cell.ilb_status_desc.frame.size.width];
+    
+    if (height<21) {
+        height=21;
+    }
+    CGFloat height1=[cal_obj fn_heightWithString:ls_remark font:cell.ilb_status_remark.font constrainedToWidth:cell.ilb_status_remark.frame.size.width];
+    if (height1<21) {
+        height1=21;
+    }
+    
+    return height+height1+15;
 }
-
+#pragma mark -拉伸图片
+-(UIImage*)fn_resizableImage:(UIImage*)image{
+    CGFloat top=80;//顶端盖高度
+    CGFloat bottom=80;//底端盖高度
+    CGFloat left=13;//左端盖宽度
+    CGFloat right=13;//右端盖宽度
+    UIEdgeInsets insets=UIEdgeInsetsMake(top, left, bottom, right);
+    //指定为拉伸模式，伸缩后重新赋值
+    return [image resizableImageWithCapInsets:insets resizingMode:UIImageResizingModeStretch];
+}
 #pragma mark -milestone info
 - (void)fn_get_milestone_info {
     int nextTag = 1;
