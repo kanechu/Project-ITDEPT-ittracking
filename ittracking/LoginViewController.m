@@ -10,10 +10,13 @@
 #import "MZFormSheetController.h"
 #import <RestKit/RestKit.h>
 #import "RespLogin.h"
-#import "NSDictionary.h"
+#import "Resp_Sypara.h"
+#import "Resp_Milestoneimage.h"
 #import "DB_login.h"
+#import "DB_sypara.h"
 #import "Web_base.h"
 #import "MBProgressHUD.h"
+#import "NSDictionary.h"
 @interface LoginViewController ()
 
 @end
@@ -59,7 +62,7 @@
     _user_Password.layer.borderColor=[UIColor lightGrayColor].CGColor;
 }
 
-#pragma mark getData method
+#pragma mark -Network Resquest Method
 - (void) fn_get_data: (NSString*)user_code :(NSString*)user_pass
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -97,6 +100,8 @@
         NSString *userlogo=[loginData valueForKey:@"user_logo"];
         NSString *usercode=[loginData valueForKey:@"user_code"];
         [dbLogin fn_save_data:usercode password:_user_Password.text logo:userlogo];
+        //登录成功后，请求spara
+        [self fn_get_sypara_data:_user_ID.text pass:_user_Password.text];
         [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController* formSheet){}];
         if (_callBack) {
             _callBack(_user_ID.text);
@@ -114,6 +119,60 @@
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
+#pragma mark -Network Resquest sypara
+//登录成功后，请求sypara 用于控制是否显示carrier milestone
+-(void)fn_get_sypara_data:(NSString*)user_code pass:(NSString*)password{
+   
+    RequestContract *req_form = [[RequestContract alloc] init];
+    AuthContract *auth=[[AuthContract alloc]init];
+    auth.user_code=user_code;
+    auth.password=password;
+    auth.system = DEFAULT_SYSTEM;
+    /**
+     *  encrypted 如果为1，密码需要AES128加密，并base64 encode
+     */
+    auth.encrypted=@"0";
+    auth.company_code=DEFAULT_COMPANY_CODE;
+    req_form.Auth =auth;
+    Web_base *web_base=[[Web_base alloc]init];
+    web_base.il_url=STR_SYPARA_URL;
+    web_base.iresp_class=[Resp_Sypara class];
+    web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[Resp_Sypara class]];
+    web_base.callBack=^(NSMutableArray *alist_result){
+        if ([alist_result count]!=0) {
+            DB_sypara *db_sypara=[[DB_sypara alloc]init];
+            [db_sypara fn_save_sypara_data:alist_result];
+            Resp_Sypara *sypara_data=[alist_result objectAtIndex:0];
+            if ([sypara_data.data1 isEqualToString:@"0"]) {
+                [self fn_request_milestone_image];
+            }
+        }
+        
+    };
+    [web_base fn_get_data:req_form];
+}
+//又sypara的一个值来控制，是否请求milestone image
+- (void)fn_request_milestone_image{
+    AuthContract *auth=[[AuthContract alloc]init];
+    auth.user_code=_user_ID.text;
+    auth.password=_user_Password.text;
+    auth.company_code=DEFAULT_COMPANY_CODE;
+    auth.system=DEFAULT_SYSTEM;
+    auth.encrypted=@"0";
+    RequestContract *req_form=[[RequestContract alloc]init];
+    req_form.Auth=auth;
+    Web_base *web_base=[[Web_base alloc]init];
+    web_base.il_url=STR_MILESTONE_IMAGE_URL;
+    web_base.iresp_class=[Resp_Milestoneimage class];
+    web_base.ilist_resp_mapping=[NSArray arrayWithPropertiesOfObject:[Resp_Milestoneimage class]];
+    web_base.callBack=^(NSMutableArray *arr_result){
+        NSLog(@"%@",arr_result);
+    };
+    [web_base fn_get_data:req_form];
+
+
+}
+
 #pragma mark -userLogin method
 - (IBAction)UserLogin:(id)sender {
     NSString *str=nil;

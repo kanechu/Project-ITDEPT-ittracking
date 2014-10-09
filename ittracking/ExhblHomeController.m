@@ -11,7 +11,7 @@
 #import "ExhblGeneralController.h"
 #import "MilestoneController.h"
 #import "CarrierMilestoneViewController.h"
-#import "DB_login.h"
+#import "DB_sypara.h"
 @interface ExhblHomeController ()
 
 @end
@@ -35,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self fn_is_login];
+    [self fn_isShow_carrierMilestone];
     /**
      *  for adjust segment widths based on their content widths
      */
@@ -53,9 +53,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(void)fn_is_login{
-    DB_login *db=[[DB_login alloc]init];
-    if ([db isLoginSuccess]==NO) {
+-(void)fn_isShow_carrierMilestone{
+    DB_sypara *db_sypara=[[DB_sypara alloc]init];
+    NSString *data1=[db_sypara fn_get_data1];
+    if ([data1 isEqualToString:@"1"]==NO) {
         [segmentedControl removeSegmentAtIndex:2 animated:NO];
         [segmentedControl setApportionsSegmentWidthsByContent:NO];
         [segmentedControl setFrame:CGRectMake(segmentedControl.frame.origin.x, segmentedControl.frame.origin.y, 140, segmentedControl.frame.size.height)];

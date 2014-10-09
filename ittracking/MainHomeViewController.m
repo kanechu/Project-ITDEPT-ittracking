@@ -10,11 +10,12 @@
 #import "LoginViewController.h"
 #import "MZFormSheetController.h"
 #import "Web_base.h"
-#import "DB_login.h"
 #import "Web_get_alert.h"
+#import "DB_login.h"
 #import "DB_alert.h"
 #import "DB_searchCriteria.h"
 #import "DB_icon.h"
+#import "DB_sypara.h"
 #import "CustomBadge.h"
 #import "Menu_home.h"
 #import "Cell_menu_item.h"
@@ -267,6 +268,9 @@ CustomBadge *iobj_customBadge;
     //清除portName的缓存
     DB_portName *db=[[DB_portName alloc]init];
     [db fn_delete_all_data];
+    //清除sypara的缓存
+    DB_sypara *db_sypara=[[DB_sypara alloc]init];
+    [db_sypara fn_delete_all_sypara_data];
 }
 #pragma mark NetWork request
 -(void)fn_get_allIcon{
