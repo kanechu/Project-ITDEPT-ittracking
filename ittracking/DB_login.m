@@ -96,6 +96,7 @@
         NSMutableArray *userInfo=[self fn_get_all_msg];
         auth.user_code =[[userInfo objectAtIndex:0] valueForKey:@"user_code"];
         auth.password = [[userInfo objectAtIndex:0] valueForKey:@"password"];
+        auth.company_code=DEFAULT_COMPANY_CODE;
         auth.encrypted=@"0";
     }else{
         auth.user_code =DEFAULT_USERCODE;

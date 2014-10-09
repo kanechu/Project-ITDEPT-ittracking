@@ -1,0 +1,22 @@
+//
+//  DB_sypara.h
+//  ittracking
+//
+//  Created by itdept on 14-10-9.
+//  Copyright (c) 2014年 ittracking Logistics Services Ltd. . All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+@class DBManager;
+@interface DB_sypara : NSObject
+
+@property(nonatomic,strong)DBManager *idb;
+
+- (BOOL)fn_save_sypara_data:(NSMutableArray*)arr_sypara;
+
+- (NSString*)fn_get_data1;
+
+- (BOOL)fn_delete_all_sypara_data;
+
+
+@end

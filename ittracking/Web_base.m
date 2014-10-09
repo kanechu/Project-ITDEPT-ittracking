@@ -30,6 +30,7 @@
                                                           @"system": @"system" ,
                                                           @"encrypted":
                                                               @"encrypted",
+                                                          @"company_code":@"company_code",
                                                           @"device_id": @"device_id"}];
     
     RKObjectMapping *lo_reqMapping = [RKObjectMapping requestMapping];
