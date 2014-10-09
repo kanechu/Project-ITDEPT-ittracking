@@ -18,6 +18,8 @@
 
 @synthesize encrypted;
 
+@synthesize company_code;
+
 @synthesize device_id;
 
 

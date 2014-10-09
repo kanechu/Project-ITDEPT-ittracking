@@ -18,6 +18,8 @@
 
 @property(nonatomic, copy) NSString *encrypted;
 
+@property(nonatomic, copy) NSString *company_code;
+
 @property(nonatomic, copy) NSString *device_id;
 
 @end
