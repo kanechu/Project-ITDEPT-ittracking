@@ -11,6 +11,7 @@
 #import "MilestoneController.h"
 #import "CarrierMilestoneViewController.h"
 #import "DB_login.h"
+#import "DB_sypara.h"
 @interface AehblHomeController ()
 
 @end
@@ -35,7 +36,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self fn_is_login];
+    [self fn_isShow_carrierMilestone];
     // add viewController so you can switch them later.
     [self.segmentedControl setApportionsSegmentWidthsByContent:YES];
     UIViewController *vc = [self viewControllerForSegmentIndex:self.segmentedControl.selectedSegmentIndex];
@@ -50,13 +51,32 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(void)fn_is_login{
-    DB_login *db=[[DB_login alloc]init];
-    if ([db isLoginSuccess]==NO) {
+-(void)fn_isShow_carrierMilestone{
+    DB_sypara *db_sypara=[[DB_sypara alloc]init];
+    NSMutableArray *arr_sypara=[db_sypara fn_get_sypara_data];
+    NSInteger flag_isShow=0;
+    for (NSMutableDictionary *dic in arr_sypara) {
+        NSString *para_code=[self fn_cut_space:[dic valueForKey:@"para_code"]];
+        NSString *data1=[dic valueForKey:@"data1"];
+        if ([para_code isEqualToString:@"ANDRDHASCARRMS      "]&&[data1 isEqualToString:@"1"]) {
+            flag_isShow=1;
+        }
+    }
+
+    if (flag_isShow==0) {
         [segmentedControl removeSegmentAtIndex:2 animated:NO];
         [segmentedControl setApportionsSegmentWidthsByContent:NO];
         [segmentedControl setFrame:CGRectMake(segmentedControl.frame.origin.x, segmentedControl.frame.origin.y, 140, segmentedControl.frame.size.height)];
     }
+}
+#pragma mark -裁掉字符串后面的空格
+-(NSString*)fn_cut_space:(NSString*)str{
+    NSString *subStr=str;
+    if ([str rangeOfString:@" "].length>0) {
+        NSRange range=[str rangeOfString:@" "];
+        subStr=[str substringToIndex:range.location];
+    }
+    return subStr;
 }
 
 - (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index {

@@ -142,8 +142,13 @@
         if ([alist_result count]!=0) {
             DB_sypara *db_sypara=[[DB_sypara alloc]init];
             [db_sypara fn_save_sypara_data:alist_result];
-            Resp_Sypara *sypara_data=[alist_result objectAtIndex:0];
-            if ([sypara_data.data1 isEqualToString:@"0"]) {
+            NSInteger flag_isRequestImage=0;
+            for (Resp_Sypara *sypara_data in alist_result) {
+                if ([sypara_data.para_code isEqualToString:@"ANDRDUSEMSIMAGE"]&&[sypara_data.data1 isEqualToString:@"1"]) {
+                    flag_isRequestImage=1;
+                }
+            }
+            if (flag_isRequestImage==1) {
                 [self fn_request_milestone_image];
             }
         }
@@ -151,7 +156,7 @@
     };
     [web_base fn_get_data:req_form];
 }
-//又sypara的一个值来控制，是否请求milestone image
+//sypara的一个值来控制，是否请求milestone image
 - (void)fn_request_milestone_image{
     AuthContract *auth=[[AuthContract alloc]init];
     auth.user_code=_user_ID.text;
