@@ -38,7 +38,7 @@
     return NO;
 }
 
-- (NSString*)fn_get_data1{
+- (NSMutableArray*)fn_get_sypara_data{
     NSMutableArray *arr_result=[NSMutableArray array];
     if ([[idb fn_get_db]open]) {
         FMResultSet *lfmdb_result=[[idb fn_get_db]executeQuery:@"select * from sypara"];
@@ -47,12 +47,7 @@
         }
         [[idb fn_get_db]close];
     }
-    NSString *data1=@"";
-    if ([arr_result count]!=0) {
-        NSMutableDictionary *dic=[arr_result objectAtIndex:0];
-        data1=[dic valueForKey:@"data1"];
-    }
-    return data1;
+    return arr_result;
 }
 
 

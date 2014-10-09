@@ -14,7 +14,7 @@
 
 - (BOOL)fn_save_sypara_data:(NSMutableArray*)arr_sypara;
 
-- (NSString*)fn_get_data1;
+- (NSMutableArray*)fn_get_sypara_data;
 
 - (BOOL)fn_delete_all_sypara_data;
 
