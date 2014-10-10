@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-@class DBManager;
+@class DatabaseQueue;
 @interface DB_Excntr_status : NSObject
-@property(strong,nonatomic)DBManager *idb;
+@property(strong,nonatomic)DatabaseQueue *queue;
 
 -(BOOL)fn_save_excntr_status_data:(NSMutableArray*)arr_result;
 

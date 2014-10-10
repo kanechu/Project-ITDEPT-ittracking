@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DBManager.h"
+#import "DatabaseQueue.h"
 
 @interface DB_alert : NSObject
 
-@property (strong, nonatomic) DBManager *idb;
+@property (strong, nonatomic) DatabaseQueue *queue;
 @property (strong, nonatomic) NSString *user_code;
 
 - (BOOL) fn_save_data:(NSMutableArray*) alist_alert;
