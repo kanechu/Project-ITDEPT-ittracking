@@ -14,6 +14,8 @@
 @synthesize	status_code	;
 @synthesize	status_desc	;
 @synthesize	act_status_date	;
-@synthesize	remark	;
+@synthesize	remark;
+@synthesize status_pic;
+@synthesize is_finished;
 
 @end
