@@ -41,7 +41,8 @@
     [self.segmentedControl setApportionsSegmentWidthsByContent:YES];
     UIViewController *vc = [self viewControllerForSegmentIndex:self.segmentedControl.selectedSegmentIndex];
     [self addChildViewController:vc];
-    vc.view.frame = self.contentView.bounds;
+    CGRect frame = self.contentView.bounds;
+    [vc.view setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height-64)];
     [self.contentView addSubview:vc.view];
     self.currentViewController = vc;
 }

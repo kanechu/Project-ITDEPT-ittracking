@@ -61,6 +61,7 @@ enum ROW_NUMOFSECTION {
     
     static NSString *ls_TableIdentifier = @"cell_aehbl_general_detail";
     Cell_exhbl_general_detail *cell = (Cell_exhbl_general_detail *)[self.tableView dequeueReusableCellWithIdentifier:ls_TableIdentifier];
+    cell.accessoryType=UITableViewCellAccessoryNone;
     NSString *ls_os_value = @"";
 
     NSMutableDictionary * ldict_dictionary = [ilist_aehbl objectAtIndex:0];    // Configure Cell

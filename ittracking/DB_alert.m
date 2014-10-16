@@ -13,6 +13,7 @@
 #import "FMDatabaseAdditions.h"
 #import "DB_login.h"
 #import "AuthContract.h"
+#import "AppConstants.h"
 
 @implementation DB_alert
 
@@ -24,7 +25,7 @@
     AuthContract *Auth =[dbLogin WayOfAuthorization];
     _user_code=Auth.user_code;
     if (_user_code==nil) {
-        _user_code=@"";
+        _user_code=DEFAULT_USERCODE;
     }
     return self;
 }
