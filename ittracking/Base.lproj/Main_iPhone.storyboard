@@ -146,7 +146,7 @@
                             <outlet property="delegate" destination="UW2-Ws-x2P" id="Q2T-Ss-I4F"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Got-ld-FaO">
+                    <navigationItem key="navigationItem" title="Sea Export" id="Got-ld-FaO">
                         <barButtonItem key="backBarButtonItem" title="Back" id="oHu-3H-3xs"/>
                     </navigationItem>
                     <connections>
@@ -165,7 +165,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="579" y="-945"/>
+            <point key="canvasLocation" x="683" y="-955"/>
         </scene>
         <!--Exhbl Home Controller-->
         <scene sceneID="pgd-Oe-MvO">
@@ -427,7 +427,7 @@
                             <outlet property="delegate" destination="eL7-ZN-uTZ" id="O3g-nT-Pa1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="psz-Sm-zEY">
+                    <navigationItem key="navigationItem" title="Air Export" id="psz-Sm-zEY">
                         <barButtonItem key="backBarButtonItem" title="Back" id="8LW-Hx-O5q"/>
                     </navigationItem>
                     <connections>
@@ -437,7 +437,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cD9-Ya-M9A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="631" y="-33"/>
+            <point key="canvasLocation" x="691" y="-45"/>
         </scene>
         <!--Exhbl General Controller-->
         <scene sceneID="VFG-5T-5bG">
@@ -540,7 +540,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="adU-0O-V4V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1599" y="-1308"/>
+            <point key="canvasLocation" x="1615" y="-1312"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="zms-s8-1UE">
@@ -564,7 +564,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rhb-ma-fnP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2134" y="-1241"/>
+            <point key="canvasLocation" x="2246" y="-369"/>
         </scene>
         <!--Track Home Controller - First-->
         <scene sceneID="W3I-pn-N6e">
@@ -603,9 +603,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Sea Export" id="9fF-43-3kL">
-                        <barButtonItem key="backBarButtonItem" title="Preivous" id="c0K-UR-DhD"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Tracking" id="9fF-43-3kL"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="lbtn_aehbl_Search" destination="RAX-aq-tDU" id="cZl-Pb-Ngu"/>
@@ -1598,7 +1596,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lLu-La-Jrn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1687" y="570"/>
+            <point key="canvasLocation" x="1647" y="586"/>
         </scene>
         <!--Carrier Milestone View Controller-->
         <scene sceneID="ypp-mF-XSe">
@@ -1721,8 +1719,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="IT6-cK-qMM"/>
         <segue reference="ceN-QP-fyr"/>
-        <segue reference="wFa-ZF-dhE"/>
+        <segue reference="IT6-cK-qMM"/>
+        <segue reference="a6i-DQ-pU2"/>
     </inferredMetricsTieBreakers>
 </document>

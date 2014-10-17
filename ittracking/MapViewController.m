@@ -14,6 +14,29 @@
 @end
 
 @implementation MapViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self GeocodeAddress];
+    self.title=_adress_name;
+	// Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent=NO;
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.mapView removeFromSuperview];
+    self.navigationController.navigationBar.translucent=YES;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 -(void)GeocodeAddress{
     _mapView.delegate=self;
     _mapView.mapType=MKMapTypeStandard;
@@ -41,19 +64,6 @@
             [_mapView addAnnotation:annotation];
         }
     }];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self GeocodeAddress];
-	// Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 #pragma mark Map View Delegate Methods
 - (MKAnnotationView *) mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>) annotation {

@@ -16,12 +16,17 @@
 #import "MapViewController.h"
 #import "MBProgressHUD.h"
 #import "Calculate_lineHeight.h"
+#import "DB_login.h"
 enum ROW_NUMOFSECTION {
     ROW_NUM1 = 10,
     RoW_NUM2 = 6
 };
 @interface ExhblGeneralController ()
+
 @property(nonatomic,strong)Calculate_lineHeight *calulate_obj;
+@property (strong,nonatomic) NSMutableArray *ilist_exhbl;
+@property (strong,nonatomic)DB_login *dbLogin;
+
 @end
 
 @implementation ExhblGeneralController

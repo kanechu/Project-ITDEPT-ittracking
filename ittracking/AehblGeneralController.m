@@ -14,12 +14,17 @@
 #import "MapViewController.h"
 #import "MBProgressHUD.h"
 #import "Calculate_lineHeight.h"
+#import "DB_login.h"
 enum ROW_NUMOFSECTION {
     ROW_NUM1 = 8,
     RoW_NUM2 = 6
 };
 @interface AehblGeneralController ()
+
 @property (nonatomic,strong)Calculate_lineHeight *calulate_obj;
+@property (strong,nonatomic) NSMutableArray *ilist_aehbl;
+@property (strong,nonatomic)DB_login *dbLogin;
+
 @end
 
 @implementation AehblGeneralController
