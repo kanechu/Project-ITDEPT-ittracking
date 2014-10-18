@@ -80,7 +80,6 @@
         [cell.ilb_status_desc setTextColor:COLOR_LIGHT_GREEN];
         [cell.ilb_status_remark setTextColor:COLOR_LIGHT_GREEN];
         
-        
     } else {
         // pic setting
         if (indexPath.row == 0 ) {
@@ -91,6 +90,7 @@
         else {
             [cell.ipic_row_status setImage:[self fn_resizableImage:[UIImage imageNamed:@"unread"]]];
         }
+        cell.ilb_status_remark.text=@"";
         [cell.ilb_status_desc setTextColor:[UIColor grayColor]];
         [cell.ilb_status_remark setTextColor:[UIColor grayColor]];
     }
