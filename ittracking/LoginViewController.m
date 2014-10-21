@@ -11,7 +11,6 @@
 #import <RestKit/RestKit.h>
 #import "RespLogin.h"
 #import "Resp_Sypara.h"
-#import "Resp_Milestoneimage.h"
 #import "DB_login.h"
 #import "DB_sypara.h"
 #import "Web_base.h"
@@ -142,42 +141,10 @@
         if ([alist_result count]!=0) {
             DB_sypara *db_sypara=[[DB_sypara alloc]init];
             [db_sypara fn_save_sypara_data:alist_result];
-            NSInteger flag_isRequestImage=0;
-            for (Resp_Sypara *sypara_data in alist_result) {
-                if ([sypara_data.para_code isEqualToString:@"ANDRDUSEMSIMAGE"]&&[sypara_data.data1 isEqualToString:@"1"]) {
-                    flag_isRequestImage=1;
-                }
-            }
-            if (flag_isRequestImage==1) {
-                [self fn_request_milestone_image];
-            }
         }
-        
     };
     [web_base fn_get_data:req_form];
 }
-//sypara的一个值来控制，是否请求milestone image
-- (void)fn_request_milestone_image{
-    AuthContract *auth=[[AuthContract alloc]init];
-    auth.user_code=_user_ID.text;
-    auth.password=_user_Password.text;
-    auth.company_code=DEFAULT_COMPANY_CODE;
-    auth.system=DEFAULT_SYSTEM;
-    auth.encrypted=@"0";
-    RequestContract *req_form=[[RequestContract alloc]init];
-    req_form.Auth=auth;
-    Web_base *web_base=[[Web_base alloc]init];
-    web_base.il_url=STR_MILESTONE_IMAGE_URL;
-    web_base.iresp_class=[Resp_Milestoneimage class];
-    web_base.ilist_resp_mapping=[NSArray arrayWithPropertiesOfObject:[Resp_Milestoneimage class]];
-    web_base.callBack=^(NSMutableArray *arr_result){
-        NSLog(@"%@",arr_result);
-    };
-    [web_base fn_get_data:req_form];
-
-
-}
-
 #pragma mark -userLogin method
 - (IBAction)UserLogin:(id)sender {
     NSString *str=nil;
