@@ -10,8 +10,10 @@
 
 @implementation RequestContract
 
+@synthesize Auth;
+
 @synthesize SearchForm;
 
-@synthesize Auth;
+@synthesize AdditSypara;
 
 @end

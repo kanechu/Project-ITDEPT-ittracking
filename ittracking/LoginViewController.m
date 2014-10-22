@@ -123,6 +123,7 @@
 -(void)fn_get_sypara_data:(NSString*)user_code pass:(NSString*)password{
    
     RequestContract *req_form = [[RequestContract alloc] init];
+    req_form.AdditSypara=[NSSet setWithObject:@"IAPPSMILESTONETIME"];
     AuthContract *auth=[[AuthContract alloc]init];
     auth.user_code=user_code;
     auth.password=password;
@@ -133,6 +134,7 @@
     auth.encrypted=@"0";
     auth.company_code=DEFAULT_COMPANY_CODE;
     req_form.Auth =auth;
+    
     Web_base *web_base=[[Web_base alloc]init];
     web_base.il_url=STR_SYPARA_URL;
     web_base.iresp_class=[Resp_Sypara class];

@@ -11,8 +11,10 @@
 
 @interface RequestContract : NSObject
 
+@property(nonatomic, strong) AuthContract *Auth;
+
 @property(nonatomic, strong) NSSet *SearchForm;
 
-@property(nonatomic, strong) AuthContract *Auth;
+@property(nonatomic, strong) NSSet *AdditSypara;
 
 @end

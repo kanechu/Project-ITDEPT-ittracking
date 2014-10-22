@@ -32,6 +32,7 @@
                                                               @"encrypted",
                                                           @"company_code":@"company_code",
                                                           @"device_id": @"device_id"}];
+    RKObjectMapping *lo_addMapping=[RKObjectMapping requestMapping];
     
     RKObjectMapping *lo_reqMapping = [RKObjectMapping requestMapping];
     
@@ -45,9 +46,11 @@
                                                relationshipMappingFromKeyPath:@"Auth"
                                                toKeyPath:@"Auth"
                                                withMapping:lo_authMapping];
+    RKRelationshipMapping *addRelationship=[RKRelationshipMapping relationshipMappingFromKeyPath:@"AdditSypara" toKeyPath:@"AdditSypara" withMapping:lo_addMapping];
     
     [lo_reqMapping addPropertyMapping:authRelationship];
     [lo_reqMapping addPropertyMapping:searchRelationship];
+    [lo_reqMapping addPropertyMapping:addRelationship];
     
     NSString* path = il_url;
     RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:lo_reqMapping

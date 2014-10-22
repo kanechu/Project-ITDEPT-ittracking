@@ -62,14 +62,21 @@
     DB_sypara *db_sypara=[[DB_sypara alloc]init];
     NSMutableArray *alist_result=[db_sypara fn_get_sypara_data];
     for (NSMutableDictionary *idic in alist_result) {
-        NSString *para_code=[idic valueForKey:@"para_code"];
+        NSString *para_code=[self fn_cut_space:[idic valueForKey:@"para_code"]];
         NSString *data1=[idic valueForKey:@"data1"];
         if ([para_code isEqualToString:@"ANDRDUSEMSIMAGE"] && [data1 isEqualToString:@"1"]) {
             flag_milestone_type=1;
         }
     }
 }
-
+-(NSString*)fn_cut_space:(NSString*)str{
+    NSString *subStr=str;
+    if ([str rangeOfString:@" "].length>0) {
+        NSRange range=[str rangeOfString:@" "];
+        subStr=[str substringToIndex:range.location];
+    }
+    return subStr;
+}
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -129,13 +136,20 @@
         [cell.ilb_status_remark setTextColor:[UIColor grayColor]];
         [cell.ilb_row_num setTextColor:[UIColor grayColor]];
     }
-    CGFloat height=[cal_obj fn_heightWithString:cell.ilb_status_desc.text font:cell.ilb_status_desc.font constrainedToWidth:cell.ilb_status_desc.frame.size.width];
+    CGFloat width=cell.ilb_status_desc.frame.size.width;
+    CGFloat width1=cell.ilb_status_remark.frame.size.width;
+    if (flag_milestone_type==0) {
+        width=width+cell.ipic_desc_status.frame.size.width;
+        width1=width1+cell.ipic_desc_status.frame.size.width;
+    }
+    
+    CGFloat height=[cal_obj fn_heightWithString:cell.ilb_status_desc.text font:cell.ilb_status_desc.font constrainedToWidth:width];
     if (height<21) {
         height=21;
     }
     [cell.ilb_status_desc setFrame:CGRectMake(cell.ilb_status_desc.frame.origin.x, cell.ilb_status_desc.frame.origin.y, cell.ilb_status_desc.frame.size.width,height)];
     
-    CGFloat height1=[cal_obj fn_heightWithString:cell.ilb_status_remark.text font:cell.ilb_status_remark.font constrainedToWidth:cell.ilb_status_remark.frame.size.width];
+    CGFloat height1=[cal_obj fn_heightWithString:cell.ilb_status_remark.text font:cell.ilb_status_remark.font constrainedToWidth:width1];
     if (height1<21) {
         height1=21;
     }
@@ -168,13 +182,18 @@
     NSString *ls_act_status_date =[ldict_dictionary valueForKey:@"act_status_date"];
     NSString *ls_remark = [NSString stringWithFormat:@"%@ %@ %@", @"(Done)", ls_act_status_date
                            , [ldict_dictionary valueForKey:@"remark"]];
-    
-    CGFloat height=[cal_obj fn_heightWithString:ls_status_desc font:cell.ilb_status_desc.font constrainedToWidth:cell.ilb_status_desc.frame.size.width];
+    CGFloat width=cell.ilb_status_desc.frame.size.width;
+    CGFloat width1=cell.ilb_status_remark.frame.size.width;
+    if (flag_milestone_type==0) {
+        width=width+cell.ipic_desc_status.frame.size.width;
+        width1=width1+cell.ipic_desc_status.frame.size.width;
+    }
+    CGFloat height=[cal_obj fn_heightWithString:ls_status_desc font:cell.ilb_status_desc.font constrainedToWidth:width];
     
     if (height<21) {
         height=21;
     }
-    CGFloat height1=[cal_obj fn_heightWithString:ls_remark font:cell.ilb_status_remark.font constrainedToWidth:cell.ilb_status_remark.frame.size.width];
+    CGFloat height1=[cal_obj fn_heightWithString:ls_remark font:cell.ilb_status_remark.font constrainedToWidth:width1];
     if (height1<21) {
         height1=21;
     }

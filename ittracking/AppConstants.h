@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #define DEFAULT_USERCODE @"ANONYMOUS"
 #define DEFAULT_PASS @"ANONYMOUS1"
-#define DEFAULT_SYSTEM @"ITNEW"
+//#define DEFAULT_SYSTEM @"ITNEW"
+#define DEFAULT_SYSTEM @"ITTRACK_WTRAN"
 #define DEFAULT_COMPANY_CODE @"WTRANLOG"
 @interface AppConstants : NSObject
 
