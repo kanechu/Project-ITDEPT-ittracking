@@ -146,9 +146,7 @@
                             <outlet property="delegate" destination="UW2-Ws-x2P" id="Q2T-Ss-I4F"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Sea Export" id="Got-ld-FaO">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="oHu-3H-3xs"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Sea Export" id="Got-ld-FaO"/>
                     <connections>
                         <outlet property="iSearchBar" destination="Lo0-3p-QUg" id="jM2-iw-W7e"/>
                         <outlet property="searchDisplayController" destination="gYg-tF-kOM" id="zvN-pj-Lki"/>
@@ -433,9 +431,7 @@
                             <outlet property="delegate" destination="eL7-ZN-uTZ" id="O3g-nT-Pa1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Air Export" id="psz-Sm-zEY">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="8LW-Hx-O5q"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Air Export" id="psz-Sm-zEY"/>
                     <connections>
                         <outlet property="iSearchBar" destination="E1R-BS-PFI" id="Gbd-MN-qny"/>
                         <segue destination="O1K-i7-1iG" kind="push" identifier="segue_aehbl_home" id="ceN-QP-fyr"/>
@@ -1421,6 +1417,7 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="GZJ-4W-PIT">
+                        <barButtonItem key="backBarButtonItem" title="Home" id="dfM-Cq-U7I"/>
                         <barButtonItem key="leftBarButtonItem" id="BMY-aC-XQe">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Qgd-tt-2d1">
                                 <rect key="frame" x="16" y="12" width="120" height="20"/>
@@ -1725,8 +1722,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="wFa-ZF-dhE"/>
         <segue reference="ceN-QP-fyr"/>
         <segue reference="IT6-cK-qMM"/>
-        <segue reference="a6i-DQ-pU2"/>
     </inferredMetricsTieBreakers>
 </document>
