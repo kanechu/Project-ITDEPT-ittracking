@@ -124,7 +124,10 @@
 
 #pragma mark UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    [self fn_get_data:_is_search_portName.text];
+    CheckNetWork *check_obj=[[CheckNetWork alloc]init];
+    if ([check_obj fn_isPopUp_alert]==NO) {
+        [self fn_get_data:_is_search_portName.text];
+    }
     [_is_search_portName resignFirstResponder];
 }
 

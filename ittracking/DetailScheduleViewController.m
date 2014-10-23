@@ -39,7 +39,10 @@
     [super viewDidLoad];
     //searchBar的代理
     _is_seach_bar.delegate=self;
-    [self fn_get_data:imd_searchDic];
+    CheckNetWork *check_obj=[[CheckNetWork alloc]init];
+    if ([check_obj fn_isPopUp_alert]==NO) {
+        [self fn_get_data:imd_searchDic];
+    }
     [self BtnGraphicMixed];
     [self fn_setExtraline_hidden];
     cal_obj=[[Calculate_lineHeight alloc]init];
@@ -165,7 +168,10 @@
 - (void)handleSearch:(UISearchBar *)searchBar {
     NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
     [dic setObject:searchBar.text forKey:@"vessel"];
-    [self fn_get_data:dic];
+    CheckNetWork *check_obj=[[CheckNetWork alloc]init];
+    if ([check_obj fn_isPopUp_alert]==NO) {
+        [self fn_get_data:dic];
+    }
     // if you want the keyboard to go away
     [searchBar resignFirstResponder];
 }

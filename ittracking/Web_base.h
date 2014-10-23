@@ -14,7 +14,7 @@
 #import "NSArray.h"
 #import "NSString.h"
 #import "Res_color.h"
-
+#import "CheckNetWork.h"
 typedef void (^CallBack_arrResult)(NSMutableArray*);
 @interface Web_base : NSObject
 

@@ -107,16 +107,20 @@
         }
        
     }else{
-       
-      UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"User ID and Password do not match!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
+       NSString *str_alert=@"User ID and Password do not match!";
+        [self fn_PopUp_alert:str_alert];
     }
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
 }
+#pragma mark -helper
 -(void)fn_hide_HUDView{
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+-(void)fn_PopUp_alert:(NSString*)str_alert{
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:str_alert delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [alertView show];
 }
 #pragma mark -Network Resquest sypara
 //登录成功后，请求sypara 用于控制是否显示carrier milestone
@@ -149,18 +153,20 @@
 }
 #pragma mark -userLogin method
 - (IBAction)UserLogin:(id)sender {
-    NSString *str=nil;
-    if (_user_ID.text.length==0) {
-        str=@"User ID can not be empty!";
-    }else if(_user_Password.text.length==0){
-        str=@"User Password can not be empty!";
-    }else{
-        [self fn_get_data:_user_ID.text :_user_Password.text];
-        return;
+    CheckNetWork *check_obj=[[CheckNetWork alloc]init];
+    if ([check_obj fn_isPopUp_alert]==NO) {
+        NSString *str=nil;
+        if (_user_ID.text.length==0) {
+            str=@"User ID can not be empty!";
+        }else if(_user_Password.text.length==0){
+            str=@"User Password can not be empty!";
+        }else{
+            [self fn_get_data:_user_ID.text :_user_Password.text];
+            return;
+        }
+        [self fn_PopUp_alert:str];
+        
     }
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:str delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    [alertView show];
-    
 }
 
 - (IBAction)closeLoginUI:(id)sender {

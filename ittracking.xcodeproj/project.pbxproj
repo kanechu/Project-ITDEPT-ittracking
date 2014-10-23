@@ -68,6 +68,8 @@
 		B26CAC6F18AA302A00C97C83 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B26CAC4B18AA302A00C97C83 /* UIKit.framework */; };
 		B26CAC7718AA302A00C97C83 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B26CAC7518AA302A00C97C83 /* InfoPlist.strings */; };
 		B26CAC7918AA302A00C97C83 /* ittrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B26CAC7818AA302A00C97C83 /* ittrackingTests.m */; };
+		B26EF4C219F8BAE500737442 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B26EF4C119F8BAE500737442 /* Reachability.m */; };
+		B26EF4CA19F8D28F00737442 /* CheckNetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = B26EF4C919F8D28F00737442 /* CheckNetWork.m */; };
 		B2700B07190E0D2A001E824C /* Custom_Button.m in Sources */ = {isa = PBXBuildFile; fileRef = B2700B06190E0D2A001E824C /* Custom_Button.m */; };
 		B272410419132E5800E6EE5F /* DB_portName.m in Sources */ = {isa = PBXBuildFile; fileRef = B272410319132E5800E6EE5F /* DB_portName.m */; };
 		B27387DA18FF85C500BF57F2 /* Custom_TextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B27387D918FF85C500BF57F2 /* Custom_TextField.m */; };
@@ -279,6 +281,10 @@
 		B26CAC7418AA302A00C97C83 /* ittrackingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ittrackingTests-Info.plist"; sourceTree = "<group>"; };
 		B26CAC7618AA302A00C97C83 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B26CAC7818AA302A00C97C83 /* ittrackingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ittrackingTests.m; sourceTree = "<group>"; };
+		B26EF4C019F8BAE500737442 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		B26EF4C119F8BAE500737442 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		B26EF4C819F8D28F00737442 /* CheckNetWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckNetWork.h; sourceTree = "<group>"; };
+		B26EF4C919F8D28F00737442 /* CheckNetWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckNetWork.m; sourceTree = "<group>"; };
 		B2700B05190E0D2A001E824C /* Custom_Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Custom_Button.h; sourceTree = "<group>"; };
 		B2700B06190E0D2A001E824C /* Custom_Button.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Custom_Button.m; sourceTree = "<group>"; };
 		B272410219132E5800E6EE5F /* DB_portName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB_portName.h; sourceTree = "<group>"; };
@@ -428,6 +434,7 @@
 		B2307B0C18BD8423000502BE /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				B26EF4BF19F8BAE500737442 /* Reachability */,
 				B25310F8191C72250049AFDA /* Expandable Table */,
 				B2571CDB18E543D200C7DFA3 /* CustomBadge */,
 				B278A90518D820F70057DC37 /* MZFormSheet */,
@@ -449,6 +456,8 @@
 		B2307B2318BEEA43000502BE /* WebRequest */ = {
 			isa = PBXGroup;
 			children = (
+				B26EF4C819F8D28F00737442 /* CheckNetWork.h */,
+				B26EF4C919F8D28F00737442 /* CheckNetWork.m */,
 				B2307B2418BEEA82000502BE /* Web_get_alert.h */,
 				B2307B2518BEEA82000502BE /* Web_get_alert.m */,
 				B23D80F018E18D4700316700 /* Web_base.h */,
@@ -674,6 +683,15 @@
 				B26CAC7518AA302A00C97C83 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B26EF4BF19F8BAE500737442 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				B26EF4C019F8BAE500737442 /* Reachability.h */,
+				B26EF4C119F8BAE500737442 /* Reachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		B27387D318FF854B00BF57F2 /* customControl */ = {
@@ -1018,6 +1036,7 @@
 				B2531108191C73E10049AFDA /* ExpandSearchCriteriaViewController.m in Sources */,
 				B2B020B818AB52D100EECD92 /* ExhblListController.m in Sources */,
 				B26B3C96190797A700CB41F9 /* Cell_portName_list.m in Sources */,
+				B26EF4CA19F8D28F00737442 /* CheckNetWork.m in Sources */,
 				B26CAC6418AA302A00C97C83 /* SecondViewController.m in Sources */,
 				B26CAC5818AA302A00C97C83 /* AppDelegate.m in Sources */,
 				B2B656DB19E6232400136452 /* Resp_Sypara.m in Sources */,
@@ -1100,6 +1119,7 @@
 				B2A9770918CF18290096BD4B /* FMDatabasePool.m in Sources */,
 				B278A91E18D8218F0057DC37 /* MZFormSheetBackgroundWindowViewController.m in Sources */,
 				B242208618B7470B00D4A75C /* Cell_exhbl_list.m in Sources */,
+				B26EF4C219F8BAE500737442 /* Reachability.m in Sources */,
 				B2307B1018BD84AF000502BE /* MBProgressHUD.m in Sources */,
 				B278A92118D8218F0057DC37 /* MZTransition.m in Sources */,
 				B28209D318E518C90027227A /* MainHomeViewController.m in Sources */,
