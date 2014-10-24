@@ -803,7 +803,7 @@
             </objects>
             <point key="canvasLocation" x="710" y="543"/>
         </scene>
-        <!--Expand Search Criteria View Controller - Schedule-->
+        <!--Expand Search Criteria View Controller - Search-->
         <scene sceneID="kIX-GH-zdW">
             <objects>
                 <viewController storyboardIdentifier="ExpandSearchCriteriaViewController" id="ifm-S5-DYL" customClass="ExpandSearchCriteriaViewController" sceneMemberID="viewController">
@@ -963,7 +963,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Schedule" id="HRp-bv-pHd"/>
+                    <navigationItem key="navigationItem" title="Search" id="HRp-bv-pHd"/>
                     <connections>
                         <outlet property="ibt_search_btn" destination="p0H-Bd-pi6" id="Box-U4-fAz"/>
                         <outlet property="skstableView" destination="MdU-GR-EMI" id="5sh-4R-Wp1"/>
@@ -1031,21 +1031,21 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="P6E-nY-zjh">
-                                                    <rect key="frame" x="10" y="89" width="130" height="21"/>
+                                                    <rect key="frame" x="10" y="89" width="120" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                     <color key="textColor" red="0.90851235949999998" green="0.96534199620000005" blue="0.42324434459999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="eta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="c6o-BR-a74">
-                                                    <rect key="frame" x="140" y="89" width="115" height="21"/>
+                                                    <rect key="frame" x="130" y="89" width="120" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                     <color key="textColor" red="0.90851235949999998" green="0.96534199620000005" blue="0.42324434459999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="t/t" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ciu-Ap-fyL">
-                                                    <rect key="frame" x="255" y="89" width="65" height="21"/>
+                                                    <rect key="frame" x="250" y="89" width="65" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                     <color key="textColor" red="0.90851235949999998" green="0.96534199620000005" blue="0.42324434459999999" alpha="1" colorSpace="calibratedRGB"/>
