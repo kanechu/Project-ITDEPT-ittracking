@@ -10,7 +10,6 @@
 		B2155E5618D930B900180EF9 /* RespLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = B2155E5518D930B900180EF9 /* RespLogin.m */; };
 		B21D992218D2E53800EE795A /* RespAehbl.m in Sources */ = {isa = PBXBuildFile; fileRef = B21D992118D2E53800EE795A /* RespAehbl.m */; };
 		B22446D518CF2C7500049F8C /* NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = B22446D418CF2C7500049F8C /* NSString.m */; };
-		B225B472190204FE009F1F25 /* DetailScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B225B471190204FE009F1F25 /* DetailScheduleViewController.m */; };
 		B225B47A19020AC3009F1F25 /* RespSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = B225B47919020AC3009F1F25 /* RespSchedule.m */; };
 		B225B49F190261FE009F1F25 /* Cell_sortBy_list.m in Sources */ = {isa = PBXBuildFile; fileRef = B225B49E190261FE009F1F25 /* Cell_sortBy_list.m */; };
 		B22D6C1418D18D0500DE4DB5 /* Cell_aehbl_list.m in Sources */ = {isa = PBXBuildFile; fileRef = B22D6C1318D18D0500DE4DB5 /* Cell_aehbl_list.m */; };
@@ -122,6 +121,7 @@
 		B2C2380218B372D6001E13C9 /* RequestContract.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2380118B372D6001E13C9 /* RequestContract.m */; };
 		B2C2380518B37466001E13C9 /* SearchFormContract.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2380418B37466001E13C9 /* SearchFormContract.m */; };
 		B2C2380918B5EAB5001E13C9 /* RespExhbl.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2380818B5EAB5001E13C9 /* RespExhbl.m */; };
+		B2C4721C19F9EE060099199D /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C4721B19F9EE060099199D /* ScheduleViewController.m */; };
 		B2C52D3A19E77B5C00DA260F /* DatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C52D3919E77B5C00DA260F /* DatabaseQueue.m */; };
 		B2C6ED7B18E58B570001837B /* Menu_home.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C6ED7A18E58B570001837B /* Menu_home.m */; };
 		B2C6ED8618E59FA80001837B /* Cell_menu_item.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C6ED8518E59FA80001837B /* Cell_menu_item.m */; };
@@ -176,8 +176,6 @@
 		B21D992118D2E53800EE795A /* RespAehbl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RespAehbl.m; sourceTree = "<group>"; };
 		B22446D318CF2C7500049F8C /* NSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString.h; sourceTree = "<group>"; };
 		B22446D418CF2C7500049F8C /* NSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString.m; sourceTree = "<group>"; };
-		B225B470190204FE009F1F25 /* DetailScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailScheduleViewController.h; sourceTree = "<group>"; };
-		B225B471190204FE009F1F25 /* DetailScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailScheduleViewController.m; sourceTree = "<group>"; };
 		B225B47819020AC3009F1F25 /* RespSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RespSchedule.h; sourceTree = "<group>"; };
 		B225B47919020AC3009F1F25 /* RespSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RespSchedule.m; sourceTree = "<group>"; };
 		B225B49D190261FE009F1F25 /* Cell_sortBy_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cell_sortBy_list.h; sourceTree = "<group>"; };
@@ -381,6 +379,8 @@
 		B2C2380418B37466001E13C9 /* SearchFormContract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFormContract.m; sourceTree = "<group>"; };
 		B2C2380718B5EAB5001E13C9 /* RespExhbl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RespExhbl.h; sourceTree = "<group>"; };
 		B2C2380818B5EAB5001E13C9 /* RespExhbl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RespExhbl.m; sourceTree = "<group>"; };
+		B2C4721A19F9EE060099199D /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
+		B2C4721B19F9EE060099199D /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
 		B2C52D3819E77B5C00DA260F /* DatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseQueue.h; sourceTree = "<group>"; };
 		B2C52D3919E77B5C00DA260F /* DatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseQueue.m; sourceTree = "<group>"; };
 		B2C6ED7918E58B570001837B /* Menu_home.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu_home.h; sourceTree = "<group>"; };
@@ -508,8 +508,8 @@
 				B2307B1818BDC748000502BE /* AlertController.m */,
 				B2531106191C73E10049AFDA /* ExpandSearchCriteriaViewController.h */,
 				B2531107191C73E10049AFDA /* ExpandSearchCriteriaViewController.m */,
-				B225B470190204FE009F1F25 /* DetailScheduleViewController.h */,
-				B225B471190204FE009F1F25 /* DetailScheduleViewController.m */,
+				B2C4721A19F9EE060099199D /* ScheduleViewController.h */,
+				B2C4721B19F9EE060099199D /* ScheduleViewController.m */,
 				B25490101904A6D800D7197A /* SortByViewController.h */,
 				B25490111904A6D800D7197A /* SortByViewController.m */,
 				B26B3C91190795C700CB41F9 /* SearchPortNameViewController.h */,
@@ -1091,8 +1091,8 @@
 				B25649FF18E29C1B00030E05 /* NSArray.m in Sources */,
 				B242208C18B8467300D4A75C /* Res_color.m in Sources */,
 				B2C216D618C85E5900A46809 /* DB_alert.m in Sources */,
+				B2C4721C19F9EE060099199D /* ScheduleViewController.m in Sources */,
 				B2C6ED8618E59FA80001837B /* Cell_menu_item.m in Sources */,
-				B225B472190204FE009F1F25 /* DetailScheduleViewController.m in Sources */,
 				B2A9770B18CF18290096BD4B /* FMResultSet.m in Sources */,
 				B242209B18BB303600D4A75C /* ExhblGeneralController.m in Sources */,
 				B2700B07190E0D2A001E824C /* Custom_Button.m in Sources */,

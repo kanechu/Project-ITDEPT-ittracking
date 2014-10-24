@@ -11,7 +11,6 @@
 #import "DB_login.h"
 #import "Web_base.h"
 #import "RespPortName.h"
-#import "MZFormSheetController.h"
 #import "MBProgressHUD.h"
 #import "DB_portName.h"
 
@@ -118,7 +117,7 @@
     if (_callBack) {
         _callBack(dic);
     }
-    [self mz_dismissFormSheetControllerAnimated:YES completionHandler:^(MZFormSheetController* formSheet){}];
+    [self dismissViewControllerAnimated:YES completion:nil];
 
 }
 
@@ -146,6 +145,6 @@
 
 - (IBAction)fn_click_close:(id)sender {
     
-     [self mz_dismissFormSheetControllerAnimated:YES completionHandler:nil];   
+     [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

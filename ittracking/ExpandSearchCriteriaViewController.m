@@ -16,10 +16,8 @@
 #import "Cell_schedule_section2_row1.h"
 #import "Cell_schedule_section2_row3.h"
 
-#import "DetailScheduleViewController.h"
+#import "ScheduleViewController.h"
 #import "SearchPortNameViewController.h"
-#import "MZFormSheetController.h"
-#import "PopViewManager.h"
 #import "KeyboardNoticeManager.h"
 typedef NSString* (^pass_value)(NSInteger tag);
 #define TEXTFIELD_TAG 100
@@ -303,8 +301,7 @@ static NSInteger day=0;
         [self.skstableView reloadData];
     };
     VC.is_placeholder=placeholder;
-    PopViewManager *popV=[[PopViewManager alloc]init];
-    [popV PopupView:VC Size:CGSizeMake(self.view.frame.size.width, self.view.frame.size.height) uponView:self];
+    [self presentViewController:VC animated:YES completion:nil];
 }
 
 - (IBAction)fn_click_subBtn:(id)sender {
@@ -355,8 +352,8 @@ static NSInteger day=0;
 #pragma mark segue
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"segue_DetailSchedule"]) {
-        DetailScheduleViewController *VC=[segue destinationViewController];
+    if ([segue.identifier isEqualToString:@"segue_Schedule"]) {
+        ScheduleViewController *VC=[segue destinationViewController];
         VC.imd_searchDic=self.imd_searchDic;
     }
     
@@ -379,7 +376,7 @@ static NSInteger day=0;
         }
     }
     if (flag==0) {
-        [self performSegueWithIdentifier:@"segue_DetailSchedule" sender:self];
+        [self performSegueWithIdentifier:@"segue_Schedule" sender:self];
     }
     
 }
