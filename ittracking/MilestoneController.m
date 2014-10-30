@@ -22,7 +22,7 @@
 
 @property(nonatomic) NSInteger ii_max_row;
 @property(nonatomic) NSInteger ii_last_status_row;
-
+@property(nonatomic,assign)NSInteger flag_isTimeout;
 @property (strong,nonatomic) NSMutableArray *ilist_milestone;
 
 //用这个来判断是否显示ms image
@@ -218,6 +218,7 @@
 {
     //显示loading
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(fn_timeOut_handle) userInfo:nil repeats:NO];
     RequestContract *req_form = [[RequestContract alloc] init];
     DB_login *dbLogin=[[DB_login alloc]init];
     req_form.Auth =[dbLogin WayOfAuthorization];
@@ -239,7 +240,11 @@
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespMilestone class]];
     web_base.callBack=^(NSMutableArray *alist_result){
-        [self fn_save_milestone_list:alist_result];
+        if (_flag_isTimeout!=1) {
+            [self fn_save_milestone_list:alist_result];
+            _flag_isTimeout=2;
+        }
+        
     };
     [web_base fn_get_data:req_form];
     
@@ -262,6 +267,24 @@
     //隐藏loading
     [MBProgressHUD hideHUDForView:self.view animated:YES];
    
+}
+-(void)fn_timeOut_handle{
+    if (_flag_isTimeout!=2) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Retry" otherButtonTitles:@"Cancel", nil];
+        [alertView show];
+        _flag_isTimeout=1;
+    }
+}
+#pragma mark -UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==0) {
+        CheckNetWork *check_obj=[[CheckNetWork alloc]init];
+        if ([check_obj fn_isPopUp_alert]==NO) {
+            [self fn_get_data:is_docu_type :is_docu_uid];
+        }
+        _flag_isTimeout=0;
+    }
 }
 
 @end

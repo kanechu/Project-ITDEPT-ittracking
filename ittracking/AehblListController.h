@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AehblListController : UITableViewController<UISearchBarDelegate>
+@interface AehblListController : UITableViewController<UISearchBarDelegate,UIAlertViewDelegate>
 
 @property(nonatomic)NSString *is_search_no;
-@property(strong,nonatomic)NSMutableArray *ilist_aehbl;
 
 @property (weak, nonatomic) IBOutlet UISearchBar *iSearchBar;
 

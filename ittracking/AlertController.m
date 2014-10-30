@@ -44,7 +44,7 @@
     NSMutableArray *arr=[NSMutableArray arrayWithObject:deleteItem];
     [self setToolbarItems:arr animated:YES];
     [[self navigationController] setToolbarHidden:YES animated:YES];
-    [self fn_hidden_extra_line];
+    [self fn_setExtraCellLineHidden];
    
 }
 -(void)fn_create_obj{
@@ -187,8 +187,8 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     }
     
 }
--(void)fn_hidden_extra_line{
-    UIView *view=[[UIView alloc]initWithFrame:self.tableView.frame];
+-(void)fn_setExtraCellLineHidden{
+    UIView *view=[[UIView alloc]initWithFrame:CGRectZero];
     view.backgroundColor=[UIColor clearColor];
     [self.tableView setTableFooterView:view];
 }

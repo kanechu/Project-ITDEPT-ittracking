@@ -16,7 +16,8 @@
 #import "Web_base.h"
 
 @interface ExhblListController ()
-
+@property (strong,nonatomic) NSMutableArray *ilist_exhbl;
+@property (assign,nonatomic) NSInteger flag_isTimeout;
 @end
 
 @implementation ExhblListController
@@ -152,6 +153,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 - (void) fn_get_data: (NSString*)as_search_no
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(fn_timeOut_handle) userInfo:nil repeats:NO];
     RequestContract *req_form = [[RequestContract alloc] init];
     
     DB_login *dbLogin=[[DB_login alloc]init];
@@ -168,12 +170,38 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
    
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespExhbl class]];
     web_base.callBack=^(NSMutableArray *alist_result){
-        ilist_exhbl = alist_result;
-        [self.tableView reloadData];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (_flag_isTimeout!=1) {
+            ilist_exhbl = alist_result;
+            [self.tableView reloadData];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            _flag_isTimeout=2;
+        }
     };
     [web_base fn_get_data:req_form];
     
+}
+-(void)fn_timeOut_handle{
+    if (_flag_isTimeout!=2) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Retry" otherButtonTitles:@"Cancel", nil];
+        [alertView show];
+        _flag_isTimeout=1;
+    }
+}
+#pragma mark -UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==0) {
+        CheckNetWork *check_obj=[[CheckNetWork alloc]init];
+        if ([check_obj fn_isPopUp_alert]==NO) {
+            if ([iSearchBar.text length]==0) {
+                [self fn_get_data:is_search_no];
+                
+            }else{
+                [self fn_get_data:iSearchBar.text];
+            }
+        }
+        _flag_isTimeout=0;
+    }
 }
 #pragma mark UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {

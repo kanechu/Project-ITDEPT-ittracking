@@ -26,7 +26,7 @@ enum ROW_NUMOFSECTION {
 @property(nonatomic,strong)Calculate_lineHeight *calulate_obj;
 @property (strong,nonatomic) NSMutableArray *ilist_exhbl;
 @property (strong,nonatomic)DB_login *dbLogin;
-
+@property (assign,nonatomic)NSInteger flag_isTimeout;
 @end
 
 @implementation ExhblGeneralController
@@ -279,6 +279,7 @@ enum ROW_NUMOFSECTION {
 - (void) fn_get_data: (NSString*)as_search_column :(NSString*)as_search_value
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(fn_timeOut_handle) userInfo:nil repeats:NO];
     RequestContract *req_form = [[RequestContract alloc] init];
 
     req_form.Auth =[dbLogin WayOfAuthorization];
@@ -293,12 +294,32 @@ enum ROW_NUMOFSECTION {
     web_base.iresp_class =[RespExhbl class];
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespExhbl class]];
     web_base.callBack=^(NSMutableArray *alist_result){
-        ilist_exhbl = alist_result;
-        [self.tableView reloadData];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (_flag_isTimeout!=1) {
+            ilist_exhbl = alist_result;
+            [self.tableView reloadData];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            _flag_isTimeout=2;
+        }
     };
     [web_base fn_get_data:req_form];
     
 }
-
+-(void)fn_timeOut_handle{
+    if (_flag_isTimeout!=2) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Retry" otherButtonTitles:@"Cancel", nil];
+        [alertView show];
+        _flag_isTimeout=1;
+    }
+}
+#pragma mark -UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==0) {
+        CheckNetWork *check_obj=[[CheckNetWork alloc]init];
+        if ([check_obj fn_isPopUp_alert]==NO) {
+            [self fn_get_data:is_search_column :is_search_value];
+        }
+        _flag_isTimeout=0;
+    }
+}
 @end
