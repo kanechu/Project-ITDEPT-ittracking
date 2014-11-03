@@ -128,6 +128,7 @@
 		B2C92B2A192DAB7800B2B8D0 /* RespIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C92B29192DAB7800B2B8D0 /* RespIcon.m */; };
 		B2C92B31192DAE2B00B2B8D0 /* DB_icon.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C92B30192DAE2B00B2B8D0 /* DB_icon.m */; };
 		B2CD156B1910B3A40025DD93 /* Custom_SearchBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CD156A1910B3A40025DD93 /* Custom_SearchBtn.m */; };
+		B2CF149E1A0791480042DD64 /* Common_methods.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CF149D1A0791480042DD64 /* Common_methods.m */; };
 		B2F9C2AC18CAC579006B7299 /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2C2171A18CAC41400A46809 /* libRestKit.a */; };
 /* End PBXBuildFile section */
 
@@ -393,6 +394,8 @@
 		B2C92B30192DAE2B00B2B8D0 /* DB_icon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DB_icon.m; sourceTree = "<group>"; };
 		B2CD15691910B3A40025DD93 /* Custom_SearchBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Custom_SearchBtn.h; sourceTree = "<group>"; };
 		B2CD156A1910B3A40025DD93 /* Custom_SearchBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Custom_SearchBtn.m; sourceTree = "<group>"; };
+		B2CF149C1A0791480042DD64 /* Common_methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common_methods.h; sourceTree = "<group>"; };
+		B2CF149D1A0791480042DD64 /* Common_methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common_methods.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -566,6 +569,8 @@
 				B2923513191A119C00F9F8B8 /* PopViewManager.m */,
 				B2B2A70919A58213009F3AE2 /* Calculate_lineHeight.h */,
 				B2B2A70A19A58213009F3AE2 /* Calculate_lineHeight.m */,
+				B2CF149C1A0791480042DD64 /* Common_methods.h */,
+				B2CF149D1A0791480042DD64 /* Common_methods.m */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -1119,6 +1124,7 @@
 				B2A9770918CF18290096BD4B /* FMDatabasePool.m in Sources */,
 				B278A91E18D8218F0057DC37 /* MZFormSheetBackgroundWindowViewController.m in Sources */,
 				B242208618B7470B00D4A75C /* Cell_exhbl_list.m in Sources */,
+				B2CF149E1A0791480042DD64 /* Common_methods.m in Sources */,
 				B26EF4C219F8BAE500737442 /* Reachability.m in Sources */,
 				B2307B1018BD84AF000502BE /* MBProgressHUD.m in Sources */,
 				B278A92118D8218F0057DC37 /* MZTransition.m in Sources */,
