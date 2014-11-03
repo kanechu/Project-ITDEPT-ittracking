@@ -63,21 +63,14 @@
     DB_sypara *db_sypara=[[DB_sypara alloc]init];
     NSMutableArray *alist_result=[db_sypara fn_get_sypara_data];
     for (NSMutableDictionary *idic in alist_result) {
-        NSString *para_code=[self fn_cut_space:[idic valueForKey:@"para_code"]];
+        NSString *para_code=[Common_methods fn_cut_whitespace:[idic valueForKey:@"para_code"]];
         NSString *data1=[idic valueForKey:@"data1"];
         if ([para_code isEqualToString:@"ANDRDUSEMSIMAGE"] && [data1 isEqualToString:@"1"]) {
             flag_milestone_type=1;
         }
     }
 }
--(NSString*)fn_cut_space:(NSString*)str{
-    NSString *subStr=str;
-    if ([str rangeOfString:@" "].length>0) {
-        NSRange range=[str rangeOfString:@" "];
-        subStr=[str substringToIndex:range.location];
-    }
-    return subStr;
-}
+
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
