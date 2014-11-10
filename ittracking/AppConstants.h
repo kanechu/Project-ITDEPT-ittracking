@@ -9,14 +9,15 @@
 #import <Foundation/Foundation.h>
 #define DEFAULT_USERCODE @"ANONYMOUS"
 #define DEFAULT_PASS @"ANONYMOUS1"
-//#define DEFAULT_SYSTEM @"ITNEW"
 #define DEFAULT_SYSTEM @"ITTRACK_WTRAN"
 #define DEFAULT_COMPANY_CODE @"WTRANLOG"
+#define DEFAULT_APP_CODE @"ITTRACK"
 @interface AppConstants : NSObject
 
 extern NSString* const STR_BASE_URL;
 extern NSString* const STR_LOGIN_URL;
 extern NSString* const STR_SYPARA_URL;
+extern NSString* const STR_PERMIT_URL;
 extern NSString* const STR_MILESTONE_IMAGE_URL;
 extern NSString* const STR_SEA_URL;
 extern NSString* const STR_AIR_URL;

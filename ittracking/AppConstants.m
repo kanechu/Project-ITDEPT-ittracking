@@ -12,6 +12,7 @@
 NSString* const STR_BASE_URL = @"http://192.168.1.17/kie_web_api/";
 NSString* const STR_LOGIN_URL=@"api/users/login";
 NSString* const STR_SYPARA_URL=@"api/System/sypara";
+NSString* const STR_PERMIT_URL=@"api/Users/permit";
 NSString* const STR_MILESTONE_IMAGE_URL=@"api/CargoTracking/milestoneimage";
 NSString* const STR_SEA_URL =@"api/cargotracking/exhbl";
 NSString* const STR_AIR_URL =@"api/cargotracking/aehbl";

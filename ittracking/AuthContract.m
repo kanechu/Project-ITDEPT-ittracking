@@ -22,5 +22,6 @@
 
 @synthesize device_id;
 
+@synthesize app_code;
 
 @end

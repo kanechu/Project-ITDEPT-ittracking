@@ -22,4 +22,6 @@
 
 @property(nonatomic, copy) NSString *device_id;
 
+@property(nonatomic, copy) NSString *app_code;
+
 @end

@@ -74,6 +74,7 @@ static int DB_VERSION = 1;
         NSString *ls_sql_excntr_status=@"CREATE TABLE IF NOT EXISTS excntr_status( unique_id INTEGER PRIMARY KEY,cntr_uid TEXT NOT NULL DEFAULT '',cntr_no TEXT NOT NULL DEFAULT '',size_type_word TEXT NOT NULL DEFAULT '',remark TEXT NOT NULL DEFAULT '',location TEXT NOT NULL DEFAULT '',act_status_date TEXT NOT NULL DEFAULT '',eventtransportmode TEXT NOT NULL DEFAULT '')";
         
         NSString *ls_sql_sypara=@"CREATE TABLE IF NOT EXISTS sypara( id INTEGER PRIMARY KEY,unique_id TEXT NOT NULL DEFAULT '',para_code TEXT NOT NULL DEFAULT '',company_code TEXT NOT NULL DEFAULT '',data1 TEXT NOT NULL DEFAULT '',data2 TEXT NOT NULL DEFAULT '',data3 TEXT NOT NULL DEFAULT '',data4 TEXT NOT NULL DEFAULT '',data5 TEXT NOT NULL DEFAULT '',para_desc TEXT NOT NULL DEFAULT '',rec_crt_user TEXT NOT NULL DEFAULT '',rec_upd_user TEXT NOT NULL DEFAULT '',rec_crt_date TEXT NOT NULL DEFAULT '',rec_upd_date TEXT NOT NULL DEFAULT '',db_id TEXT NOT NULL DEFAULT '',is_ct TEXT NOT NULL DEFAULT '',crt_user TEXT NOT NULL DEFAULT '',req_user TEXT NOT NULL DEFAULT '',rmk TEXT NOT NULL DEFAULT '')";
+        NSString *ls_sql_permit= @"CREATE TABLE IF NOT EXISTS permit( unique_id INTEGER PRIMARY KEY,module_unique_id TEXT NOT NULL DEFAULT '',module_code TEXT NOT NULL DEFAULT '',module_desc TEXT NOT NULL DEFAULT '',module_desc_lang1 TEXT NOT NULL DEFAULT '',module_desc_lang2 TEXT NOT NULL DEFAULT '',f_exec TEXT NOT NULL DEFAULT '')";
         
         [database executeUpdate:ls_sql_stmt];
         [database executeUpdate:ls_sql_login];
@@ -83,6 +84,7 @@ static int DB_VERSION = 1;
         [database executeUpdate:ls_sql_icon];
         [database executeUpdate:ls_sql_excntr_status];
         [database executeUpdate:ls_sql_sypara];
+        [database executeUpdate:ls_sql_permit];
         [database close];
         return  lb_Success;
     }
