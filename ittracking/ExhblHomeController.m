@@ -36,15 +36,12 @@
 {
     [super viewDidLoad];
     [self fn_isShow_carrierMilestone];
-    /**
-     *  for adjust segment widths based on their content widths
-     */
+    // for adjust segment widths based on their content widths
     [self.segmentedControl setApportionsSegmentWidthsByContent:YES];
+    
     // add viewController so you can switch them later.
     UIViewController *vc = [self viewControllerForSegmentIndex:self.segmentedControl.selectedSegmentIndex];
     [self addChildViewController:vc];
-    CGRect frame = self.contentView.bounds;
-    [vc.view setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height)];
     [self.contentView addSubview:vc.view];
     self.currentViewController = vc;
 }
