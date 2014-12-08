@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef void (^CallBack_alert)(NSMutableArray *);
+#import "Web_base.h"
 @interface Web_get_alert : NSObject
 
 @property (strong,nonatomic) NSMutableArray *ilist_alert;
-@property (strong,nonatomic) CallBack_alert callBack;
+@property (strong,nonatomic) CallBack_arrResult callBack;
 
 - (void) fn_get_data;
 

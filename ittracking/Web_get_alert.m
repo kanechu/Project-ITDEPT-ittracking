@@ -14,7 +14,6 @@
 #import "Res_color.h"
 #import "AppConstants.h"
 #import "NSArray.h"
-#import "Web_base.h"
 #import "DB_login.h"
 @implementation Web_get_alert
 @synthesize ilist_alert;
