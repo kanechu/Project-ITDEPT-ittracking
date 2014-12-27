@@ -251,7 +251,8 @@ static NSInteger day=0;
 -(void)fn_create_datePick{
     //初始化UIDatePicker
     idp_picker=[[UIDatePicker alloc]init];
-    // idp_picker.backgroundColor=[UIColor blueColor];
+    [idp_picker setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"en"]];
+    
     [idp_picker setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight)];
     //设置UIDatePicker的显示模式
     [idp_picker setDatePickerMode:UIDatePickerModeDate];
