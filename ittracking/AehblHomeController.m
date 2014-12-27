@@ -65,7 +65,6 @@
 
     if (flag_isShow==0) {
         [segmentedControl removeSegmentAtIndex:2 animated:NO];
-        [segmentedControl setApportionsSegmentWidthsByContent:NO];
         [segmentedControl setFrame:CGRectMake(segmentedControl.frame.origin.x, segmentedControl.frame.origin.y, 140, segmentedControl.frame.size.height)];
     }
 }

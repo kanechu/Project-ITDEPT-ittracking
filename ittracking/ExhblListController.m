@@ -183,16 +183,17 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 -(void)fn_timeOut_handle{
     if (_flag_isTimeout!=2) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Retry" otherButtonTitles:@"Cancel", nil];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
         [alertView show];
         _flag_isTimeout=1;
     }
 }
 #pragma mark -UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex==0) {
+    if (buttonIndex!=[alertView cancelButtonIndex]) {
         CheckNetWork *check_obj=[[CheckNetWork alloc]init];
         if ([check_obj fn_isPopUp_alert]==NO) {
+             _flag_isTimeout=0;
             if ([iSearchBar.text length]==0) {
                 [self fn_get_data:is_search_no];
                 
@@ -200,7 +201,6 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
                 [self fn_get_data:iSearchBar.text];
             }
         }
-        _flag_isTimeout=0;
     }
 }
 #pragma mark UISearchBarDelegate
