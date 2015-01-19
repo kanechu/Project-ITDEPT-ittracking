@@ -201,7 +201,6 @@ CustomBadge *iobj_customBadge;
         if ([str length]<=2) {
             [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -50, 0, 0)];        }
         else if([str length]<16){
-            NSLog(@"%d",(45+(str.length-2)/2*10));
             NSInteger left=-(45+(str.length-2)/2*10+30);
             [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0,left , 0, 0)];
         }else{
