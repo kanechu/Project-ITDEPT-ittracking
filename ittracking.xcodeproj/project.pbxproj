@@ -143,6 +143,13 @@
 			remoteGlobalIDString = B26CAC4318AA302A00C97C83;
 			remoteInfo = worldtrans;
 		};
+		B27026171A6CB0F700D93379 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2C2171218CAC41300A46809 /* RestKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 25160D1514564E810060A5C5;
+			remoteInfo = RestKit;
+		};
 		B2C2171918CAC41400A46809 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2C2171218CAC41300A46809 /* RestKit.xcodeproj */;
@@ -921,6 +928,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B27026181A6CB0F700D93379 /* PBXTargetDependency */,
 			);
 			name = ittracking;
 			productName = worldtrans;
@@ -1166,6 +1174,11 @@
 			target = B26CAC4318AA302A00C97C83 /* ittracking */;
 			targetProxy = B26CAC7018AA302A00C97C83 /* PBXContainerItemProxy */;
 		};
+		B27026181A6CB0F700D93379 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RestKit;
+			targetProxy = B27026171A6CB0F700D93379 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1313,7 +1326,7 @@
 		B26CAC8018AA302A00C97C83 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/worldtrans.app/worldtrans";
+				BUNDLE_LOADER = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1335,7 +1348,7 @@
 		B26CAC8118AA302A00C97C83 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/worldtrans.app/worldtrans";
+				BUNDLE_LOADER = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
