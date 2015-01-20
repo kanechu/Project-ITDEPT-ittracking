@@ -367,7 +367,7 @@ CustomBadge *iobj_customBadge;
 // 3
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     Cell_menu_item *cell = [cv dequeueReusableCellWithReuseIdentifier:@"cell_menu_item" forIndexPath:indexPath];
-    int li_item = [indexPath item];
+    NSInteger li_item = [indexPath item];
     menu_item =  [ilist_menu objectAtIndex:li_item];
     cell.ilb_label.text = menu_item.is_label;
     [cell.itemButton setImage:[UIImage imageNamed:menu_item.is_image] forState:UIControlStateNormal];
@@ -375,7 +375,7 @@ CustomBadge *iobj_customBadge;
     
     if (li_item == 1) {
         
-        iobj_customBadge=[CustomBadge customBadgeWithString:[NSString stringWithFormat:@"%d",badge_Num] withStringColor:[UIColor whiteColor] withInsetColor:[UIColor redColor] withBadgeFrame:YES withBadgeFrameColor:[UIColor whiteColor] withScale:0.7 withShining:YES];
+        iobj_customBadge=[CustomBadge customBadgeWithString:@(badge_Num).stringValue withStringColor:[UIColor whiteColor] withInsetColor:[UIColor redColor] withBadgeFrame:YES withBadgeFrameColor:[UIColor whiteColor] withScale:0.7 withShining:YES];
         [iobj_customBadge setFrame:CGRectMake(cell.itemButton.frame.size.width-iobj_customBadge.frame.size.width+4,cell.itemButton.frame.origin.y-12, iobj_customBadge.frame.size.width-5, iobj_customBadge.frame.size.height-5)];
         DB_login *dbLogin=[[DB_login alloc]init];
         //登陆后和有新通知的时候，才显示badge

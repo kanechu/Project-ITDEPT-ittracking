@@ -55,8 +55,7 @@
             while ([lfmdb_result next]) {
                 NSMutableDictionary *dic=[[lfmdb_result resultDictionary]mutableCopy];
                 NSInteger subrows=[[dic valueForKey:@"subrows"]integerValue]+1;
-                NSString *str_rows=[NSString stringWithFormat:@"%d",subrows];
-                [dic setObject:str_rows forKey:@"subrows"];
+                [dic setObject:@(subrows).stringValue forKey:@"subrows"];
                 [arr addObject:dic];
             }
             [db close];

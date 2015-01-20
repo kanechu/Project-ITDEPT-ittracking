@@ -83,10 +83,12 @@
 // Use this method if you want to change the badge text after the first rendering 
 - (void) autoBadgeSizeWithString:(NSString *)badgeString
 {
-	CGSize retValue;
-	CGFloat rectWidth, rectHeight;
-	CGSize stringSize = [badgeString sizeWithFont:[UIFont boldSystemFontOfSize:12]];
-	CGFloat flexSpace;
+    CGSize retValue;
+    CGFloat rectWidth, rectHeight;
+    
+    NSDictionary *dic_attribute=@{NSFontAttributeName:[UIFont boldSystemFontOfSize:12]};
+    CGSize stringSize =[badgeString sizeWithAttributes:dic_attribute];
+    CGFloat flexSpace;
 	if ([badgeString length]>=2) {
 		flexSpace = [badgeString length];
 		rectWidth = 20 + (stringSize.width + flexSpace); rectHeight = 20+(stringSize.width + flexSpace);
@@ -232,8 +234,9 @@
 			sizeOfFont += sizeOfFont*0.20;
 		}
 		UIFont *textFont = [UIFont boldSystemFontOfSize:sizeOfFont];
-		CGSize textSize = [self.badgeText sizeWithFont:textFont];
-		[self.badgeText drawAtPoint:CGPointMake((rect.size.width/2-textSize.width/2), (rect.size.height/2-textSize.height/2)) withFont:textFont];
+        NSDictionary *dic_attribute=@{NSFontAttributeName:textFont};
+		CGSize textSize = [self.badgeText sizeWithAttributes:dic_attribute];
+		[self.badgeText drawAtPoint:CGPointMake((rect.size.width/2-textSize.width/2), (rect.size.height/2-textSize.height/2)) withAttributes:dic_attribute];
 	}
 	
 }

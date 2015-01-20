@@ -159,7 +159,7 @@ static NSInteger day=0;
             day=[[dic valueForKey:@"col_def"] integerValue];
             NSString *col_code=[dic valueForKey:@"col_code"];
             if ([col_code length]!=0) {
-                [imd_displayDic setObject:[NSString stringWithFormat:@"%d",day] forKey:col_code];
+                [imd_displayDic setObject:@(day).stringValue forKey:col_code];
                 [imd_searchDic setObject:[self fn_get_finishDate:day]forKey:col_code];
             }
             
@@ -325,7 +325,7 @@ static NSInteger day=0;
     if ([[self fn_get_finishDate:day]length]!=0) {
         [imd_searchDic setObject:[self fn_get_finishDate:day]forKey:col_code];
     }
-    [imd_displayDic setObject:[NSString stringWithFormat:@"%d",day] forKey:col_code];
+    [imd_displayDic setObject:@(day).stringValue forKey:col_code];
     [self.skstableView reloadData];
 }
 
