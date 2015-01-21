@@ -16,6 +16,10 @@
 #import "Web_base.h"
 #import "MBProgressHUD.h"
 #import "NSDictionary.h"
+
+#define DEFAULT_USERCODE @"ANONYMOUS"
+#define DEFAULT_PASS @"ANONYMOUS1"
+#define DEFAULT_SYSTEM @"ITTRACK_WTRAN"
 @interface LoginViewController ()
 
 @end
@@ -76,7 +80,7 @@
     /**
      *  encrypted 如果为1，密码需要AES128加密，并base64 encode
      */
-    auth.encrypted=@"0";
+    auth.encrypted=IS_ENCRYPTED;
     req_form.Auth =auth;
     Web_base *web_base=[[Web_base alloc]init];
     web_base.il_url=STR_LOGIN_URL;
@@ -135,7 +139,7 @@
     /**
      *  encrypted 如果为1，密码需要AES128加密，并base64 encode
      */
-    auth.encrypted=@"0";
+    auth.encrypted=IS_ENCRYPTED;
     auth.company_code=DEFAULT_COMPANY_CODE;
     req_form.Auth =auth;
     

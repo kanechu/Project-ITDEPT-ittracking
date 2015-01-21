@@ -7,11 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#define DEFAULT_USERCODE @"ANONYMOUS"
-#define DEFAULT_PASS @"ANONYMOUS1"
-#define DEFAULT_SYSTEM @"ITTRACK_WTRAN"
 #define DEFAULT_COMPANY_CODE @"WTRANLOG"
 #define DEFAULT_APP_CODE @"ITTRACK"
+#define IS_ENCRYPTED @"0"
 @interface AppConstants : NSObject
 
 extern NSString* const STR_BASE_URL;
