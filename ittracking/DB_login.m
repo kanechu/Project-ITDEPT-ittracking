@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #import "DB_device.h"
 #import "AppConstants.h"
+#define DEFAULT_USERCODE @"ANONYMOUS"
+#define DEFAULT_PASS @"ANONYMOUS1"
 @implementation DB_login
 
 @synthesize queue;

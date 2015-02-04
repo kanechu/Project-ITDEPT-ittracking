@@ -24,9 +24,6 @@
     DB_login *dbLogin = [[DB_login alloc] init];
     AuthContract *Auth =[dbLogin WayOfAuthorization];
     _user_code=Auth.user_code;
-    if (_user_code==nil) {
-        _user_code=DEFAULT_USERCODE;
-    }
     return self;
 }
 

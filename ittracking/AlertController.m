@@ -178,6 +178,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     }
     
 }
+
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
     return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
 }

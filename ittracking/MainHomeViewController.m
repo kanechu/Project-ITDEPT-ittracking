@@ -33,7 +33,7 @@
 #define LOGINSHEETSIZE CGSizeMake(280, 220)
 #define SHEETSIZE1 CGSizeMake(280, 250)
 #define SHEETSIZE2 CGSizeMake(280, 180)
-static NSInteger flag=0;
+static NSInteger flag_isLogin=0;
 
 @implementation MainHomeViewController
 @synthesize ilist_menu;
@@ -78,8 +78,8 @@ CustomBadge *iobj_customBadge;
         NSString *str=[[[dbLogin fn_get_all_msg] objectAtIndex:0] valueForKey:@"user_code"];
         [_loginBtn setTitle:str forState:UIControlStateNormal];
         [self fn_show_user_logo];
-        //如果已经登录，设置flag=1，显示alert项
-        flag=1;
+        //如果已经登录，设置flag_isLogin=1，显示alert项
+        flag_isLogin=1;
         
     }else{
         [_loginBtn setTitle:@"LOGIN" forState:UIControlStateNormal];
@@ -127,7 +127,7 @@ CustomBadge *iobj_customBadge;
 {
     ilist_menu = [[NSMutableArray alloc] init];
     [ilist_menu addObject:[Menu_home fn_create_item:@"Tracking" image:@"ic_ct" segue:@"segue_trackHome"]];
-    if (flag==1) {
+    if (flag_isLogin==1) {
         [ilist_menu addObject:[Menu_home fn_create_item:@"Alert" image:@"alert" segue:@"segue_alert"]];
     }
     [ilist_menu addObject:[Menu_home fn_create_item:@"Schedule" image:@"schedule_icon" segue:@"Segue_ExpandSearch"]];
@@ -246,8 +246,8 @@ CustomBadge *iobj_customBadge;
     [_loginBtn setTitle:userName forState:UIControlStateNormal];
     //登陆后显示logo图片
     [self fn_show_user_logo];
-    //登陆成功后，设置flag=1,显示alert项
-     flag=1;
+    //登陆成功后，设置flag_isLogin=1,显示alert项
+     flag_isLogin=1;
     [self fn_refresh_menu];
     //登陆成功后，请求搜索标准的数据
     [self fn_get_data];
@@ -261,8 +261,8 @@ CustomBadge *iobj_customBadge;
     _imageView.image=nil;
     [self BtnGraphicMixed];
     [_loginBtn setTitle:@"LOGIN" forState:UIControlStateNormal];
-    //退出登陆后，设置flag=0,隐藏alert项
-    flag=0;
+    //退出登陆后，设置flag_isLogin=0,隐藏alert项
+    flag_isLogin=0;
     [self fn_refresh_menu];
     //清除portName的缓存
     DB_portName *db=[[DB_portName alloc]init];

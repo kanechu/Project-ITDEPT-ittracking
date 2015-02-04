@@ -17,9 +17,6 @@
 #import "MBProgressHUD.h"
 #import "NSDictionary.h"
 
-#define DEFAULT_USERCODE @"ANONYMOUS"
-#define DEFAULT_PASS @"ANONYMOUS1"
-#define DEFAULT_SYSTEM @"ITTRACK_WTRAN"
 @interface LoginViewController ()
 
 @end
@@ -44,7 +41,9 @@
     //设置文本框的代理
     _user_ID.delegate=self;
     _user_Password.delegate=self;
-	// Do any additional setup after loading the view.
+    _user_ID.returnKeyType=UIReturnKeyNext;
+    _user_Password.returnKeyType=UIReturnKeyDone;
+    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,6 +51,14 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)fn_userName_textField_didEndOnExit:(id)sender {
+    [_user_Password becomeFirstResponder];
+}
+- (IBAction)fn_pass_textField_didEndOnExit:(id)sender {
+    [sender resignFirstResponder];
+}
+
 #pragma mark UITextFieldDelegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     if (_user_ID.editing) {

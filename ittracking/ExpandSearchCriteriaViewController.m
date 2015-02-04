@@ -310,11 +310,19 @@ static NSInteger day=0;
     if (day<0) {
         day=0;
     }
+    UIButton *ibtn=(UIButton*)sender;
+    NSString *col_code=_passValue(ibtn.tag);
+    [imd_searchDic setObject:@(day).stringValue forKey:col_code];
+    [imd_displayDic setObject:@(day).stringValue forKey:col_code];
     [self.skstableView reloadData];
 }
 
 - (IBAction)fn_click_addBtn:(id)sender {
     day++;
+    UIButton *ibtn=(UIButton*)sender;
+    NSString *col_code=_passValue(ibtn.tag);
+    [imd_searchDic setObject:@(day).stringValue forKey:col_code];
+    [imd_displayDic setObject:@(day).stringValue forKey:col_code];
     [self.skstableView reloadData];
 }
 //输入天数结束的时候(endEdit)，触发的方法
@@ -435,7 +443,15 @@ static NSInteger day=0;
         if (cell==nil) {
             cell=[[Cell_schedule_section1 alloc]init];
         }
-        cell.im_navigate_img.image=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
+        UIImage *nav_img=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
+        cell.im_navigate_img.image=nav_img;
+        if (nav_img==nil) {
+            if ([col_code isEqualToString:@"load_port"]) {
+                cell.im_navigate_img.image=[UIImage imageNamed:@"navigate-up"];
+            }else if([col_code isEqualToString:@"dish_port"]){
+                cell.im_navigate_img.image=[UIImage imageNamed:@"navigate-down"];
+            }
+        }
         cell.ilb_port.text=col_label;
         cell.ilb_show_portName.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
         cell.ilb_show_portName.label.text=[imd_displayDic valueForKey:col_code];
@@ -451,7 +467,11 @@ static NSInteger day=0;
         cell.itf_show_dateType.delegate=self;
         cell.ilb_show_dateAndtype.text=col_label;
         cell.itf_show_dateType.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
-        cell.ii_calendar_img.image=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
+        UIImage *combo_img=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
+        if(combo_img==nil){
+            combo_img=[UIImage imageNamed:@"ic_date"];
+        }
+        cell.ii_calendar_img.image=combo_img;
         cell.itf_show_dateType.text=[imd_displayDic valueForKey:col_code];
             ;
         if ([col_type isEqualToString:@"combo"]) {
@@ -459,7 +479,6 @@ static NSInteger day=0;
             cell.itf_show_dateType.inputAccessoryView=[self fn_create_toolbar];
         }
         if ([col_type isEqualToString:@"date"]) {
-            
             cell.itf_show_dateType.inputView=idp_picker;
             cell.itf_show_dateType.inputAccessoryView=[self fn_create_toolbar];
             NSString *str_date=[self fn_DateToStringDate:id_startdate];
@@ -474,11 +493,21 @@ static NSInteger day=0;
         if (cell==nil) {
             cell=[[Cell_schedule_section2_row3 alloc]init];
         }
+        cell.ibt_add_btn.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
+        cell.ibt_decrease_btn.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
         cell.ict_show_days.tag=TEXTFIELD_TAG+indexPath.section*100+indexPath.subRow-1;
         cell.ict_show_days.text=[imd_displayDic valueForKey:col_code];
         cell.ict_show_days.delegate=self;
-        [cell.ibt_add_btn setImage:[UIImage imageWithData:[self fn_get_imageData:@"int_minus"]] forState:UIControlStateNormal];
-        [cell.ibt_decrease_btn setImage:[UIImage imageWithData:[self fn_get_imageData:@"int_add"]] forState:UIControlStateNormal];
+        UIImage *add_image=[UIImage imageWithData:[self fn_get_imageData:@"int_minus"]];
+        if (add_image==nil) {
+            add_image=[UIImage imageNamed:@"ic_minus"];
+        }
+        [cell.ibt_add_btn setImage:add_image forState:UIControlStateNormal];
+        UIImage *minus_image=[UIImage imageWithData:[self fn_get_imageData:@"int_add"]];
+        if (minus_image==nil) {
+            minus_image=[UIImage imageNamed:@"ic_add"];
+        }
+        [cell.ibt_decrease_btn setImage:minus_image forState:UIControlStateNormal];
         cell.ii_calendar_img.image=[UIImage imageWithData:[self fn_get_imageData:icon_name]];
         return cell;
     }

@@ -10,6 +10,7 @@
 #define DEFAULT_COMPANY_CODE @"WTRANLOG"
 #define DEFAULT_APP_CODE @"ITTRACK"
 #define IS_ENCRYPTED @"0"
+#define DEFAULT_SYSTEM @"ITTRACK_WTRAN"
 @interface AppConstants : NSObject
 
 extern NSString* const STR_BASE_URL;
