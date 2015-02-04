@@ -781,7 +781,7 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="Select the port name" id="2Dx-WD-FuQ">
+                                    <navigationItem title="port name" id="2Dx-WD-FuQ">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="sQd-yL-HUo">
                                             <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
@@ -795,6 +795,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="inav_item" destination="2Dx-WD-FuQ" id="ijB-Ht-HhW"/>
                         <outlet property="is_search_portName" destination="DKC-Jh-aL4" id="166-Ph-GeF"/>
                         <outlet property="it_table_portname" destination="6lk-fb-gQD" id="XC9-3p-429"/>
                     </connections>

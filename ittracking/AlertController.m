@@ -44,8 +44,6 @@
     NSMutableArray *arr=[NSMutableArray arrayWithObject:deleteItem];
     [self setToolbarItems:arr animated:YES];
     [[self navigationController] setToolbarHidden:YES animated:YES];
-    [self fn_setExtraCellLineHidden];
-   
 }
 -(void)fn_create_obj{
     self.deleteDic=[NSMutableDictionary dictionaryWithCapacity:10];
@@ -192,6 +190,20 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     UIView *view=[[UIView alloc]initWithFrame:CGRectZero];
     view.backgroundColor=[UIColor clearColor];
     [self.tableView setTableFooterView:view];
+    [self.tableView setScrollEnabled:YES];
+}
+-(void)fn_show_no_msg_alert{
+    CGRect frame=self.tableView.frame;
+    UIView *bg_view=[[UIView alloc]initWithFrame:frame];
+    bg_view.backgroundColor=[UIColor clearColor];
+    UILabel *ilb_alert=[[UILabel alloc]initWithFrame:CGRectMake(0,frame.size.height/2-88,frame.size.width,42)];
+    ilb_alert.textAlignment=NSTextAlignmentCenter;
+    ilb_alert.font=[UIFont systemFontOfSize:24];
+    ilb_alert.textColor=[UIColor lightGrayColor];
+    ilb_alert.text=@"No Message!";
+    [bg_view addSubview:ilb_alert];
+    [self.tableView setTableFooterView:bg_view];
+    [self.tableView setScrollEnabled:NO];
 }
 #pragma mark segue
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -295,6 +307,11 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     }else if (segmentCon.selectedSegmentIndex==1){
         ilist_alert=previous_alert;
     }
+    if ([ilist_alert count]!=0) {
+        [self fn_setExtraCellLineHidden];
+    }else{
+        [self fn_show_no_msg_alert];
+    }
     [self.tableView reloadData];
 }
 - (void) fn_get_data
@@ -303,6 +320,11 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     today_alert=[ldb_alert fn_get_today_msg];
     previous_alert=[ldb_alert fn_get_previous_msg];
     ilist_alert=today_alert;
+    if ([ilist_alert count]!=0) {
+        [self fn_setExtraCellLineHidden];
+    }else{
+        [self fn_show_no_msg_alert];
+    }
     
 }
 @end

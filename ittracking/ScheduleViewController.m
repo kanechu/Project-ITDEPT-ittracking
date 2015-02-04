@@ -153,6 +153,20 @@
     UIView *view=[[UIView alloc]initWithFrame:self.view.bounds];
     view.backgroundColor=[UIColor clearColor];
     [self.tableview setTableFooterView:view];
+    [self.tableview setScrollEnabled:YES];
+}
+-(void)fn_show_no_data_msg{
+    CGRect frame=self.tableview.frame;
+    UIView *bg_view=[[Custom_backgroundView alloc]init];
+    bg_view.frame=frame;
+    UILabel *ilb_alert=[[UILabel alloc]initWithFrame:CGRectMake(0,frame.size.height/2-88,frame.size.width,42)];
+    ilb_alert.textAlignment=NSTextAlignmentCenter;
+    ilb_alert.font=[UIFont systemFontOfSize:24];
+    ilb_alert.textColor=[UIColor lightGrayColor];
+    ilb_alert.text=@"NO Schedule Data";
+    [bg_view addSubview:ilb_alert];
+    [self.tableview setTableFooterView:bg_view];
+    [self.tableview setScrollEnabled:NO];
 }
 #pragma mark 同一个Label显示不同颜色的文字方法
 -(NSMutableAttributedString*)fn_different_fontcolor:(NSString*)_str range:(NSRange)_range{
@@ -214,6 +228,11 @@
         //默认以etd排序
         [self fn_sort_schedule:@"etd"];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if ([alist_result count]!=0) {
+            [self fn_setExtraline_hidden];
+        }else{
+            [self fn_show_no_data_msg];
+        }
     };
     [web_base fn_get_data:req_form];
     

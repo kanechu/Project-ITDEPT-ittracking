@@ -16,6 +16,7 @@
 
 @interface SearchPortNameViewController ()
 
+@property (weak, nonatomic) IBOutlet UINavigationItem *inav_item;
 @end
 
 @implementation SearchPortNameViewController
@@ -25,9 +26,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.inav_item.title=is_placeholder;
     //设置search bar的代理
     _is_search_portName.delegate=self;
-    _is_search_portName.placeholder=is_placeholder;
+    _is_search_portName.placeholder=[NSString stringWithFormat:@"Please fill in %@ !",is_placeholder];
     //设置Table的代理
     _it_table_portname.delegate=self;
     _it_table_portname.dataSource=self;

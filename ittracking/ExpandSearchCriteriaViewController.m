@@ -272,10 +272,10 @@ static NSInteger day=0;
     NSString *col_code=_passValue(Btn.tag);
     NSString *str_placeholder=@"";
     if ([col_code isEqualToString:@"load_port"]) {
-        str_placeholder=@"Please fill in Load Port!";
+        str_placeholder=@"Load Port";
     }
     if ([col_code isEqualToString:@"dish_port"]) {
-        str_placeholder=@"Please fill in Discharge Port!";
+        str_placeholder=@"Discharge Port";
     }
     [self fn_popup_searchPortNameView:str_placeholder col_code:col_code];
 }
