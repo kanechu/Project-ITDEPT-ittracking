@@ -17,7 +17,6 @@
 #import "Web_base.h"
 
 @interface AehblListController ()
-@property(assign,nonatomic)NSInteger flag_isTimeout;
 @property(strong,nonatomic)NSMutableArray *ilist_aehbl;
 @end
 
@@ -163,7 +162,6 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 - (void) fn_get_data: (NSString*)as_search_no
 {    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(fn_timeOut_handle) userInfo:nil repeats:NO];
     RequestContract *req_form = [[RequestContract alloc] init];
     
     DB_login *dbLogin=[[DB_login alloc]init];
@@ -171,37 +169,34 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     SearchFormContract *search = [[SearchFormContract alloc]init];
     search.os_column = @"search_no";
     search.os_value = as_search_no;
-    
     req_form.SearchForm = [NSSet setWithObjects:search, nil];
+    search=nil;
     
     Web_base *web_base = [[Web_base alloc] init];
     web_base.il_url =STR_AIR_URL;
     web_base.iresp_class =[RespAehbl class];
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespAehbl class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        if (_flag_isTimeout!=1) {
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (isTimeOut) {
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
+        }else{
             ilist_aehbl = alist_result;
             [self.tableView reloadData];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            _flag_isTimeout=2;
         }
     };
     [web_base fn_get_data:req_form];
+    req_form=nil;
+    dbLogin=nil;
+    web_base=nil;
+}
 
-}
--(void)fn_timeOut_handle{
-    if (_flag_isTimeout!=2) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
-        [alertView show];
-        _flag_isTimeout=1;
-    }
-}
 #pragma mark -UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex!=[alertView cancelButtonIndex]) {
         CheckNetWork *check_obj=[[CheckNetWork alloc]init];
-        if ([check_obj fn_isPopUp_alert]==NO) { _flag_isTimeout=0;
+        if ([check_obj fn_isPopUp_alert]==NO) {
             if ([iSearchBar.text length]==0) {
                 [self fn_get_data:is_search_no];
                 
@@ -209,6 +204,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
                 [self fn_get_data:iSearchBar.text];
             }
         }
+        check_obj=nil;
     }
 }
 #pragma mark UISearchBarDelegate

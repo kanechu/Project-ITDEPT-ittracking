@@ -19,7 +19,8 @@
     RequestContract *ao_form=[[RequestContract alloc]init];
     AuthContract *auth=[[AuthContract alloc]init];
     auth.system=DEFAULT_SYSTEM;//备注，这里先写死，日后记住改过来
-    auth.app_code=DEFAULT_APP_CODE;    base_url=@"http://192.168.1.17/kie_web_api/";//这里也先写死，日后记住改过来
+    auth.app_code=DEFAULT_APP_CODE;
+    base_url=@"http://192.168.1.17/kie_web_api/";//这里也先写死，日后记住改过来
     ao_form.Auth=auth;
     SearchFormContract *searchform=[[SearchFormContract alloc]init];
     searchform.os_column=@"type";
@@ -29,7 +30,7 @@
     web_base.il_url=STR_PERMIT_URL;
     web_base.iresp_class=[Resp_permit class];
     web_base.ilist_resp_mapping=[NSArray arrayWithPropertiesOfObject:[Resp_permit class]];
-    web_base.callBack=^(NSMutableArray *alist_arr){
+    web_base.callBack=^(NSMutableArray *alist_arr,BOOL isTimeOut){
         DB_permit *db_permit=[[DB_permit alloc]init];
         [db_permit fn_save_permit_data:alist_arr];
         if (call_back) {

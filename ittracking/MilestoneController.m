@@ -22,7 +22,6 @@
 
 @property(nonatomic) NSInteger ii_max_row;
 @property(nonatomic) NSInteger ii_last_status_row;
-@property(nonatomic,assign)NSInteger flag_isTimeout;
 @property (strong,nonatomic) NSMutableArray *ilist_milestone;
 
 //用这个来判断是否显示ms image
@@ -211,7 +210,6 @@
 {
     //显示loading
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(fn_timeOut_handle) userInfo:nil repeats:NO];
     RequestContract *req_form = [[RequestContract alloc] init];
     DB_login *dbLogin=[[DB_login alloc]init];
     req_form.Auth =[dbLogin WayOfAuthorization];
@@ -220,28 +218,33 @@
     search1.os_column = @"docu_type";
     search1.os_value = as_docu_type;
     
-    
     SearchFormContract *search2 = [[SearchFormContract alloc]init];
     search2.os_column = @"docu_uid";
     search2.os_value = as_docu_uid;
     
     req_form.SearchForm = [NSSet setWithObjects:search1,search2, nil];
+    search1=nil;
+    search2=nil;
     
     Web_base *web_base = [[Web_base alloc] init];
     web_base.il_url =STR_MILESTONE_URL;
     web_base.iresp_class =[RespMilestone class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespMilestone class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        if (_flag_isTimeout!=1) {
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
+        if (isTimeOut) {
+            //隐藏loading
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
+        }else{
             [self fn_save_milestone_list:alist_result];
-            _flag_isTimeout=2;
         }
-        
     };
     [web_base fn_get_data:req_form];
-    
-   
+    req_form=nil;
+    dbLogin=nil;
+    web_base=nil;
 }
 -(void)fn_save_milestone_list:(NSMutableArray*)alist_result{
     ilist_milestone = alist_result;
@@ -261,19 +264,11 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
    
 }
--(void)fn_timeOut_handle{
-    if (_flag_isTimeout!=2) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
-        [alertView show];
-        _flag_isTimeout=1;
-    }
-}
+
 #pragma mark -UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex!=[alertView cancelButtonIndex]) {
         CheckNetWork *check_obj=[[CheckNetWork alloc]init];
-        _flag_isTimeout=0;
         if ([check_obj fn_isPopUp_alert]==NO) {
             [self fn_get_data:is_docu_type :is_docu_uid];
         }

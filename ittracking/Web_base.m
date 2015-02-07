@@ -18,11 +18,8 @@
 
 - (void) fn_get_data:(RequestContract*)ao_form
 {
-    
-    
     RKObjectMapping *lo_searchMapping = [RKObjectMapping requestMapping];
     [lo_searchMapping addAttributeMappingsFromArray:@[@"os_column",@"os_value"]];
-    
     
     RKObjectMapping *lo_authMapping = [RKObjectMapping requestMapping];
     [lo_authMapping addAttributeMappingsFromDictionary:@{ @"user_code": @"user_code",
@@ -79,12 +76,22 @@
                     
                     ilist_resp_result = [NSMutableArray arrayWithArray:result.array];
                     if (_callBack) {
-                        _callBack(ilist_resp_result);
+                        _callBack(ilist_resp_result,NO);
                     }
                     
                 } failure:^(RKObjectRequestOperation *operation, NSError *error) {
                     RKLogError(@"Operation failed with error: %@", error);
+                    NSString *str_error=[NSString stringWithFormat:@"%@",error];
+                    if ([str_error rangeOfString:@"Code=-1001"].location!=NSNotFound) {
+                        if (_callBack) {
+                            _callBack(ilist_resp_result,YES);
+                        }
+                    }else{
+                        if (_callBack) {
+                            _callBack(ilist_resp_result,NO);
+                        }
+                    }
+                    
                 }];
-    
 }
 @end

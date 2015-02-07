@@ -89,10 +89,9 @@
     UIApplicationState state = [application applicationState];
     if (state == UIApplicationStateActive)
     {
-        
         //background task here
         Web_get_alert *web_get_alert = [[Web_get_alert alloc] init];
-        web_get_alert.callBack=^(NSMutableArray* alist_result){
+        web_get_alert.callBack=^(NSMutableArray* alist_result,BOOL isTimeOut){
             DB_alert * ldb_alert = [[DB_alert alloc] init];
             [ldb_alert fn_save_data:alist_result];
         };

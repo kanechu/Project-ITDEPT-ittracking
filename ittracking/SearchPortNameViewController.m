@@ -14,7 +14,7 @@
 #import "MBProgressHUD.h"
 #import "DB_portName.h"
 
-@interface SearchPortNameViewController ()
+@interface SearchPortNameViewController ()<UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *inav_item;
 @end
@@ -33,8 +33,6 @@
     //设置Table的代理
     _it_table_portname.delegate=self;
     _it_table_portname.dataSource=self;
-    
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,8 +42,7 @@
 }
 #pragma mark resquest portName Data
 -(void)fn_get_data:(NSString*)as_search_portname{
-    [NSTimer scheduledTimerWithTimeInterval: 11.0 target: self
-                                   selector: @selector(fn_hide_HUDView) userInfo: nil repeats: NO];    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     RequestContract *req_form=[[RequestContract alloc]init];
     DB_login *dbLogin=[[DB_login alloc]init];
     req_form.Auth=[dbLogin WayOfAuthorization];
@@ -59,26 +56,39 @@
     search1.os_value=@"";
     
     req_form.SearchForm=[NSSet setWithObjects:search,search1,nil];
+    search=nil;
+    search1=nil;
     Web_base *web_base=[[Web_base alloc]init];
     web_base.il_url =STR_PORTNAME_URL;
     web_base.iresp_class =[RespPortName class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespPortName class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        ilist_portname=alist_result;
-        DB_portName *db=[[DB_portName alloc]init];
-        [db fn_save_data:alist_result];
-        [_it_table_portname reloadData];
+    web_base.callBack=^(NSMutableArray *alist_result, BOOL isTimeOut){
         [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (isTimeOut) {
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
+        }else{
+            ilist_portname=alist_result;
+            DB_portName *db=[[DB_portName alloc]init];
+            [db fn_save_data:alist_result];
+            [_it_table_portname reloadData];
+            db=nil;
+        }
     };
     [web_base fn_get_data:req_form];
-    
+    req_form=nil;
+    dbLogin=nil;
+    web_base=nil;
     
 }
--(void)fn_hide_HUDView{
-    
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+#pragma mark -UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==[alertView firstOtherButtonIndex]) {
+        [self fn_get_data:_is_search_portName.text];
+    }
 }
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

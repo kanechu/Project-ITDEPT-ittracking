@@ -18,7 +18,7 @@
 #import "PopViewManager.h"
 #import "Calculate_lineHeight.h"
 
-@interface ScheduleViewController ()
+@interface ScheduleViewController ()<UIAlertViewDelegate>
 @property(nonatomic,strong)Calculate_lineHeight *cal_obj;
 @end
 
@@ -192,6 +192,7 @@
     CheckNetWork *check_obj=[[CheckNetWork alloc]init];
     if ([check_obj fn_isPopUp_alert]==NO) {
         [self fn_get_data:dic];
+        imd_searchDic=dic;
     }
     // if you want the keyboard to go away
     [searchBar resignFirstResponder];
@@ -223,20 +224,32 @@
     web_base.iresp_class =[RespSchedule class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespSchedule     class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        ilist_schedule=alist_result;
-        //默认以etd排序
-        [self fn_sort_schedule:@"etd"];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        if ([alist_result count]!=0) {
-            [self fn_setExtraline_hidden];
+    web_base.callBack=^(NSMutableArray *alist_result ,BOOL isTimeOut){
+        if (isTimeOut) {
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
         }else{
-            [self fn_show_no_data_msg];
+            ilist_schedule=alist_result;
+            //默认以etd排序
+            [self fn_sort_schedule:@"etd"];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            if ([alist_result count]!=0) {
+                [self fn_setExtraline_hidden];
+            }else{
+                [self fn_show_no_data_msg];
+            }
         }
     };
     [web_base fn_get_data:req_form];
     
 }
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==[alertView firstOtherButtonIndex]) {
+        [self fn_get_data:imd_searchDic];
+    }
+}
+
 #pragma mark 点击右上角的sortBy Button触发的方法
 - (IBAction)fn_click_sortBy_btn:(id)sender {
     SortByViewController *sortByVC=[self.storyboard instantiateViewControllerWithIdentifier:@"SortByViewController"];

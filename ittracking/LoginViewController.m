@@ -17,7 +17,7 @@
 #import "MBProgressHUD.h"
 #import "NSDictionary.h"
 
-@interface LoginViewController ()
+@interface LoginViewController ()<UIAlertViewDelegate>
 
 @end
 
@@ -76,9 +76,6 @@
 - (void) fn_get_data: (NSString*)user_code :(NSString*)user_pass
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [NSTimer scheduledTimerWithTimeInterval: 11.0 target: self
-                                   selector: @selector(fn_hide_HUDView) userInfo: nil repeats: NO];
-    
     RequestContract *req_form = [[RequestContract alloc] init];
     AuthContract *auth=[[AuthContract alloc]init];
     auth.user_code=user_code;
@@ -93,10 +90,15 @@
     web_base.il_url=STR_LOGIN_URL;
     web_base.iresp_class=[RespLogin class];
     web_base.ilist_resp_mapping =@[@"user_code",@"pass",@"user_logo"];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        if ([alist_result count]!=0) {
-            
-            [self fn_save_login_list:alist_result];
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (isTimeOut) {
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
+        }else{
+            if ([alist_result count]!=0) {
+                [self fn_save_login_list:alist_result];
+            }
         }
     };
     [web_base fn_get_data:req_form];
@@ -124,14 +126,15 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
 }
-#pragma mark -helper
--(void)fn_hide_HUDView{
-    
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-}
 -(void)fn_PopUp_alert:(NSString*)str_alert{
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:str_alert delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:str_alert delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     [alertView show];
+}
+#pragma mark -UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==[alertView firstOtherButtonIndex]) {
+         [self fn_get_data:_user_ID.text :_user_Password.text];
+    }
 }
 #pragma mark -Network Resquest sypara
 //登录成功后，请求sypara 用于控制是否显示carrier milestone
@@ -154,10 +157,11 @@
     web_base.il_url=STR_SYPARA_URL;
     web_base.iresp_class=[Resp_Sypara class];
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[Resp_Sypara class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
+    web_base.callBack=^(NSMutableArray *alist_result ,BOOL isTimeOut){
         if ([alist_result count]!=0) {
             DB_sypara *db_sypara=[[DB_sypara alloc]init];
             [db_sypara fn_save_sypara_data:alist_result];
+            db_sypara=nil;
         }
     };
     [web_base fn_get_data:req_form];

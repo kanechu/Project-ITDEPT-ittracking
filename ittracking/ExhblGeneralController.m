@@ -26,7 +26,6 @@ enum ROW_NUMOFSECTION {
 @property(nonatomic,strong)Calculate_lineHeight *calulate_obj;
 @property (strong,nonatomic) NSMutableArray *ilist_exhbl;
 @property (strong,nonatomic)DB_login *dbLogin;
-@property (assign,nonatomic)NSInteger flag_isTimeout;
 @end
 
 @implementation ExhblGeneralController
@@ -279,7 +278,6 @@ enum ROW_NUMOFSECTION {
 - (void) fn_get_data: (NSString*)as_search_column :(NSString*)as_search_value
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(fn_timeOut_handle) userInfo:nil repeats:NO];
     RequestContract *req_form = [[RequestContract alloc] init];
 
     req_form.Auth =[dbLogin WayOfAuthorization];
@@ -293,25 +291,24 @@ enum ROW_NUMOFSECTION {
     web_base.il_url =STR_SEA_URL;
     web_base.iresp_class =[RespExhbl class];
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespExhbl class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        if (_flag_isTimeout!=1) {
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (isTimeOut) {
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
+        }else{
             ilist_exhbl = alist_result;
             [self.tableView reloadData];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            _flag_isTimeout=2;
         }
     };
     [web_base fn_get_data:req_form];
+    req_form=nil;
+    dbLogin=nil;
+    search=nil;
+    web_base=nil;
     
 }
--(void)fn_timeOut_handle{
-    if (_flag_isTimeout!=2) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
-        [alertView show];
-        _flag_isTimeout=1;
-    }
-}
+
 #pragma mark -UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex!=[alertView cancelButtonIndex]) {
@@ -319,7 +316,7 @@ enum ROW_NUMOFSECTION {
         if ([check_obj fn_isPopUp_alert]==NO) {
             [self fn_get_data:is_search_column :is_search_value];
         }
-        _flag_isTimeout=0;
+        check_obj=nil;
     }
 }
 @end

@@ -15,7 +15,7 @@
 #import "NSString.h"
 #import "Res_color.h"
 #import "CheckNetWork.h"
-typedef void (^CallBack_arrResult)(NSMutableArray*);
+typedef void (^CallBack_arrResult)(NSMutableArray*,BOOL isTimeOut);
 @interface Web_base : NSObject
 
 @property (strong,nonatomic)CallBack_arrResult callBack;

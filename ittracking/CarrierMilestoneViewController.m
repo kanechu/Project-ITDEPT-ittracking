@@ -15,7 +15,7 @@
 #import "Cell_Carrier_milestone.h"
 #import "SKSTableViewCell.h"
 #import "Calculate_lineHeight.h"
-@interface CarrierMilestoneViewController ()
+@interface CarrierMilestoneViewController ()<UIAlertViewDelegate>
 @property (nonatomic,strong)NSMutableArray *alist_excntr_status;
 @property (nonatomic,strong)NSMutableArray *alist_filtered_data;
 @property (nonatomic,strong)NSMutableArray *alist_groupAndnum;
@@ -84,25 +84,42 @@
     search1.os_column = @"hbl_uid";
     search1.os_value = _is_hbl_uid;
     req_form.SearchForm = [NSSet setWithObjects:search1,nil];
+    search1=nil;
     Web_base *web_base = [[Web_base alloc] init];
     web_base.il_url =STR_EXCNTR_STATUS_URL;
     web_base.iresp_class =[RespExcntr_status class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespExcntr_status class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        DB_Excntr_status *db_excntr=[[DB_Excntr_status alloc]init];
-        [db_excntr fn_save_excntr_status_data:alist_result];
-        alist_excntr_status=[db_excntr fn_all_excntr_status_data];
-        alist_groupAndnum=[db_excntr fn_get_groupAndNum];
-        [self fn_get_filtered_data];
-        [self.skstableview reloadData];
-        if ([alist_groupAndnum count]==2) {
-            [self.skstableview fn_expandall];
+        if (isTimeOut) {
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
+        }else{
+            DB_Excntr_status *db_excntr=[[DB_Excntr_status alloc]init];
+            [db_excntr fn_save_excntr_status_data:alist_result];
+            alist_excntr_status=[db_excntr fn_all_excntr_status_data];
+            alist_groupAndnum=[db_excntr fn_get_groupAndNum];
+            [self fn_get_filtered_data];
+            [self.skstableview reloadData];
+            if ([alist_groupAndnum count]==2) {
+                [self.skstableview fn_expandall];
+            }
         }
+        
     };
     [web_base fn_get_data:req_form];
+    req_form=nil;
+    dbLogin=nil;
+    web_base=nil;
 }
+#pragma mark -UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex==[alertView firstOtherButtonIndex]) {
+        [self fn_get_excntr_status_data];
+    }
+}
+
 #pragma mark filter array
 -(void)fn_get_filtered_data{
     for (NSMutableDictionary *dic in alist_groupAndnum) {

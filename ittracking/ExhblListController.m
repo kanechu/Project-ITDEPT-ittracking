@@ -17,7 +17,6 @@
 
 @interface ExhblListController ()
 @property (strong,nonatomic) NSMutableArray *ilist_exhbl;
-@property (assign,nonatomic) NSInteger flag_isTimeout;
 @end
 
 @implementation ExhblListController
@@ -153,7 +152,6 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 - (void) fn_get_data: (NSString*)as_search_no
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(fn_timeOut_handle) userInfo:nil repeats:NO];
     RequestContract *req_form = [[RequestContract alloc] init];
     
     DB_login *dbLogin=[[DB_login alloc]init];
@@ -169,31 +167,29 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     web_base.iresp_class =[RespExhbl class];
    
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespExhbl class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
-        if (_flag_isTimeout!=1) {
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (isTimeOut) {
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network request timed out, retry or cancel the request ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+            [alertView show];
+        }else{
             ilist_exhbl = alist_result;
             [self.tableView reloadData];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            _flag_isTimeout=2;
         }
     };
     [web_base fn_get_data:req_form];
+    req_form=nil;
+    dbLogin=nil;
+    search=nil;
+    web_base=nil;
     
 }
--(void)fn_timeOut_handle{
-    if (_flag_isTimeout!=2) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:@"Network requests data timeout !" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
-        [alertView show];
-        _flag_isTimeout=1;
-    }
-}
+
 #pragma mark -UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex!=[alertView cancelButtonIndex]) {
         CheckNetWork *check_obj=[[CheckNetWork alloc]init];
         if ([check_obj fn_isPopUp_alert]==NO) {
-             _flag_isTimeout=0;
             if ([iSearchBar.text length]==0) {
                 [self fn_get_data:is_search_no];
                 
@@ -201,6 +197,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
                 [self fn_get_data:iSearchBar.text];
             }
         }
+        check_obj=nil;
     }
 }
 #pragma mark UISearchBarDelegate

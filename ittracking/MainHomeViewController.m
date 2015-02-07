@@ -102,7 +102,7 @@ CustomBadge *iobj_customBadge;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //background task here
         Web_get_alert *web_get_alert = [[Web_get_alert alloc] init];
-        web_get_alert.callBack=^(NSMutableArray *alist_result){
+        web_get_alert.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
             DB_alert * ldb_alert = [[DB_alert alloc] init];
             [ldb_alert fn_save_data:alist_result];
         };
@@ -298,10 +298,14 @@ CustomBadge *iobj_customBadge;
     web_base.iresp_class =[RespIcon class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespIcon class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
         [self fn_save_icon_list:alist_result];
     };
     [web_base fn_get_data:req_form];
+    req_form=nil;
+    dbLogin=nil;
+    search=nil;
+    web_base=nil;
     
 }
 
@@ -323,6 +327,7 @@ CustomBadge *iobj_customBadge;
             }
         }
     }
+    db=nil;
     
 }
 /**
@@ -344,13 +349,18 @@ CustomBadge *iobj_customBadge;
     web_base.iresp_class =[RespSearchCriteria class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespSearchCriteria class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
         DB_searchCriteria *db=[[DB_searchCriteria alloc]init];
         if ([db fn_delete_all_data]) {
             [db fn_save_data:alist_result];
         }
+        db=nil;
     };
     [web_base fn_get_data:req_form];
+    req_form=nil;
+    dbLogin=nil;
+    search=nil;
+    web_base=nil;
     
 }
 

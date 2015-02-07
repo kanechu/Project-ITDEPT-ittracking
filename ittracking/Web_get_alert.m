@@ -20,7 +20,6 @@
 
 - (void) fn_get_data
 {
-    
     DB_login *dbLogin = [[DB_login alloc] init];
     
     RequestContract *req_form = [[RequestContract alloc] init];
@@ -31,24 +30,21 @@
     search1.os_column = @"device_id";
     search1.os_value = @"dev";
     
-    
-    
     SearchFormContract *search2 = [[SearchFormContract alloc]init];
     search2.os_column = @"request_sart_date";
-    search2.os_value = @"2014-02-01";
+    search2.os_value = @"2015-02-07";
     
     req_form.SearchForm = [NSSet setWithObjects:search1,search2, nil];
-    
     
     Web_base *web_base = [[Web_base alloc] init];
     web_base.il_url =STR_ALERT_URL;
     web_base.iresp_class =[RespAlert class];
     
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespAlert class]];
-    web_base.callBack=^(NSMutableArray *alist_result){
+    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
         ilist_alert = alist_result;
         if (_callBack) {
-            _callBack(ilist_alert);
+            _callBack(ilist_alert,NO);
         }
     };
     [web_base fn_get_data:req_form];
