@@ -246,7 +246,6 @@ enum ROW_NUMOFSECTION {
     };
     [web_base fn_get_data:req_form];
     req_form=nil;
-    dbLogin=nil;
     web_base=nil;
     
 }
