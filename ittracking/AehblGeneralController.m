@@ -230,6 +230,7 @@ enum ROW_NUMOFSECTION {
     search=nil;
     
     Web_base *web_base = [[Web_base alloc] init];
+    web_base.base_url=[dbLogin fn_get_field_content:kWeb_addr];
     web_base.il_url =STR_AIR_URL;
     web_base.iresp_class =[RespAehbl class];
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespAehbl class]];

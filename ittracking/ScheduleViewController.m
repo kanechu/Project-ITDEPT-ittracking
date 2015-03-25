@@ -220,6 +220,7 @@
         req_form.SearchForm=[NSSet setWithArray:arr_searchForm];
     }
     Web_base *web_base=[[Web_base alloc]init];
+    web_base.base_url=[dbLogin fn_get_field_content:kWeb_addr];
     web_base.il_url =STR_SCHEDULE_URL;
     web_base.iresp_class =[RespSchedule class];
     

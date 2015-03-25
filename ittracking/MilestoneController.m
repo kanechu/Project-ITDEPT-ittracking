@@ -227,6 +227,7 @@
     search2=nil;
     
     Web_base *web_base = [[Web_base alloc] init];
+    web_base.base_url=[dbLogin fn_get_field_content:kWeb_addr];
     web_base.il_url =STR_MILESTONE_URL;
     web_base.iresp_class =[RespMilestone class];
     

@@ -164,6 +164,7 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     
     Web_base *web_base = [[Web_base alloc] init];
     web_base.il_url =STR_SEA_URL;
+    web_base.base_url=[dbLogin fn_get_field_content:kWeb_addr];
     web_base.iresp_class =[RespExhbl class];
    
     web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespExhbl class]];

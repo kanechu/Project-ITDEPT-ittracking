@@ -59,6 +59,7 @@
     search=nil;
     search1=nil;
     Web_base *web_base=[[Web_base alloc]init];
+    web_base.base_url=[dbLogin fn_get_field_content:kWeb_addr];
     web_base.il_url =STR_PORTNAME_URL;
     web_base.iresp_class =[RespPortName class];
     
