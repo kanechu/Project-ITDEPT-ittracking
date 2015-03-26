@@ -9,7 +9,8 @@
 #import "AppConstants.h"
 
 #ifdef DEBUG
-NSString* const STR_BASE_URL = @"http://223.255.167.158/itwebapi_v2";
+NSString* const STR_BASE_URL = @"http://demo.itdept.com.hk/itcrm_web_api/";
+NSString* const STR_CONFIG_URL=@"api/System/app_config";
 NSString* const STR_LOGIN_URL=@"api/users/login";
 NSString* const STR_SYPARA_URL=@"api/System/sypara";
 NSString* const STR_PERMIT_URL=@"api/Users/permit";
@@ -29,8 +30,9 @@ NSString* const STR_EXCNTR_STATUS_URL=@"api/cargotracking/excntr_status";
 //Worldtrans company
 //NSString* const STR_BASE_URL = @"http://223.255.167.158/itwebapi/";
 //客户真正的服务器
-NSString* const STR_BASE_URL = @"http://223.255.167.158/itwebapi_v2";
-//NSString* const STR_BASE_URL = @"http://192.168.1.17/kie_web_api/";
+//NSString* const STR_BASE_URL = @"http://223.255.167.158/itwebapi_v2";
+NSString* const STR_BASE_URL = @"http://demo.itdept.com.hk/itcrm_web_api/";
+NSString* const STR_CONFIG_URL=@"api/System/app_config";
 NSString* const STR_LOGIN_URL=@"api/users/login";
 NSString* const STR_SYPARA_URL=@"api/System/sypara";
 NSString* const STR_PERMIT_URL=@"api/Users/permit";

@@ -18,7 +18,8 @@
 -(void)fn_get_permit_data:(NSString*)base_url callBack:(call_isGetPermit)call_back{
     RequestContract *ao_form=[[RequestContract alloc]init];
     AuthContract *auth=[[AuthContract alloc]init];
-    auth.system=DEFAULT_SYSTEM;//备注，这里先写死，日后记住改过来
+#warning -neet to mofify
+    auth.system=@"ITNEW";//备注，这里先写死，日后记住改过来
     auth.app_code=DEFAULT_APP_CODE;
     base_url=@"http://192.168.1.17/kie_web_api/";//这里也先写死，日后记住改过来
     ao_form.Auth=auth;

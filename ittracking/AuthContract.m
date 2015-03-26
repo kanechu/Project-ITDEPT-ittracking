@@ -16,6 +16,8 @@
 
 @synthesize system;
 
+@synthesize com_sys_code;
+
 @synthesize encrypted;
 
 @synthesize company_code;
@@ -23,5 +25,7 @@
 @synthesize device_id;
 
 @synthesize app_code;
+
+@synthesize version;
 
 @end

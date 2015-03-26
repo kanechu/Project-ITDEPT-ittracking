@@ -13,8 +13,8 @@
 #import "AppDelegate.h"
 #import "DB_device.h"
 #import "AppConstants.h"
-#define DEFAULT_USERCODE @"ANONYMOUS"
-#define DEFAULT_PASS @"ANONYMOUS1"
+#import "Resp_app_config.h"
+
 @implementation DB_login
 
 @synthesize queue;
@@ -24,7 +24,7 @@
     return self;
 }
 
-- (BOOL) fn_save_data:(NSString*)user_ID password:(NSString*)user_pass logo:(NSString*)user_logo
+- (BOOL) fn_save_data:(NSString*)user_ID password:(NSString*)user_pass system:(NSString*)sys_name logo:(NSString*)user_logo
 {
     // get current date/time
     NSDate *today = [NSDate date];
@@ -35,7 +35,7 @@
     __block BOOL ib_updated=NO;
     [queue inDataBase:^(FMDatabase *db){
         if ([db open]) {
-            NSString *insertSQL = [NSString stringWithFormat:@"insert into loginInfo (user_code,password,login_time,user_logo) values (\"%@\",\"%@\",\"%@\",\"%@\")", user_ID,user_pass,ls_currentTime,user_logo];
+            NSString *insertSQL = [NSString stringWithFormat:@"insert into loginInfo (user_code,password,sys_name,login_time,user_logo) values (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\")", user_ID,user_pass,sys_name,ls_currentTime,user_logo];
             ib_updated =[db executeUpdate:insertSQL];
             [db close];
         }
@@ -88,27 +88,88 @@
 -(AuthContract*)WayOfAuthorization{
     AuthContract *auth=[[AuthContract alloc]init];
     NSString * ls_device_token = [(AppDelegate *)[[UIApplication sharedApplication] delegate] is_device_token];
-     DB_device *device=[[DB_device alloc]init];
+    DB_device *device=[[DB_device alloc]init];
     if (ls_device_token==nil) {
         [device fn_save_data:@"dev-simulator"];
         ls_device_token=@"dev-simulator";
     }else{
-         [device fn_save_data:ls_device_token];
+        [device fn_save_data:ls_device_token];
     }
-   
-    if ([self isLoginSuccess]) {
-        NSMutableArray *userInfo=[self fn_get_all_msg];
-        auth.user_code =[[userInfo objectAtIndex:0] valueForKey:@"user_code"];
-        auth.password = [[userInfo objectAtIndex:0] valueForKey:@"password"];
-        auth.company_code=DEFAULT_COMPANY_CODE;
-        auth.encrypted=@"0";
-    }else{
-        auth.user_code =DEFAULT_USERCODE;
-        auth.password =DEFAULT_PASS;
+    NSMutableArray *userInfo=[self fn_get_all_msg];
+    if ([userInfo count]!=0) {
+        NSMutableDictionary *dic_userInfo=[userInfo firstObject];
+        auth.user_code =[dic_userInfo valueForKey:@"user_code"];
+        auth.password = [dic_userInfo valueForKey:@"password"];
+        
+        auth.system=[dic_userInfo valueForKey:@"sys_name"];
+        /**
+         *  encrypted 如果为1，密码需要AES128加密，并base64 encode
+         */
+        auth.encrypted=IS_ENCRYPTED;
+        auth.device_id = ls_device_token;
     }
-    auth.system = DEFAULT_SYSTEM;
-    auth.device_id = ls_device_token;
-
     return auth;
 }
+#pragma mark -app config
+- (BOOL)fn_save_app_config_data:(NSMutableArray*)alist_appConfig{
+    __block BOOL ib_updated=NO;
+    [queue inDataBase:^(FMDatabase *db){
+        if ([db open]) {
+            for (Resp_app_config *lmap_data in alist_appConfig) {
+                NSMutableDictionary *ldict_row=[[NSDictionary dictionaryWithPropertiesOfObject:lmap_data]mutableCopy];
+                ib_updated =[db executeUpdate:@"delete from app_config where company_code = :company_code and sys_name = :sys_name and env = :env and web_addr =:web_addr and php_addr =:php_addr" withParameterDictionary:ldict_row];
+                
+                ib_updated =[db executeUpdate:@"insert into app_config (company_code, sys_name, env, web_addr,php_addr) values (:company_code, :sys_name, :env, :web_addr,:php_addr)" withParameterDictionary:ldict_row];
+            }
+            [db close];
+        }
+    }];
+    return ib_updated;
+}
+-(NSMutableArray*)fn_get_all_appConfig_data{
+    __block NSMutableArray *llist_result=[NSMutableArray array];
+    [queue inDataBase:^(FMDatabase *db){
+        if ([db open]) {
+            FMResultSet *lfmdb_result=[db executeQuery:@"SELECT * FROM app_config"];
+            while ([lfmdb_result next]) {
+                [llist_result addObject:[lfmdb_result resultDictionary]];
+            }
+            [db close];
+        }
+    }];
+    
+    return llist_result;
+}
+-(BOOL)fn_delete_all_appConfig_data{
+    __block BOOL ib_deleted=NO;
+    [queue inDataBase:^(FMDatabase *db){
+        if ([db open]) {
+            ib_deleted=[db executeUpdate:@"delete from app_config"];
+            [db close];
+        }
+    }];
+    return ib_deleted;
+}
+-(NSString*)fn_get_field_content:(kAppConfig_field)field_name{
+    NSMutableArray *alist_appconfig=[self fn_get_all_appConfig_data];
+    NSString *str_field_content;
+    NSString *str_key;
+    if (field_name==kWeb_addr) {
+        str_key=@"web_addr";
+    }else if (field_name==kPhp_addr){
+        str_key=@"php_addr";
+    }else if (field_name==kCompany_code){
+        str_key=@"company_code";
+    }else if (field_name==kSys_name){
+        str_key=@"sys_name";
+    }
+    if ([alist_appconfig count]!=0) {
+        str_field_content=[[alist_appconfig objectAtIndex:0]valueForKey:str_key];
+        str_field_content=[str_field_content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    }
+    str_key=nil;
+    alist_appconfig=nil;
+    return str_field_content;
+}
+
 @end

@@ -16,6 +16,8 @@
 
 @property(nonatomic, copy) NSString *system;
 
+@property(nonatomic, copy) NSString *com_sys_code;
+
 @property(nonatomic, copy) NSString *encrypted;
 
 @property(nonatomic, copy) NSString *company_code;
@@ -24,4 +26,5 @@
 
 @property(nonatomic, copy) NSString *app_code;
 
+@property(nonatomic, copy) NSString *version;
 @end

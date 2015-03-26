@@ -20,6 +20,8 @@ typedef void (^CallBack_arrResult)(NSMutableArray*,BOOL isTimeOut);
 
 @property (strong,nonatomic)CallBack_arrResult callBack;
 
+@property (strong,nonatomic) NSString *base_url;
+
 @property (strong,nonatomic) NSString *il_url;
 
 @property (strong,nonatomic) Class iresp_class;

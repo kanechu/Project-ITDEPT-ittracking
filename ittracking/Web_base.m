@@ -24,12 +24,12 @@
     RKObjectMapping *lo_authMapping = [RKObjectMapping requestMapping];
     [lo_authMapping addAttributeMappingsFromDictionary:@{ @"user_code": @"user_code",
                                                        @"password": @"password",
-                                                          @"system": @"system" ,
+                                                          @"system": @"system" ,@"com_sys_code":@"com_sys_code",
                                                           @"encrypted":
                                                               @"encrypted",
                                                           @"company_code":@"company_code",
                                                           @"device_id": @"device_id",
-                                                          @"app_code": @"app_code"}];
+                                                          @"app_code": @"app_code",@"version":@"version"}];
     RKObjectMapping *lo_addMapping=[RKObjectMapping requestMapping];
     
     RKObjectMapping *lo_reqMapping = [RKObjectMapping requestMapping];
@@ -65,7 +65,7 @@
                                                                                            keyPath:nil
                                                                                        statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:STR_BASE_URL]];
+    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:_base_url]];
     [manager addRequestDescriptor:requestDescriptor];
     [manager addResponseDescriptor:responseDescriptor];
     manager.requestSerializationMIMEType = RKMIMETypeJSON;

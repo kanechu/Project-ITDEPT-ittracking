@@ -66,7 +66,9 @@ static int DB_VERSION = 1;
     } else {
         NSString *ls_sql_stmt =
         @"CREATE TABLE IF NOT EXISTS alert ( unique_id INTEGER PRIMARY KEY,user_code TEXT NOT NULL DEFAULT '', ct_type TEXT NOT NULL DEFAULT '', so_uid TEXT NOT NULL DEFAULT '', so_no TEXT NOT NULL DEFAULT '', hbl_uid TEXT NOT NULL DEFAULT '', hbl_no TEXT NOT NULL DEFAULT '', status_desc TEXT NOT NULL DEFAULT '', act_status_date TEXT NOT NULL DEFAULT '', act_status_time TEXT NOT NULL DEFAULT '', msg_recv_date TEXT NOT NULL DEFAULT '', is_read INT DEFAULT 0);";
-        NSString *ls_sql_login = @"CREATE TABLE IF NOT EXISTS loginInfo( unique_id INTEGER PRIMARY KEY,user_code TEXT NOT NULL DEFAULT '',password TEXT NOT NULL DEFAULT '',login_time TEXT NOT NULL DEFAULT '',user_logo TEXT)";
+        NSString *ls_sql_login = @"CREATE TABLE IF NOT EXISTS loginInfo( unique_id INTEGER PRIMARY KEY,user_code TEXT NOT NULL DEFAULT '',password TEXT NOT NULL DEFAULT '',sys_name TEXT NOT NULL DEFAULT '',login_time TEXT NOT NULL DEFAULT '',user_logo TEXT)";
+        
+        NSString *ls_sql_RespConfig = @"CREATE TABLE IF NOT EXISTS app_config( unique_id INTEGER PRIMARY KEY,company_code TEXT NOT NULL DEFAULT '',sys_name TEXT NOT NULL DEFAULT '',env TEXT NOT NULL DEFAULT '',web_addr TEXT,php_addr TEXT NOT NULL DEFAULT '')";
         NSString *ls_sql_device=@"CREATE TABLE IF NOT EXISTS device( unique_id INTEGER PRIMARY KEY,device_id TEXT NOT NULL DEFAULT '')";
         NSString *ls_sql_portName=@"CREATE TABLE IF NOT EXISTS portName( unique_id INTEGER PRIMARY KEY,display TEXT NOT NULL DEFAULT '',data TEXT NOT NULL DEFAULT '',desc TEXT NOT NULL DEFAULT '',image TEXT NOT NULL DEFAULT '')";
          NSString *ls_sql_searchCriteria=@"CREATE TABLE IF NOT EXISTS searchCriteria( unique_id INTEGER PRIMARY KEY,srch_type TEXT NOT NULL DEFAULT '',seq TEXT NOT NULL DEFAULT '',col_code TEXT NOT NULL DEFAULT '',col_label TEXT NOT NULL DEFAULT '',col_type TEXT NOT NULL DEFAULT '',col_option TEXT NOT NULL DEFAULT '',col_def TEXT NOT NULL DEFAULT '',group_name TEXT NOT NULL DEFAULT '',is_mandatory TEXT NOT NULL DEFAULT '',icon_name TEXT NOT NULL DEFAULT '',save_time TEXT NOT NULL DEFAULT '')";
@@ -78,6 +80,7 @@ static int DB_VERSION = 1;
         
         [database executeUpdate:ls_sql_stmt];
         [database executeUpdate:ls_sql_login];
+        [database executeUpdate:ls_sql_RespConfig];
         [database executeUpdate:ls_sql_device];
         [database executeUpdate:ls_sql_portName];
         [database executeUpdate:ls_sql_searchCriteria];
