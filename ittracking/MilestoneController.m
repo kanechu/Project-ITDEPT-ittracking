@@ -148,7 +148,6 @@
     }
     
    [cell.ilb_status_remark setFrame:CGRectMake(cell.ilb_status_remark.frame.origin.x, cell.ilb_status_desc.frame.origin.y+height, cell.ilb_status_remark.frame.size.width,height1)];
-    [cell.ipic_row_status setFrame:CGRectMake(cell.ipic_row_status.frame.origin.x, cell.ipic_row_status.frame.origin.y, cell.ipic_row_status.frame.size.width, height+height1+17)];    
     return cell;
 }
 #pragma mark UITableViewDelegate

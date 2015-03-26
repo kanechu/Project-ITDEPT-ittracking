@@ -17,7 +17,15 @@
 #import "DB_login.h"
 @implementation Web_get_alert
 @synthesize ilist_alert;
-
++ (Web_get_alert*) fn_get_shareInstance{
+ 
+    static dispatch_once_t pred=0;
+    __strong static Web_get_alert *web_getAlert_obj=nil;
+    dispatch_once(&pred, ^{
+        web_getAlert_obj=[[self alloc]init];
+    });
+    return web_getAlert_obj;
+}
 - (void) fn_get_data
 {
     DB_login *dbLogin = [[DB_login alloc] init];
@@ -35,8 +43,8 @@
     search2.os_value = @"2015-02-07";
     
     req_form.SearchForm = [NSSet setWithObjects:search1,search2, nil];
-    
     Web_base *web_base = [[Web_base alloc] init];
+    web_base.base_url=[dbLogin fn_get_field_content:kWeb_addr];
     web_base.il_url =STR_ALERT_URL;
     web_base.iresp_class =[RespAlert class];
     

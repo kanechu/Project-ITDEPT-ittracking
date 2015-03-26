@@ -13,8 +13,6 @@
 #import "Web_get_alert.h"
 #import "DB_login.h"
 #import "DB_alert.h"
-#import "DB_searchCriteria.h"
-#import "DB_icon.h"
 #import "DB_sypara.h"
 #import "CustomBadge.h"
 #import "Menu_home.h"
@@ -23,9 +21,7 @@
 #import "TrackHomeController.h"
 #import "AlertController.h"
 #import "DB_portName.h"
-#import "RespSearchCriteria.h"
 #import "PopViewManager.h"
-#import "RespIcon.h"
 #import "NSDictionary.h"
 @interface MainHomeViewController ()
 
@@ -33,7 +29,6 @@
 #define LOGINSHEETSIZE CGSizeMake(280, 220)
 #define SHEETSIZE1 CGSizeMake(280, 250)
 #define SHEETSIZE2 CGSizeMake(280, 180)
-static NSInteger flag_isLogin=0;
 
 @implementation MainHomeViewController
 @synthesize ilist_menu;
@@ -45,14 +40,16 @@ CustomBadge *iobj_customBadge;
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self=[super initWithCoder:aDecoder];
     if (self) {
-        [self fn_get_allIcon];
+        //[self fn_get_allIcon];
     }
     return self;
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_loginBtn addTarget:self action:@selector(fn_pre_login_or_logout:) forControlEvents:UIControlEventTouchUpInside];
+    [self fn_refresh_menu];
+    [self fn_isLogin_ITTracking];
+    [_loginBtn addTarget:self action:@selector(fn_logout_ITTracking:) forControlEvents:UIControlEventTouchUpInside];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self gettingNotification];
@@ -69,29 +66,6 @@ CustomBadge *iobj_customBadge;
 	// Do any additional setup after loading the view.
 }
 
-//这是在viewDidLoad执行后才执行的方法，避免因为autoLayer,导致视图不能滑动
--(void)viewDidAppear:(BOOL)animated{
-    
-    DB_login *dbLogin=[[DB_login alloc]init];
-    if ([dbLogin isLoginSuccess]) {
-        [self BtnGraphicMixed];
-        NSString *str=[[[dbLogin fn_get_all_msg] objectAtIndex:0] valueForKey:@"user_code"];
-        [_loginBtn setTitle:str forState:UIControlStateNormal];
-        [self fn_show_user_logo];
-        //如果已经登录，设置flag_isLogin=1，显示alert项
-        flag_isLogin=1;
-        
-    }else{
-        [_loginBtn setTitle:@"LOGIN" forState:UIControlStateNormal];
-    }
-    [self fn_refresh_menu];
-    DB_searchCriteria *dbSearch=[[DB_searchCriteria alloc]init];
-    NSMutableArray* arr=[dbSearch fn_get_all_data];
-    if (arr.count==0) {
-        [self fn_get_data];
-    }
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -101,13 +75,16 @@ CustomBadge *iobj_customBadge;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //background task here
-        Web_get_alert *web_get_alert = [[Web_get_alert alloc] init];
+        Web_get_alert *web_get_alert =[Web_get_alert fn_get_shareInstance];
         web_get_alert.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
             DB_alert * ldb_alert = [[DB_alert alloc] init];
             [ldb_alert fn_save_data:alist_result];
         };
-        [web_get_alert fn_get_data];
-        
+        NSUserDefaults *user_isLogin=[NSUserDefaults standardUserDefaults];
+        NSInteger flag_isLogin=[user_isLogin integerForKey:@"isLogin"];
+        if (flag_isLogin==1) {
+            [web_get_alert fn_get_data];
+        }
         dispatch_async( dispatch_get_main_queue(), ^{
             // update UI here
             [self fn_set_unread_msg_badge];
@@ -127,9 +104,7 @@ CustomBadge *iobj_customBadge;
 {
     ilist_menu = [[NSMutableArray alloc] init];
     [ilist_menu addObject:[Menu_home fn_create_item:@"Tracking" image:@"ic_ct" segue:@"segue_trackHome"]];
-    if (flag_isLogin==1) {
-        [ilist_menu addObject:[Menu_home fn_create_item:@"Alert" image:@"alert" segue:@"segue_alert"]];
-    }
+    [ilist_menu addObject:[Menu_home fn_create_item:@"Alert" image:@"alert" segue:@"segue_alert"]];
     [ilist_menu addObject:[Menu_home fn_create_item:@"Schedule" image:@"schedule_icon" segue:@"Segue_ExpandSearch"]];
     self.iui_collectionview.delegate = self;
     
@@ -148,24 +123,6 @@ CustomBadge *iobj_customBadge;
     menu_item=[ilist_menu objectAtIndex:button.tag];
     [self performSegueWithIdentifier:menu_item.is_segue sender:self];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(fn_set_unread_msg_badge) name:@"update" object:nil];
-    if ([menu_item.is_segue isEqualToString:@"Segue_ExpandSearch"]) {
-        NSDate *now_time=[NSDate date];
-        NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-        DB_searchCriteria *dbSearch=[[DB_searchCriteria alloc]init];
-        NSMutableArray* arr=[dbSearch fn_get_all_data];
-        NSString *str=nil;
-        if ([arr count]!=0) {
-            str =[[arr objectAtIndex:0] valueForKey:@"save_time"];
-            NSDate *save_time=[formatter dateFromString:str];
-            NSTimeInterval time=[now_time timeIntervalSinceDate:save_time];
-            int  hours=((int)time)%(3600*24)/3600;
-            NSLog(@"%d",hours);
-            if (hours>=3) {
-                [self fn_get_data];
-            }
-        }
-    }
 }
 
 //登陆后显示logo图片
@@ -185,183 +142,84 @@ CustomBadge *iobj_customBadge;
     
 }
 //实现按钮的图文混排
--(void)BtnGraphicMixed{
-    DB_login *dbLogin=[[DB_login alloc]init];
-    if ([dbLogin isLoginSuccess]==NO) {
-        
-        [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_loginBtn setImage:nil forState:UIControlStateNormal];
-        [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-        
+-(void)fn_BtnGraphicMixed:(NSString*)user_code{
+    [_loginBtn setTitle:user_code forState:UIControlStateNormal];
+    [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_loginBtn setImage:[UIImage imageNamed:@"userImage"] forState:UIControlStateNormal];
+    if ([user_code length]<=2) {
+        [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -50, 0, 0)];        }
+    else if([user_code length]<16){
+        NSInteger left=-(45+(user_code.length-2)/2*10+30);
+        [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0,left , 0, 0)];
     }else{
-        
-        [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_loginBtn setImage:[UIImage imageNamed:@"userImage"] forState:UIControlStateNormal];
-        NSString *str=[[[dbLogin fn_get_all_msg] objectAtIndex:0] valueForKey:@"user_code"];
-        if ([str length]<=2) {
-            [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -50, 0, 0)];        }
-        else if([str length]<16){
-            NSInteger left=-(45+(str.length-2)/2*10+30);
-            [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0,left , 0, 0)];
-        }else{
-            [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -150, 0, 0)];
-        }
-        [_loginBtn setImageEdgeInsets:UIEdgeInsetsMake(0, _loginBtn.frame.size.width-35, 0, 0)];
+        [_loginBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -150, 0, 0)];
     }
+    [_loginBtn setImageEdgeInsets:UIEdgeInsetsMake(0, _loginBtn.frame.size.width-35, 0, 0)];
+    
 }
-#pragma mark user LOGIN or LOGOUT
-- (void)fn_pre_login_or_logout:(id)sender {
-    DB_login *dbLogin=[[DB_login alloc]init];
-    PopViewManager *popV=[[PopViewManager alloc]init];
-    if ([dbLogin isLoginSuccess]==NO) {
+- (void)fn_isLogin_ITTracking{
+    NSUserDefaults *user_isLogin=[NSUserDefaults standardUserDefaults];
+    NSInteger flag_isLogin=[user_isLogin integerForKey:@"isLogin"];
+    if (flag_isLogin==0) {
         LoginViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
         VC.callBack=^(NSString* user_id){
             [self fn_after_login:user_id];
         };
-        [popV PopupView:VC Size:LOGINSHEETSIZE uponView:self];
+        [self presentViewController:VC animated:NO completion:nil];
     }else{
-        //点击用户名称项，执行下面的语句
-        LogoutViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
-        VC.callback=^(){
-            [self fn_user_logout];
-        };
-        NSString *logo=@"";
-        if ([[dbLogin fn_get_all_msg]count]!=0) {
-            logo=[[[dbLogin fn_get_all_msg] objectAtIndex:0] valueForKey:@"user_logo"];
-        }
-        //如果logo为空的话，弹出的视图size变小
-        if (logo==NULL || logo==nil || logo.length==0) {
-            [popV PopupView:VC Size:SHEETSIZE2 uponView:self];
-        }else{
-            [popV PopupView:VC Size:SHEETSIZE1 uponView:self];
-        }
+        DB_login *dbLogin=[[DB_login alloc]init];
+        NSString *user_code=[[[dbLogin fn_get_all_msg]firstObject]valueForKey:@"user_code"];
+        [self fn_show_user_logo];
+        [self fn_BtnGraphicMixed:user_code];
+    }
+}
+#pragma mark -user logout
+- (void)fn_logout_ITTracking:(id)sender {
+    DB_login *dbLogin=[[DB_login alloc]init];
+    PopViewManager *popV=[[PopViewManager alloc]init];
+    //点击用户名称项，执行下面的语句
+    LogoutViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
+    VC.callback=^(){
+        [self fn_user_logout];
         
+    };
+    NSString *logo=@"";
+    if ([[dbLogin fn_get_all_msg]count]!=0) {
+        logo=[[[dbLogin fn_get_all_msg] objectAtIndex:0] valueForKey:@"user_logo"];
+    }
+    //如果logo为空的话，弹出的视图size变小
+    if (logo==NULL || logo==nil || logo.length==0) {
+        [popV PopupView:VC Size:SHEETSIZE2 uponView:self];
+    }else{
+        [popV PopupView:VC Size:SHEETSIZE1 uponView:self];
     }
     
 }
 //登录成功后，导航的按钮项显示为用户的名称
 -(void)fn_after_login:(NSString*)userName{
     
-    [self BtnGraphicMixed];
-    [_loginBtn setTitle:userName forState:UIControlStateNormal];
+    [self fn_BtnGraphicMixed:userName];
     //登陆后显示logo图片
     [self fn_show_user_logo];
-    //登陆成功后，设置flag_isLogin=1,显示alert项
-     flag_isLogin=1;
-    [self fn_refresh_menu];
-    //登陆成功后，请求搜索标准的数据
-    [self fn_get_data];
-
 }
-//退出登录后，导航的按钮项显示为LOGIN
+//退出登录后
 - (void)fn_user_logout{
     
     DB_login *dbLogin=[[DB_login alloc]init];
     [dbLogin fn_delete_record];
     _imageView.image=nil;
-    [self BtnGraphicMixed];
-    [_loginBtn setTitle:@"LOGIN" forState:UIControlStateNormal];
-    //退出登陆后，设置flag_isLogin=0,隐藏alert项
-    flag_isLogin=0;
-    [self fn_refresh_menu];
     //清除portName的缓存
     DB_portName *db=[[DB_portName alloc]init];
     [db fn_delete_all_data];
     //清除sypara的缓存
     DB_sypara *db_sypara=[[DB_sypara alloc]init];
     [db_sypara fn_delete_all_sypara_data];
-}
-#pragma mark NetWork request
--(void)fn_get_allIcon{
-    DB_icon *db=[[DB_icon alloc]init];
-    if ([[db fn_get_all_iconData] count]==0) {
-        [self fn_get_icon_data:@"0"];
-    }else{
-        NSString *recent_update=[[db fn_get_recent_update] valueForKey:@"max(upd_date)"];
-        [self fn_get_icon_data:recent_update];
-    }
-}
-//请求图片
--(void)fn_get_icon_data:(NSString*)search_value{
-    
-    RequestContract *req_form=[[RequestContract alloc]init];
-    DB_login *dbLogin=[[DB_login alloc]init];
-    req_form.Auth=[dbLogin WayOfAuthorization];
-    
-    SearchFormContract *search=[[SearchFormContract alloc]init];
-    search.os_column=@"rec_upd_date";
-    search.os_value=search_value;
-    
-    req_form.SearchForm=[NSSet setWithObjects:search,nil];
-    Web_base *web_base=[[Web_base alloc]init];
-    web_base.il_url =STR_ICON_URL;
-    web_base.iresp_class =[RespIcon class];
-    
-    web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespIcon class]];
-    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
-        [self fn_save_icon_list:alist_result];
+    LoginViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+    VC.callBack=^(NSString* user_id){
+        [self fn_after_login:user_id];
     };
-    [web_base fn_get_data:req_form];
-    req_form=nil;
-    dbLogin=nil;
-    search=nil;
-    web_base=nil;
-    
-}
-
-
-//搜索标准的图片存入数据库中
--(void)fn_save_icon_list:(NSMutableArray*)ilist_result{
-    DB_icon *db=[[DB_icon alloc]init];
-    if ([[db fn_get_all_iconData]count]==0) {
-        [db fn_save_data:ilist_result];
-    }else{
-        for (RespIcon *lmap_icon in ilist_result) {
-            NSMutableDictionary *ldict_row = [[NSDictionary dictionaryWithPropertiesOfObject:lmap_icon] mutableCopy];
-            if ([db fn_isExist_icon:[ldict_row valueForKey:@"ic_name"]]) {
-                [db fn_save_update_data:ldict_row];
-            }else{
-                NSMutableArray *arr=[[NSMutableArray alloc]init];
-                [arr addObject:ldict_row];
-                [db fn_save_data:arr];
-            }
-        }
-    }
-    db=nil;
-    
-}
-/**
- *  请求搜索标准数据
- */
--(void)fn_get_data{
-    
-    RequestContract *req_form=[[RequestContract alloc]init];
-    DB_login *dbLogin=[[DB_login alloc]init];
-    req_form.Auth=[dbLogin WayOfAuthorization];
-    
-    SearchFormContract *search=[[SearchFormContract alloc]init];
-    search.os_column=@"form";
-    search.os_value=@"ctschedule";
-    
-    req_form.SearchForm=[NSSet setWithObjects:search,nil];
-    Web_base *web_base=[[Web_base alloc]init];
-    web_base.il_url =STR_SEARCHCRITERIA_URL;
-    web_base.iresp_class =[RespSearchCriteria class];
-    
-    web_base.ilist_resp_mapping =[NSArray arrayWithPropertiesOfObject:[RespSearchCriteria class]];
-    web_base.callBack=^(NSMutableArray *alist_result,BOOL isTimeOut){
-        DB_searchCriteria *db=[[DB_searchCriteria alloc]init];
-        if ([db fn_delete_all_data]) {
-            [db fn_save_data:alist_result];
-        }
-        db=nil;
-    };
-    [web_base fn_get_data:req_form];
-    req_form=nil;
-    dbLogin=nil;
-    search=nil;
-    web_base=nil;
-    
+    [self presentViewController:VC animated:YES completion:nil];
+    VC=nil;
 }
 
 #pragma mark - UICollectionView Datasource

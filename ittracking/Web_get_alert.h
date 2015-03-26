@@ -12,7 +12,7 @@
 
 @property (strong,nonatomic) NSMutableArray *ilist_alert;
 @property (strong,nonatomic) CallBack_arrResult callBack;
-
++ (Web_get_alert*) fn_get_shareInstance;
 - (void) fn_get_data;
 
 @end

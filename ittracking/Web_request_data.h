@@ -12,5 +12,6 @@
 
 -(void)fn_get_sypara_data:(NSString*)str_base_url;
 -(void)fn_get_searchcriteria_data:(NSString*)str_base_url;
+-(void)fn_get_allIcon;
 
 @end

@@ -28,6 +28,7 @@
     searchform.os_value=@"ALL";
     ao_form.SearchForm=[NSSet setWithObject:searchform];
     Web_base *web_base=[[Web_base alloc]init];
+    web_base.base_url=base_url;
     web_base.il_url=STR_PERMIT_URL;
     web_base.iresp_class=[Resp_permit class];
     web_base.ilist_resp_mapping=[NSArray arrayWithPropertiesOfObject:[Resp_permit class]];
