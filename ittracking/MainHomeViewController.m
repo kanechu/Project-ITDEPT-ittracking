@@ -37,13 +37,6 @@
 @synthesize menu_item;
 CustomBadge *iobj_customBadge;
 
--(id)initWithCoder:(NSCoder *)aDecoder{
-    self=[super initWithCoder:aDecoder];
-    if (self) {
-        //[self fn_get_allIcon];
-    }
-    return self;
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
