@@ -70,6 +70,8 @@
 		B26EF4C219F8BAE500737442 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B26EF4C119F8BAE500737442 /* Reachability.m */; };
 		B26EF4CA19F8D28F00737442 /* CheckNetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = B26EF4C919F8D28F00737442 /* CheckNetWork.m */; };
 		B2700B07190E0D2A001E824C /* Custom_Button.m in Sources */ = {isa = PBXBuildFile; fileRef = B2700B06190E0D2A001E824C /* Custom_Button.m */; };
+		B271DE551AC289620001EA98 /* Resp_app_config.m in Sources */ = {isa = PBXBuildFile; fileRef = B271DE541AC289620001EA98 /* Resp_app_config.m */; };
+		B271DE5E1AC29C380001EA98 /* Web_request_data.m in Sources */ = {isa = PBXBuildFile; fileRef = B271DE5D1AC29C380001EA98 /* Web_request_data.m */; };
 		B272410419132E5800E6EE5F /* DB_portName.m in Sources */ = {isa = PBXBuildFile; fileRef = B272410319132E5800E6EE5F /* DB_portName.m */; };
 		B27387DA18FF85C500BF57F2 /* Custom_TextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B27387D918FF85C500BF57F2 /* Custom_TextField.m */; };
 		B278A91C18D8218F0057DC37 /* MZAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = B278A90B18D8218F0057DC37 /* MZAppearance.m */; };
@@ -296,6 +298,10 @@
 		B26EF4C919F8D28F00737442 /* CheckNetWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckNetWork.m; sourceTree = "<group>"; };
 		B2700B05190E0D2A001E824C /* Custom_Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Custom_Button.h; sourceTree = "<group>"; };
 		B2700B06190E0D2A001E824C /* Custom_Button.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Custom_Button.m; sourceTree = "<group>"; };
+		B271DE531AC289620001EA98 /* Resp_app_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resp_app_config.h; sourceTree = "<group>"; };
+		B271DE541AC289620001EA98 /* Resp_app_config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Resp_app_config.m; sourceTree = "<group>"; };
+		B271DE5C1AC29C380001EA98 /* Web_request_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Web_request_data.h; sourceTree = "<group>"; };
+		B271DE5D1AC29C380001EA98 /* Web_request_data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Web_request_data.m; sourceTree = "<group>"; };
 		B272410219132E5800E6EE5F /* DB_portName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB_portName.h; sourceTree = "<group>"; };
 		B272410319132E5800E6EE5F /* DB_portName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DB_portName.m; sourceTree = "<group>"; };
 		B27387D818FF85C500BF57F2 /* Custom_TextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Custom_TextField.h; sourceTree = "<group>"; };
@@ -483,6 +489,8 @@
 				B2DE9AA11A104E2D00259EB5 /* Web_get_permit.m */,
 				B23D80F018E18D4700316700 /* Web_base.h */,
 				B23D80F118E18D4700316700 /* Web_base.m */,
+				B271DE5C1AC29C380001EA98 /* Web_request_data.h */,
+				B271DE5D1AC29C380001EA98 /* Web_request_data.m */,
 			);
 			name = WebRequest;
 			sourceTree = "<group>";
@@ -844,6 +852,8 @@
 				B2307B0818BC960C000502BE /* RespMilestone.m */,
 				B2307B1A18BDD532000502BE /* RespAlert.h */,
 				B2307B1B18BDD532000502BE /* RespAlert.m */,
+				B271DE531AC289620001EA98 /* Resp_app_config.h */,
+				B271DE541AC289620001EA98 /* Resp_app_config.m */,
 				B2155E5418D930B900180EF9 /* RespLogin.h */,
 				B2155E5518D930B900180EF9 /* RespLogin.m */,
 				B225B47819020AC3009F1F25 /* RespSchedule.h */,
@@ -1103,6 +1113,7 @@
 				B2307B1C18BDD532000502BE /* RespAlert.m in Sources */,
 				B2B020BD18AB5DFE00EECD92 /* Candy.m in Sources */,
 				B278A92318D8218F0057DC37 /* UIImage+Additional.m in Sources */,
+				B271DE551AC289620001EA98 /* Resp_app_config.m in Sources */,
 				B2C237FF18B37153001E13C9 /* AuthContract.m in Sources */,
 				B2C2380918B5EAB5001E13C9 /* RespExhbl.m in Sources */,
 				B242209818BB2F1C00D4A75C /* Cell_exhbl_general_detail.m in Sources */,
@@ -1115,6 +1126,7 @@
 				B2C6ED7B18E58B570001837B /* Menu_home.m in Sources */,
 				B278A91F18D8218F0057DC37 /* MZFormSheetController.m in Sources */,
 				B25490121904A6D800D7197A /* SortByViewController.m in Sources */,
+				B271DE5E1AC29C380001EA98 /* Web_request_data.m in Sources */,
 				B2923514191A119C00F9F8B8 /* PopViewManager.m in Sources */,
 				B2307B0618BC920F000502BE /* MilestoneController.m in Sources */,
 				B278A92418D8218F0057DC37 /* UIViewController+TargetViewController.m in Sources */,
