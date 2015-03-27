@@ -34,8 +34,15 @@
     [hostReach startNotifier];
     
     NSLog(@"Registering for push notifications...");
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge)];
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]<8.0) {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge)];
+    }else{
+        UIUserNotificationSettings *setting=[UIUserNotificationSettings settingsForTypes:( UIUserNotificationTypeBadge|UIUserNotificationTypeSound |UIUserNotificationTypeAlert) categories:nil];
+        [application registerUserNotificationSettings:setting];
+        [application registerForRemoteNotifications];
+    }
+    
     return YES;
     
 }
@@ -49,8 +56,7 @@
 
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
     
-    NSString *str = [NSString stringWithFormat: @"Error: %@", err];
-    NSLog(@"Error %@",str);
+    NSLog(@"Error %@",[NSString stringWithFormat: @"Error: %@", err]);
     is_device_token = @"dev-ser";
     
 }
