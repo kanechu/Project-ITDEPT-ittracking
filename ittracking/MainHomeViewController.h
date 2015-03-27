@@ -10,16 +10,12 @@
 @class Menu_home;
 @interface MainHomeViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *hdrImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (strong,nonatomic) NSMutableArray *ilist_menu;
 @property (nonatomic, retain) IBOutlet UICollectionView *iui_collectionview;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
+
+@property (strong,nonatomic) NSMutableArray *ilist_menu;
 @property (assign,nonatomic)NSInteger badge_Num;
 @property (nonatomic,weak)Menu_home *menu_item;
-
-//点击ButtonItem触发事件的方法
-- (IBAction)fn_menu_btn_clicked:(id)sender;
 
 @end

@@ -1472,8 +1472,8 @@
                         <barButtonItem key="backBarButtonItem" title="Home" id="dfM-Cq-U7I"/>
                         <barButtonItem key="leftBarButtonItem" id="bIu-L5-2zT">
                             <button key="customView" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1lB-fa-AJe">
-                                <rect key="frame" x="16" y="0.0" width="140" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="16" y="0.0" width="140" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="ITTracking_logo">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
