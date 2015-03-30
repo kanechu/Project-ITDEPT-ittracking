@@ -1202,7 +1202,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_logo" id="P2K-ks-s8i">
                                 <rect key="frame" x="20" y="44" width="120" height="110"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="IT TRACKING    SYSTEM" textAlignment="center" id="j5Z-Dv-NBE">
                                 <rect key="frame" x="142" y="55" width="158" height="99"/>
@@ -1235,7 +1235,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="WWIL" placeholder="User Code" minimumFontSize="17" clearButtonMode="whileEditing" id="muQ-cI-2y7" userLabel="user code">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User Code" minimumFontSize="17" clearButtonMode="whileEditing" id="muQ-cI-2y7" userLabel="user code">
                                 <rect key="frame" x="70" y="191" width="221" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1247,7 +1247,7 @@
                                     <outlet property="delegate" destination="Lza-Aw-B6x" id="iDQ-jr-XYb"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="WWIL12" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" id="zEV-Q1-uwM" userLabel="password">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" id="zEV-Q1-uwM" userLabel="password">
                                 <rect key="frame" x="70" y="245" width="221" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1258,7 +1258,7 @@
                                     <outlet property="delegate" destination="Lza-Aw-B6x" id="YKx-vn-PNI"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ITNEW/DEMO" placeholder="System Code" minimumFontSize="17" clearButtonMode="whileEditing" id="rWB-z7-HZc" userLabel="system">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="System Code" minimumFontSize="17" clearButtonMode="whileEditing" id="rWB-z7-HZc" userLabel="system">
                                 <rect key="frame" x="70" y="305" width="173" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
