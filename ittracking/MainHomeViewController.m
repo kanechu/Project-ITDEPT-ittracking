@@ -193,7 +193,9 @@ CustomBadge *iobj_customBadge;
 }
 //退出登录后
 - (void)fn_user_logout{
-    
+    NSUserDefaults *user_isLogin=[NSUserDefaults standardUserDefaults];
+    [user_isLogin setInteger:0 forKey:@"isLogin"];
+    [user_isLogin synchronize];
     DB_login *dbLogin=[[DB_login alloc]init];
     [dbLogin fn_delete_record];
     dbLogin=nil;

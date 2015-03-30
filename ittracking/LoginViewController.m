@@ -13,6 +13,7 @@
 #import "RespLogin.h"
 #import "DB_login.h"
 #import "Web_request_data.h"
+#import "Web_get_permit.h"
 #import "MBProgressHUD.h"
 #import "NSDictionary.h"
 
@@ -302,6 +303,11 @@ typedef NS_ENUM(NSInteger, kTimeOut_stage){
                 if (_callBack) {
                     _callBack(_itf_usercode.text);
                 }
+                web_request_obj=nil;
+                Web_get_permit *web_permit_obj=[[Web_get_permit alloc]init];
+                [web_permit_obj fn_get_permit_data:base_url callBack:^(BOOL isSuccess){
+                    
+                }];
                 
             }else{
                 NSString *str_alert=@"User ID and Password do not match!";
