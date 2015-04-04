@@ -25,6 +25,8 @@
 #import "NSDictionary.h"
 @interface MainHomeViewController ()
 
+@property(assign,nonatomic)NSInteger flag_first_isLogin;
+
 @end
 #define LOGINSHEETSIZE CGSizeMake(280, 220)
 #define SHEETSIZE1 CGSizeMake(280, 250)
@@ -58,6 +60,11 @@ CustomBadge *iobj_customBadge;
     });
     
 	// Do any additional setup after loading the view.
+}
+- (void)viewDidAppear:(BOOL)animated{
+    if (_flag_first_isLogin==0) {
+        [self fn_present_loginView];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -122,7 +129,7 @@ CustomBadge *iobj_customBadge;
     }
     //如果logo为空的话，是不能进行Base64编码的，需进行容错处理
     if (logo==NULL || logo==nil || logo.length==0) {
-        _imageView.image=nil;
+        _imageView.image=[UIImage imageNamed:@"home_logo"];
     }else{
         NSData *data=[[NSData alloc]initWithBase64EncodedString:logo options:0];
         _imageView.image=[UIImage imageWithData:data];
@@ -147,20 +154,27 @@ CustomBadge *iobj_customBadge;
 }
 - (void)fn_isLogin_ITTracking{
     NSUserDefaults *user_isLogin=[NSUserDefaults standardUserDefaults];
-    NSInteger flag_isLogin=[user_isLogin integerForKey:@"isLogin"];
-    if (flag_isLogin==0) {
-        LoginViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-        VC.callBack=^(NSString* user_id){
-            [self fn_after_login:user_id];
-        };
-        [self presentViewController:VC animated:NO completion:nil];
-    }else{
+    _flag_first_isLogin=[user_isLogin integerForKey:@"isLogin"];
+    if (_flag_first_isLogin==1) {
         DB_login *dbLogin=[[DB_login alloc]init];
         NSString *user_code=[[[dbLogin fn_get_all_msg]firstObject]valueForKey:@"user_code"];
         [self fn_show_user_logo];
         [self fn_BtnGraphicMixed:user_code];
         dbLogin=nil;
     }
+}
+- (void)fn_present_loginView{
+    LoginViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+    VC.callBack=^(NSString* user_id){
+        [self fn_after_login:user_id];
+        _flag_first_isLogin=1;
+    };
+    if (_flag_first_isLogin==0) {
+        [self presentViewController:VC animated:NO completion:nil];
+    }else{
+        [self presentViewController:VC animated:YES completion:^{}];
+    }
+   
 }
 #pragma mark -user logout
 - (void)fn_logout_ITTracking:(id)sender {
@@ -207,12 +221,7 @@ CustomBadge *iobj_customBadge;
     DB_sypara *db_sypara=[[DB_sypara alloc]init];
     [db_sypara fn_delete_all_sypara_data];
     db_sypara=nil;
-    LoginViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-    VC.callBack=^(NSString* user_id){
-        [self fn_after_login:user_id];
-    };
-    [self presentViewController:VC animated:YES completion:nil];
-    VC=nil;
+    [self fn_present_loginView];
 }
 
 #pragma mark - UICollectionView Datasource
