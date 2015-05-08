@@ -16,4 +16,5 @@
     #import<SystemConfiguration/SystemConfiguration.h>
     #import<MobileCoreServices/MobileCoreServices.h>
     #import"Common_methods.h"
+    #import "Custom_backgroundView.h"
 #endif

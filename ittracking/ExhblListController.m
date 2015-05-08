@@ -113,11 +113,20 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 {
     [self performSegueWithIdentifier:@"segue_exhbl_home" sender:self];
 }
+#pragma mark - set footview
 - (void)setExtraCellLineHidden
 {
     UIView *view =[ [UIView alloc]init];
     view.backgroundColor = [UIColor clearColor];
     [self.tableView setTableFooterView:view];
+    [self.tableView setScrollEnabled:YES];
+}
+-(void)fn_show_no_data_msg{
+    Custom_backgroundView *bg_view=[[Custom_backgroundView alloc]initWithFrame:self.view.frame];
+    bg_view.str_msg=@"No Sea Export Data";
+    bg_view.flag_bgView_type=kBgView_alert;
+    [self.tableView setTableFooterView:bg_view];
+    [self.tableView setScrollEnabled:NO];
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
@@ -175,6 +184,9 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
             [alertView show];
         }else{
             ilist_exhbl = alist_result;
+            if ([alist_result count]==0) {
+                [self fn_show_no_data_msg];
+            }
             [self.tableView reloadData];
         }
     };

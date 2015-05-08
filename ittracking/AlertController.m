@@ -193,15 +193,9 @@ didSelectRowAtIndexPath: (NSIndexPath *)indexPath
     [self.tableView setScrollEnabled:YES];
 }
 -(void)fn_show_no_msg_alert{
-    CGRect frame=self.tableView.frame;
-    UIView *bg_view=[[UIView alloc]initWithFrame:frame];
-    bg_view.backgroundColor=[UIColor clearColor];
-    UILabel *ilb_alert=[[UILabel alloc]initWithFrame:CGRectMake(0,frame.size.height/2-88,frame.size.width,42)];
-    ilb_alert.textAlignment=NSTextAlignmentCenter;
-    ilb_alert.font=[UIFont systemFontOfSize:24];
-    ilb_alert.textColor=[UIColor lightGrayColor];
-    ilb_alert.text=@"No Message!";
-    [bg_view addSubview:ilb_alert];
+    Custom_backgroundView *bg_view=[[Custom_backgroundView alloc]initWithFrame:self.tableView.frame];
+    bg_view.str_msg=@"No Message!";
+    bg_view.flag_bgView_type=kBgView_alert;
     [self.tableView setTableFooterView:bg_view];
     [self.tableView setScrollEnabled:NO];
 }

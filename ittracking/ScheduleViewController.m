@@ -10,7 +10,6 @@
 #import "MZFormSheetController.h"
 #import "SortByViewController.h"
 #import "Cell_detail_schedule.h"
-#import "Custom_backgroundView.h"
 #import "DB_login.h"
 #import "Web_base.h"
 #import "RespSchedule.h"
@@ -157,14 +156,9 @@
 }
 -(void)fn_show_no_data_msg{
     CGRect frame=self.tableview.frame;
-    UIView *bg_view=[[Custom_backgroundView alloc]init];
-    bg_view.frame=frame;
-    UILabel *ilb_alert=[[UILabel alloc]initWithFrame:CGRectMake(0,frame.size.height/2-88,frame.size.width,42)];
-    ilb_alert.textAlignment=NSTextAlignmentCenter;
-    ilb_alert.font=[UIFont systemFontOfSize:24];
-    ilb_alert.textColor=[UIColor lightGrayColor];
-    ilb_alert.text=@"NO Schedule Data";
-    [bg_view addSubview:ilb_alert];
+    Custom_backgroundView *bg_view=[[Custom_backgroundView alloc]initWithFrame:frame];
+    bg_view.str_msg=@"No Schedule Data";
+    bg_view.flag_bgView_type=kBgView_colorAndAlert;
     [self.tableview setTableFooterView:bg_view];
     [self.tableview setScrollEnabled:NO];
 }
